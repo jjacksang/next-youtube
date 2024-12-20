@@ -1,20 +1,32 @@
 .sns {
     position: fixed;
+<<<<<<< HEAD
     width: 258px;
+=======
+    width: 260px;
+>>>>>>> f0ff9b2 (first)
     bottom: 0;
     left: 0;
     right: 0;
     text-align: center;
     padding: 15px 0 10px;
     background-color: #11111125;
+<<<<<<< HEAD
     backdrop-filter: blur(20px);
+=======
+    backdrop-filter: blur(10px);
+>>>>>>> f0ff9b2 (first)
 }
 
 .sns > ul {
     display: flex;
     justify-content: center;
     list-style-type: none;
+<<<<<<< HEAD
     gap: 2rem;
+=======
+    gap: 1rem;
+>>>>>>> f0ff9b2 (first)
     padding: 0;
 }
 

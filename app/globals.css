@@ -1,6 +1,7 @@
 body,
 html {
     background-color: black;
+<<<<<<< HEAD
     color: white;
     font-size: 16px;
     line-height: 1.5;
@@ -31,4 +32,16 @@ html {
 .swiper-button-prev::after {
     font-size: 1.4rem !important;
     font-weight: 600 !important;
+=======
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+}
+
+main {
+    max-width: 2000px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding-left: 260px;
+>>>>>>> f0ff9b2 (first)
 }

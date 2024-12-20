@@ -1,5 +1,6 @@
 "use client";
 
+<<<<<<< HEAD
 import React, { useState, useRef } from "react";
 import style from "./searchbar.module.css";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -40,10 +41,18 @@ export default function Searchbar() {
 
     return (
         <form onSubmit={onSubmit} role="search">
+=======
+import style from "./searchbar.module.css";
+
+export default function Searchbar() {
+    return (
+        <div id="search">
+>>>>>>> f0ff9b2 (first)
             <div className={style.search__inner}>
                 <label htmlFor="searchInput">
                     <span className={style.ir}>검색</span>
                 </label>
+<<<<<<< HEAD
                 <input
                     id="searchInput"
                     ref={inputRef}
@@ -56,5 +65,10 @@ export default function Searchbar() {
                 />
             </div>
         </form>
+=======
+                <input />
+            </div>
+        </div>
+>>>>>>> f0ff9b2 (first)
     );
 }

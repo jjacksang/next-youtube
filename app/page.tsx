@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 import { notFound } from "next/navigation";
 import { VideoSwiper } from "./components/swiper/videoSwiper";
+=======
+>>>>>>> f0ff9b2 (first)
 import styles from "./page.module.css";
 import { processVideoData } from "./utils/process-video-data";
 import { RecoDeveloper } from "./components/reco-developer";
 
+<<<<<<< HEAD
 async function DeverloperVideo() {
     return (
         <>
@@ -134,6 +138,12 @@ export default async function Home() {
                     ))}
                 </section>
             </div>
+=======
+export default function Home() {
+    return (
+        <div className={styles.page}>
+            <h1>page</h1>
+>>>>>>> f0ff9b2 (first)
         </div>
     );
 }
