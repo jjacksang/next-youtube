@@ -1,0 +1,28 @@
+.sns {
+    position: fixed;
+    width: 260px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 15px 0 10px;
+    background-color: #11111125;
+    backdrop-filter: blur(10px);
+}
+
+.sns > ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    gap: 1rem;
+    padding: 0;
+}
+
+.sns > li {
+    display: inline-block;
+}
+
+.sns > li > a {
+    padding: 5px 7px;
+    display: inline-block;
+}

@@ -1,0 +1,56 @@
+.menu {
+    padding: 4px 0;
+}
+
+.menuList {
+    border-bottom: 1px solid #111;
+    padding-left: 1rem;
+}
+
+.menuList > li {
+    margin-bottom: 5px;
+    list-style-type: none;
+}
+
+.menuList > li > a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.9rem 2rem 0.9rem 0rem;
+    margin: 0 0.625rem;
+    border-radius: 40px;
+    position: relative;
+    color: white;
+    transition: all 0.3s;
+
+    text-decoration-line: none;
+}
+
+.menuList > li > a > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    left: 1.25rem;
+    top: 0.75rem;
+}
+
+.menuList > li > a > span {
+    font-size: 1rem;
+}
+
+.keyword {
+    padding: 1.25rem;
+    display: inline-block;
+}
+
+.keyword > li {
+    display: inline-block;
+    padding: 3px 8px;
+    margin: 3px;
+    border: 1px solid #222;
+    border-radius: 40px;
+}
+
+.keyword > li > a {
+    color: #cccccc;
+    text-decoration-line: none;
+}

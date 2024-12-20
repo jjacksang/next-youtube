@@ -1,0 +1,26 @@
+.logo {
+    border-bottom: 1px solid #111;
+}
+
+.logo > a {
+    display: flex;
+    margin: 10px;
+    color: white;
+    text-decoration-line: none;
+}
+
+.logo > a > em {
+    width: 40px;
+    height: 40px;
+
+    display: block;
+    background-color: red;
+    margin-right: 10px;
+}
+
+.logo > a > span {
+    font-size: 20px;
+    line-height: 1;
+    font-weight: 900;
+    text-transform: uppercase;
+}
