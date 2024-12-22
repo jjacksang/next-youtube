@@ -7,8 +7,8 @@ import { CiDumbbell } from "react-icons/ci";
 import { CiFries } from "react-icons/ci";
 import { CiMoneyBill } from "react-icons/ci";
 
+import { SiVelog } from "react-icons/si";
 import { AiFillGithub } from "react-icons/ai";
-import { AiFillYoutube } from "react-icons/ai";
 import { AiOutlineInstagram } from "react-icons/ai";
 
 export const headerMenus = [
@@ -100,17 +100,17 @@ export const searchKeyword = [
 export const snsLink = [
     {
         title: "github",
-        url: "https://github.com/webstoryboy",
+        url: "https://github.com/jjacksang/next-youtube",
         icon: <AiFillGithub />,
     },
     {
         title: "youtube",
-        url: "https://www.youtube.com/webstoryboy",
-        icon: <AiFillYoutube />,
+        url: "https://velog.io/@jjacksang/posts",
+        icon: <SiVelog />,
     },
     {
         title: "instagram",
-        url: "https://www.instagram.com/webstoryboy",
+        url: "https://www.instagram.com/ban_ko.1/",
         icon: <AiOutlineInstagram />,
     },
 ];

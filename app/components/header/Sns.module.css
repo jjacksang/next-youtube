@@ -7,14 +7,14 @@
     text-align: center;
     padding: 15px 0 10px;
     background-color: #11111125;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
 }
 
 .sns > ul {
     display: flex;
     justify-content: center;
     list-style-type: none;
-    gap: 1rem;
+    gap: 2rem;
     padding: 0;
 }
 

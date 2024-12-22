@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+}
+
+.container h3 {
+    margin: 0px;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.thumbnail__img {
+    display: flex;
+}
+
+.thumbnail__img > img {
+    border: 1px solid white;
+    border-radius: 15px;
+}
+
+.container .info__content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    font-size: 14px;
+}
