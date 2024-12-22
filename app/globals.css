@@ -1,14 +1,12 @@
 body,
 html {
     background-color: black;
+    color: white;
     font-size: 16px;
     line-height: 1.5;
     font-weight: 400;
 }
 
-main {
-    max-width: 2000px;
-    min-height: 100vh;
-    margin: 0 auto;
-    padding-left: 260px;
+* {
+    box-sizing: border-box;
 }
