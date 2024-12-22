@@ -3,8 +3,9 @@
 }
 
 .menuList {
-    border-bottom: 1px solid #111;
-    padding-left: 1rem;
+    border-bottom: 1px solid #333;
+    padding: 0 0 32px 1rem;
+    margin: 0;
 }
 
 .menuList > li {

@@ -3,6 +3,7 @@
     flex-direction: column;
 
     color: white;
+    padding: 5px 5px 5px 5px;
 }
 
 .container h3 {
@@ -13,9 +14,10 @@
 
 .thumbnail__img {
     display: flex;
+    margin-bottom: 5px;
 }
 
-.thumbnail__img > img {
+.thumbnail__img a > img {
     border: 1px solid white;
     border-radius: 15px;
 }
@@ -23,7 +25,27 @@
 .container .info__content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 
     font-size: 14px;
+}
+
+.video {
+    display: grid;
+    grid-template-columns: repeat(4, 24%);
+    gap: 15px;
+}
+
+.thumbnail__img > a > img {
+    width: 100%;
+    height: 160px;
+}
+
+.content__author {
+    color: #666;
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+.content__info {
+    color: #666;
 }
