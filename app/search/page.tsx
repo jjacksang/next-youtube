@@ -24,11 +24,16 @@ export function Content() {
             </div>
 
             <div className={style.info__content}>
-                <h3 className={style.content__title}>와... 이건 진짜 영화다</h3>
-                <span className={style.content__author}>우주하마</span>
-                <span className={style.content__info}>
-                    조회수 13만회 / 2일 전
-                </span>
+                <img src="https://yt3.ggpht.com/XfS8CIrSHyofq79j-qoHukdwloL6H2UkKl36OMBeyHVdPBEr-6HzVLuASMsKl32HFfvYaekgFA=s68-c-k-c0x00ffffff-no-rj" />
+                <div>
+                    <h3 className={style.content__title}>
+                        와... 이건 진짜 영화다
+                    </h3>
+                    <span className={style.content__author}>우주하마</span>
+                    <span className={style.content__info}>
+                        조회수 13만회 / 2일 전
+                    </span>
+                </div>
             </div>
         </div>
     );
