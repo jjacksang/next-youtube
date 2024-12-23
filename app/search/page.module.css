@@ -39,7 +39,7 @@
 .video {
     display: grid;
     grid-template-columns: repeat(4, 24%);
-    gap: 15px;
+    grid-gap: 15px;
 }
 
 .thumbnail__img > a > img {

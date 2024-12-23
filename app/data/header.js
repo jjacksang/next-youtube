@@ -6,6 +6,7 @@ import { CiCoffeeCup } from "react-icons/ci";
 import { CiDumbbell } from "react-icons/ci";
 import { CiFries } from "react-icons/ci";
 import { CiMoneyBill } from "react-icons/ci";
+import { SiYoutubeshorts } from "react-icons/si";
 
 import { SiVelog } from "react-icons/si";
 import { AiFillGithub } from "react-icons/ai";
@@ -13,44 +14,19 @@ import { AiOutlineInstagram } from "react-icons/ai";
 
 export const headerMenus = [
     {
-        title: "Choptube",
+        title: "Home",
         icon: <CiBaseball />,
         src: "/",
     },
     {
-        title: "추천 영상",
-        icon: <CiMoneyBill />,
-        src: "/today",
+        title: "Shorts",
+        icon: <SiYoutubeshorts />,
+        src: "/shorts",
     },
     {
         title: "추천 개발자",
         icon: <CiCoins1 />,
         src: "/developer",
-    },
-    {
-        title: "웹디자인기능사",
-        icon: <CiBoxes />,
-        src: "/webd",
-    },
-    {
-        title: "웹표준 사이트",
-        icon: <CiBullhorn />,
-        src: "/website",
-    },
-    {
-        title: "GSAP Parallax",
-        icon: <CiCoffeeCup />,
-        src: "/gsap",
-    },
-    {
-        title: "포트폴리오 사이트",
-        icon: <CiDumbbell />,
-        src: "/port",
-    },
-    {
-        title: "유튜브 클론 사이트",
-        icon: <CiFries />,
-        src: "/youtube",
     },
 ];
 
