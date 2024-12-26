@@ -1,10 +1,40 @@
 import Link from "next/link";
 import style from "./page.module.css";
+import { Suspense } from "react";
 
-export default function Search() {
+type Props = {
+    searchParams: Promise<{ q: string }>;
+};
+
+type SearchParams = {
+    q: string;
+    nextPageToken: any;
+    maxResult: number;
+};
+
+async function SearchResult({ q }: { q: string }) {
+    console.log(q);
+    const res = await fetch(
+        `https://youtube-v31.p.rapidapi.com/search?q=${q}&part=snippet%2Cid&regionCode=US&maxResults=50&order=date`
+    );
+    if (!res.ok) {
+        return <div>Error!</div>;
+    }
+
+    const videos = await res.json();
+    console.log(videos);
+
+    return videos.map((video: any) => <div key={video.id} {...video}></div>);
+}
+
+export default async function Search({ searchParams }: Props) {
+    const { q } = await searchParams;
+
     return (
         <div className={style.video}>
-            <Content />
+            <Suspense fallback={<div>Loading...</div>}>
+                <SearchResult q={q || ""} />
+            </Suspense>
             <Content />
             <Content />
         </div>
