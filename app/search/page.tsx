@@ -1,6 +1,7 @@
 import Link from "next/link";
 import style from "./page.module.css";
 import { Suspense } from "react";
+import { fetchYoutubeVideos } from "../api";
 
 type Props = {
     searchParams: Promise<{ q: string }>;
@@ -14,17 +15,14 @@ type SearchParams = {
 
 async function SearchResult({ q }: { q: string }) {
     console.log(q);
-    const res = await fetch(
-        `https://youtube-v31.p.rapidapi.com/search?q=${q}&part=snippet%2Cid&regionCode=US&maxResults=50&order=date`
-    );
-    if (!res.ok) {
-        return <div>Error!</div>;
-    }
+    const res = await fetchYoutubeVideos(q);
 
-    const videos = await res.json();
-    console.log(videos);
+    console.log(res);
+    return <div></div>;
+    // const videos = res;
+    // console.log(videos);
 
-    return videos.map((video: any) => <div key={video.id} {...video}></div>);
+    // return videos.map((video: any) => <div key={video.id} {...video}></div>);
 }
 
 export default async function Search({ searchParams }: Props) {
