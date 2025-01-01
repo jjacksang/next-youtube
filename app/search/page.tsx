@@ -20,7 +20,7 @@ async function SearchResult({ q }: { q: string }) {
     console.log(res);
 
     const videos = res.data.filter(
-        (content: any) => content.type !== "channel"
+        (content: Video) => content.type !== "channel"
     );
     console.log(videos);
 
@@ -51,7 +51,7 @@ export function Content({ video }: IVideo) {
                         alt="h"
                         width={68}
                         height={68}
-                        src={video.richThumbnail[0].url}
+                        src={video.thumbnail[0].url}
                     />
                 </Link>
             </div>
@@ -69,7 +69,7 @@ export function Content({ video }: IVideo) {
                         {video.channelTitle}
                     </span>
                     <span className={style.content__info}>
-                        {video.viewCount}
+                        {video.publishedText} / {video.viewCount}
                     </span>
                 </div>
             </div>
