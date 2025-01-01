@@ -28,13 +28,13 @@ export const fetchYoutubeVideos = async (q: string) => {
         method: "GET",
         headers: {
             "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY!,
-            "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
+            "X-RapidAPI-Host": "youtube-v3-alternative.p.rapidapi.com",
         },
     };
 
     try {
         const response = await fetch(
-            `${url}/search?=${q}&?part=snippet&maxResults=48`,
+            `${url}/search?query=${q}&?part=snippet&maxResults=48`,
             options
         );
         if (!response.ok) console.log("fetch failed");
