@@ -1,7 +1,7 @@
 import Link from "next/link";
 import style from "./page.module.css";
 import { Suspense } from "react";
-import { fetchYoutubeVideos } from "../api";
+import { fetchYoutubeVideos } from "../utils/api";
 import Image from "next/image";
 import { Video } from "@/type";
 
