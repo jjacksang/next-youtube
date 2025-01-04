@@ -26,8 +26,6 @@ export default function Searchbar() {
         }
     };
 
-    console.log(q);
-
     return (
         <div className={style.search__inner}>
             <label htmlFor="searchInput">

@@ -18,3 +18,15 @@ export interface Video {
     videoId: string;
     viewCount: string;
 }
+
+export interface IVideoDetail {
+    id: string;
+    channelId: string;
+    channelTitle: string;
+    description: string;
+    publishDate: string;
+    title: string;
+    uploadDate: string;
+    viewCount: string;
+    thumbnail: Thumbnail[];
+}

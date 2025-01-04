@@ -1,0 +1,9 @@
+.videoViewPage {
+    padding: 0;
+}
+
+.video__play {
+    width: 100%;
+    padding-bottom: 56.2%;
+    position: relative;
+}

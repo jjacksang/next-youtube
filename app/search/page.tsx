@@ -3,7 +3,7 @@ import style from "./page.module.css";
 import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import Image from "next/image";
-import { Video } from "@/type";
+import { Video } from "../utils/type";
 
 type Props = {
     searchParams: Promise<{ q: string }>;
