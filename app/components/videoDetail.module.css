@@ -7,3 +7,34 @@
     padding-bottom: 56.2%;
     position: relative;
 }
+
+.video__play > iframe {
+    border-radius: 12px;
+}
+
+.video__info {
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 12px 20px 12px;
+}
+
+.video__channel {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 8px;
+}
+
+.id > a {
+    display: flex;
+    align-items: center;
+
+    color: white;
+    font-weight: 300;
+}
+
+.id > a > img {
+    border-radius: 50%;
+    margin-right: 12px;
+}
