@@ -32,9 +32,38 @@
 
     color: white;
     font-weight: 300;
+    text-decoration: none;
 }
 
 .id > a > img {
     border-radius: 50%;
     margin-right: 12px;
+}
+
+.video__desc {
+    padding: 12px 20px 12px 20px;
+    margin-top: 20px;
+    background-color: rgb(44, 44, 44);
+    border-radius: 12px;
+
+    white-space: pre-line;
+}
+
+.count {
+    display: flex;
+    white-space: break-spaces;
+}
+
+.view {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.description > a {
+    color: rgb(12, 88, 202);
+}
+
+.description > a:hover {
+    color: rgb(4, 128, 200);
 }

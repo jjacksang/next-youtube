@@ -7,8 +7,31 @@ import { CiRead } from "react-icons/ci";
 import { IVideoDetail } from "../utils/type";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { elapsedTime } from "../utils/elapsedTime";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+
+const convertUrls = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    const parts = text.split(urlRegex);
+
+    return parts.map((part, index) => {
+        if (part.match(urlRegex)) {
+            return (
+                <Link
+                    key={index}
+                    href={part}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {part}
+                </Link>
+            );
+        }
+        return <span key={index}>{part}</span>;
+    });
+};
 
 export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
     return (
@@ -46,15 +69,18 @@ export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
                                     {videoDetail.channelTitle}
                                 </Link>
                             </div>
+                        </div>
+                        <div className={style.video__desc}>
                             <div className={style.count}>
                                 <span className={style.view}>
                                     <CiRead />
-                                    {videoDetail.viewCount}
+                                    {`${videoDetail.viewCount}회`}&ensp;
+                                    {`-${elapsedTime(videoDetail.publishDate)}`}
                                 </span>
                             </div>
-                        </div>
-                        <div className={style.video__desc}>
-                            {videoDetail.description}
+                            <div className={style.description}>
+                                {convertUrls(videoDetail.description)}
+                            </div>
                         </div>
                     </div>
                 </div>
