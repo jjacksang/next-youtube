@@ -19,13 +19,8 @@ async function SearchResult({ q }: { q: string }) {
 
     console.log(res);
 
-    const videos = res.data.filter(
-        (content: Video) => content.type !== "channel"
-    );
-    console.log(videos);
-
-    return videos.map((video: Video) => (
-        <Content video={video} key={video.videoId} />
+    return res.items.map((video: Video) => (
+        <Content video={video} key={video.id.videoId} />
     ));
 }
 
@@ -42,34 +37,29 @@ export default async function Search({ searchParams }: Props) {
 }
 
 export function Content({ video }: IVideo) {
-    console.log(video.channelThumbnail[0].url);
     return (
         <div className={style.container}>
             <div className={style.thumbnail__img}>
-                <Link href={`/video/${video.videoId}`}>
+                <Link href={`/video/${video.id.videoId}`}>
                     <Image
                         alt="h"
                         width={68}
                         height={68}
-                        src={video.thumbnail[0].url}
+                        src={video.snippet.thumbnails.default.url}
                     />
                 </Link>
             </div>
 
             <div className={style.info__content}>
-                <Image
-                    alt="y"
-                    src={`${video.channelThumbnail[0].url}`}
-                    width={`${video.channelThumbnail[0].width}`}
-                    height={`${video.channelThumbnail[0].height}`}
-                />
                 <div>
-                    <h3 className={style.content__title}>{video.title}</h3>
+                    <h3 className={style.content__title}>
+                        {video.snippet.title}
+                    </h3>
                     <span className={style.content__author}>
-                        {video.channelTitle}
+                        {video.snippet.channelTitle}
                     </span>
                     <span className={style.content__info}>
-                        {video.publishedText} / {video.viewCount}
+                        {video.snippet.publishedTime}
                     </span>
                 </div>
             </div>

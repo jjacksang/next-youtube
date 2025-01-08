@@ -3,14 +3,14 @@ const options = {
     method: "GET",
     headers: {
         "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
-        "X-RapidAPI-Host": "youtube-v3-alternative.p.rapidapi.com",
+        "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
     },
 };
 
 export const fetchYoutubeVideos = async (q: string) => {
     try {
         const response = await fetch(
-            `${baseURL}/search?query=${q}&?part=snippet`,
+            `${baseURL}/search?q=${q}&part=snippet&maxResults=48&order=date`,
             options
         );
         if (!response.ok) console.log("fetch Search failed");

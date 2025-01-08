@@ -5,18 +5,19 @@ interface Thumbnail {
 }
 
 export interface Video {
-    type: string;
-    channelId: string;
-    channelTitle: string;
-    channelThumbnail: Thumbnail[];
-    description: string;
-    lengthText: string;
-    publishedText: string;
-    richThumbnail: Thumbnail[];
-    thumbnail: Thumbnail[];
-    title: string;
-    videoId: string;
-    viewCount: string;
+    id: { videoId: string };
+    snippet: {
+        channelId: string;
+        channelTitle: string;
+        description: string;
+        publishedTime: string;
+        thumbnails: {
+            default: Thumbnail;
+            high: Thumbnail;
+            medium: Thumbnail;
+        };
+        title: string;
+    };
 }
 
 export interface IVideoDetail {
