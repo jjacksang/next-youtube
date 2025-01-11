@@ -29,11 +29,16 @@ export default async function Search({ searchParams }: Props) {
     const { q } = await searchParams;
 
     return (
-        <div className={style.video}>
-            <Suspense fallback={<div>Loading...</div>}>
-                <SearchResult q={q || ""} />
-            </Suspense>
-        </div>
+        <section>
+            <div className={style.video}>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <SearchResult q={q || ""} />
+                </Suspense>
+            </div>
+            <div className={style.moreBtn}>
+                <button>더보기</button>
+            </div>
+        </section>
     );
 }
 
@@ -52,19 +57,15 @@ export function Content({ video }: IVideo) {
             </div>
 
             <div className={style.info__content}>
-                <div>
-                    <h3 className={style.content__title}>
-                        {video.snippet.title}
-                    </h3>
-                    <div className={style.content__text}>
-                        <span className={style.content__author}>
-                            {video.snippet.channelTitle}
-                        </span>
-                        <span className={style.publishTime}>
-                            <div className={style.dot}>•</div>
-                            {elapsedTime(video.snippet.publishTime)}
-                        </span>
-                    </div>
+                <h3 className={style.content__title}>{video.snippet.title}</h3>
+                <div className={style.content__text}>
+                    <span className={style.content__author}>
+                        {video.snippet.channelTitle}
+                    </span>
+                    <span className={style.publishTime}>
+                        <div className={style.dot}>•</div>
+                        {elapsedTime(video.snippet.publishTime)}
+                    </span>
                 </div>
             </div>
         </div>

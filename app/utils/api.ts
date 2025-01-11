@@ -10,7 +10,7 @@ const options = {
 export const fetchYoutubeVideos = async (q: string) => {
     try {
         const response = await fetch(
-            `${baseURL}/search?q=${q}&part=snippet&maxResults=48&order=date`,
+            `${baseURL}/search?q=${q}&part=snippet&maxResults=24&order=date`,
             options
         );
         if (!response.ok) console.log("fetch Search failed");
