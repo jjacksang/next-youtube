@@ -1,3 +1,7 @@
+// publishTime값을 받아 ~분 전, ~시간 전, ~일 전, ~주 전, ~개월 전, ~년 전 으로 변환
+// timeDiff 설정 전 -> 해당년도보다 낮은 년도수를 가지면 값을 변환하지 못함
+// timeDiff 설정 후 -> Math.abs()를 통하여 절대값으로 비교하여 날짜를 변환
+
 export const elapsedTime = (date: string): string => {
     const start = new Date(date);
     const end = new Date();
