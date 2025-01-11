@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import Image from "next/image";
 import { Video } from "../utils/type";
+import { elapsedTime } from "../utils/elapsedTime";
 
 type Props = {
     searchParams: Promise<{ q: string }>;
@@ -45,7 +46,7 @@ export function Content({ video }: IVideo) {
                         alt="h"
                         width={68}
                         height={68}
-                        src={video.snippet.thumbnails.default.url}
+                        src={video.snippet.thumbnails.medium.url}
                     />
                 </Link>
             </div>
@@ -55,12 +56,15 @@ export function Content({ video }: IVideo) {
                     <h3 className={style.content__title}>
                         {video.snippet.title}
                     </h3>
-                    <span className={style.content__author}>
-                        {video.snippet.channelTitle}
-                    </span>
-                    <span className={style.content__info}>
-                        {video.snippet.publishedTime}
-                    </span>
+                    <div className={style.content__text}>
+                        <span className={style.content__author}>
+                            {video.snippet.channelTitle}
+                        </span>
+                        <span className={style.publishTime}>
+                            <div className={style.dot}>•</div>
+                            {elapsedTime(video.snippet.publishTime)}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

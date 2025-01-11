@@ -52,7 +52,15 @@
     font-size: 0.875rem;
     font-weight: bold;
 }
+.content__text {
+    display: flex;
+}
 
-.content__info {
+.dot {
+    margin: 0 4px;
+}
+.publishTime {
+    display: flex;
+    flex-direction: row;
     color: #666;
 }

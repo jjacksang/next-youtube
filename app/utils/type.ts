@@ -10,7 +10,7 @@ export interface Video {
         channelId: string;
         channelTitle: string;
         description: string;
-        publishedTime: string;
+        publishTime: string;
         thumbnails: {
             default: Thumbnail;
             high: Thumbnail;
