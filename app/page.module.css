@@ -1,4 +1,5 @@
 .home {
+    width: 100%;
     color: white;
 
     padding: 0px 12px;
@@ -6,26 +7,38 @@
 
 .youtuber {
     display: grid;
-    grid-template-columns: repeat(5, 24%);
+    grid-auto-flow: column;
+    grid-auto-columns: calc(18% - 4px);
+    overflow-x: hidden;
 }
 
 .youtuber__profile {
     display: flex;
     flex-direction: column;
+    align-items: center;
 
-    width: 180px;
+    width: 128px;
     height: auto;
 
     gap: 8px;
 }
 
 .youtuber__profile > img {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
 
     border-radius: 50%;
 }
 
 .youtuber__profile > span {
     text-align: center;
+}
+
+.swiper__section {
+    position: relative;
+    overflow: hidden;
+}
+
+.swiper__section > section {
+    overflow-x: auto;
 }
