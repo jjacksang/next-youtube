@@ -34,6 +34,8 @@ const convertUrls = (text: string) => {
 };
 
 export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
+    console.log(videoDetail);
+
     return (
         <section className={style.videoViewPage}>
             {videoDetail && (

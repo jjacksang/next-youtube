@@ -1,3 +1,31 @@
 .home {
     color: white;
+
+    padding: 0px 12px;
+}
+
+.youtuber {
+    display: grid;
+    grid-template-columns: repeat(5, 24%);
+}
+
+.youtuber__profile {
+    display: flex;
+    flex-direction: column;
+
+    width: 180px;
+    height: auto;
+
+    gap: 8px;
+}
+
+.youtuber__profile > img {
+    width: 160px;
+    height: 160px;
+
+    border-radius: 50%;
+}
+
+.youtuber__profile > span {
+    text-align: center;
 }

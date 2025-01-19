@@ -14,9 +14,13 @@ async function SearchResult({ q }: { q: string }) {
 
     console.log(res);
 
-    return res.items.map((video: Video) => (
-        <VideoItem video={video} key={video.id.videoId} />
-    ));
+    return (
+        <>
+            {res.items.map((video: Video) => (
+                <VideoItem video={video} key={video.id.videoId} />
+            ))}
+        </>
+    );
 }
 
 export default async function Search({ searchParams }: Props) {
