@@ -22,12 +22,25 @@ export interface Video {
 
 export interface IVideoDetail {
     id: string;
-    channelId: string;
-    channelTitle: string;
-    description: string;
-    publishDate: string;
-    title: string;
-    uploadDate: string;
-    viewCount: string;
-    thumbnail: Thumbnail[];
+    snippet: {
+        channelId: string;
+        channelTitle: string;
+        description: string;
+        publishedAt: string;
+        title: string;
+        uploadDate: string;
+        viewCount: string;
+        thumbnails: {
+            default: Thumbnail;
+            high: Thumbnail;
+            medium: Thumbnail;
+        };
+    };
+    statistics: {
+        commentCount: number;
+        likeCount: number;
+        viewCount: number;
+    };
 }
+
+export interface IContentDetails {}

@@ -55,20 +55,23 @@ export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
                     </div>
                     <div className={style.video__info}>
                         <h2 className={style.video__title}>
-                            {videoDetail.title}
+                            {videoDetail.snippet.title}
                         </h2>
                         <div className={style.video__channel}>
                             <div className={style.id}>
                                 <Link
-                                    href={`/channel/${videoDetail.channelId}`}
+                                    href={`/channel/${videoDetail.snippet.channelId}`}
                                 >
                                     <Image
-                                        src={videoDetail.thumbnail[0].url}
-                                        alt={videoDetail.channelTitle}
+                                        src={
+                                            videoDetail.snippet.thumbnails
+                                                .default.url
+                                        }
+                                        alt={videoDetail.snippet.channelTitle}
                                         width={40}
                                         height={40}
                                     />
-                                    {videoDetail.channelTitle}
+                                    {videoDetail.snippet.channelTitle}
                                 </Link>
                             </div>
                         </div>
@@ -76,12 +79,13 @@ export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
                             <div className={style.count}>
                                 <span className={style.view}>
                                     <CiRead />
-                                    {`${videoDetail.viewCount}회`}&ensp;
-                                    {`-${elapsedTime(videoDetail.publishDate)}`}
+                                    {`${videoDetail.statistics.viewCount}회`}
+                                    &ensp;
+                                    {`-${elapsedTime(videoDetail.snippet.publishedAt)}`}
                                 </span>
                             </div>
                             <div className={style.description}>
-                                {convertUrls(videoDetail.description)}
+                                {convertUrls(videoDetail.snippet.description)}
                             </div>
                         </div>
                     </div>

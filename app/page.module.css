@@ -8,8 +8,10 @@
 .youtuber {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: calc(18% - 4px);
+    grid-auto-columns: calc(18% - 8px);
     overflow-x: hidden;
+
+    padding-top: 12px;
 }
 
 .youtuber__profile {
