@@ -36,3 +36,20 @@ export const fetchVideoDetail = async (id: string) => {
         throw error;
     }
 };
+
+export const fetchChannelDetail = async (id: string) => {
+    try {
+        const res = await fetch(
+            `${baseURL}/channels?part=snippet&id=${id}`,
+            options
+        );
+        if (res.ok) {
+            let data = await res.json();
+            console.log(data);
+
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};

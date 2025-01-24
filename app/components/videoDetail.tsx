@@ -33,9 +33,13 @@ const convertUrls = (text: string) => {
     });
 };
 
-export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
-    console.log(videoDetail);
-
+export const VideoDetail = ({
+    videoDetail,
+    channelThumbnail,
+}: {
+    videoDetail: IVideoDetail;
+    channelThumbnail: string;
+}) => {
     return (
         <section className={style.videoViewPage}>
             {videoDetail && (
@@ -63,10 +67,7 @@ export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
                                     href={`/channel/${videoDetail.snippet.channelId}`}
                                 >
                                     <Image
-                                        src={
-                                            videoDetail.snippet.thumbnails
-                                                .default.url
-                                        }
+                                        src={channelThumbnail}
                                         alt={videoDetail.snippet.channelTitle}
                                         width={40}
                                         height={40}
@@ -79,9 +80,9 @@ export const VideoDetail = ({ videoDetail }: { videoDetail: IVideoDetail }) => {
                             <div className={style.count}>
                                 <span className={style.view}>
                                     <CiRead />
-                                    {`${videoDetail.statistics.viewCount}회`}
-                                    &ensp;
-                                    {`-${elapsedTime(videoDetail.snippet.publishedAt)}`}
+                                    <span>{`${videoDetail.statistics.viewCount}회`}</span>
+                                    <div className={style.dot}>•</div>
+                                    <span>{`${elapsedTime(videoDetail.snippet.publishedAt)}`}</span>
                                 </span>
                             </div>
                             <div className={style.description}>

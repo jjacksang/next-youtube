@@ -25,6 +25,7 @@ export default function VideoItem({ video }: IVideo) {
             <div className={style.info__content}>
                 <h3 className={style.content__title}>{video.snippet.title}</h3>
                 <div className={style.content__text}>
+                    {/* <img src={video.snippet.thumbnails.default.url} /> */}
                     <span className={style.content__author}>
                         {video.snippet.channelTitle}
                     </span>
