@@ -43,4 +43,30 @@ export interface IVideoDetail {
     };
 }
 
+export interface IChannelDetail {
+    brandingSettings: {
+        channel: {
+            title: string;
+            description: string;
+        };
+        contentDetails: {
+            id: string;
+        };
+        snippet: {
+            customUrl: string;
+            description: string;
+        };
+        publishedAt: string;
+        thumbnails: {
+            default: Thumbnail;
+            high: Thumbnail;
+            medium: Thumbnail;
+        };
+        statistics: {
+            subscriberCount: number;
+            viewCount: number;
+        };
+    };
+}
+
 export interface IContentDetails {}
