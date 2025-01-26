@@ -19,6 +19,7 @@
 .channel__text {
     display: flex;
     flex-direction: column;
+    gap: 0.875rem;
 
     margin-left: 12px;
 
@@ -35,4 +36,22 @@
 .tabBar {
     display: flex;
     white-space: nowrap;
+
+    margin: 12px 0;
+}
+
+.tabBar > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1.25rem;
+
+    min-width: 48px;
+    height: 48px;
+}
+
+.tabBar > form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -49,23 +49,25 @@ export interface IChannelDetail {
             title: string;
             description: string;
         };
-        contentDetails: {
-            id: string;
-        };
-        snippet: {
-            customUrl: string;
-            description: string;
-        };
-        publishedAt: string;
+    };
+    contentDetails: {
+        id: string;
+    };
+    snippet: {
+        customUrl: string;
+        description: string;
         thumbnails: {
             default: Thumbnail;
             high: Thumbnail;
             medium: Thumbnail;
         };
-        statistics: {
-            subscriberCount: number;
-            viewCount: number;
-        };
+        publishedAt: string;
+    };
+
+    statistics: {
+        subscriberCount: number;
+        viewCount: number;
+        videoCount: number;
     };
 }
 

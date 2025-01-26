@@ -1,9 +1,11 @@
 import Image from "next/image";
 import { fetchChannelDetail } from "../utils/api";
 import style from "./channelDetail.module.css";
+import { IChannelDetail } from "../utils/type";
+import { formatNumber } from "../utils/formatNumber";
 
 export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
-    const res = await fetchChannelDetail(channelId).then(
+    const res: IChannelDetail = await fetchChannelDetail(channelId).then(
         (data) => data.items[0]
     );
 
@@ -20,12 +22,19 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
                     />
                     <div className={style.channel__text}>
                         <h2>{res.brandingSettings.channel.title}</h2>
-                        <span className={style.channel__statistics}>
-                            channel statistics
-                        </span>
-                        <span className={style.channel__description}>
-                            channel description
-                        </span>
+                        <div className={style.channel__statistics}>
+                            <span>
+                                {res.snippet.customUrl}
+                                {" • "}
+                                구독자{" "}
+                                {formatNumber(res.statistics.subscriberCount)}
+                                {" • "}
+                                동영상 {formatNumber(res.statistics.videoCount)}
+                            </span>
+                        </div>
+                        <div className={style.channel__description}>
+                            {res.snippet.description}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -34,6 +43,14 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
                 <div>동영상</div>
                 <div>재생목록</div>
                 <div>커뮤니티</div>
+                <form>
+                    <Image
+                        src="/search.svg"
+                        alt="search"
+                        width={24}
+                        height={24}
+                    />
+                </form>
             </div>
         </div>
     );
