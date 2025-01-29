@@ -12,6 +12,7 @@ export default async function Page({
     const channelDetail = await fetchChannelDetail(
         videoDetail.snippet.channelId
     );
+    console.log(videoDetail);
 
     const channelThumbnail =
         channelDetail.items[0].snippet.thumbnails.default.url;

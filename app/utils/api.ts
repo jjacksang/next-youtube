@@ -30,6 +30,7 @@ export const fetchVideoDetail = async (id: string) => {
         );
         if (!response.ok) console.log("fetch VideoDetail failed");
         const data = await response.json();
+        console.log(data);
         return data.items[0];
     } catch (error) {
         console.error("Error: ", error);
@@ -51,5 +52,24 @@ export const fetchChannelDetail = async (id: string) => {
         }
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const fetchChannelVideos = async (id: string) => {
+    try {
+        const res = await fetch(
+            `${baseURL}/search?part=snippet&order=date&maxResults=12&channelId=${id}`,
+            options
+        );
+
+        if (res.ok) {
+            let data = await res.json();
+
+            console.log(data);
+
+            return data;
+        }
+    } catch (error) {
+        console.log("fetch channle videos error: ", error);
     }
 };

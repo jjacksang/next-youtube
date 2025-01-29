@@ -1,39 +1,43 @@
 import Image from "next/image";
-import { fetchChannelDetail } from "../utils/api";
+import { fetchChannelDetail, fetchChannelVideos } from "../utils/api";
 import style from "./channelDetail.module.css";
 import { IChannelDetail } from "../utils/type";
 import { formatNumber } from "../utils/formatNumber";
 
 export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
-    const res: IChannelDetail = await fetchChannelDetail(channelId).then(
-        (data) => data.items[0]
-    );
+    const channelInfo: IChannelDetail = await fetchChannelDetail(
+        channelId
+    ).then((data) => data.items[0]);
 
-    console.log(res);
     return (
         <div className={style.channel}>
             <section className={style.channel__section}>
                 <div className={style.channel__info}>
                     <Image
-                        alt={res.snippet.description}
-                        src={res.snippet.thumbnails.medium.url}
-                        height={res.snippet.thumbnails.medium.height}
-                        width={res.snippet.thumbnails.medium.width}
+                        alt={channelInfo.snippet.description}
+                        src={channelInfo.snippet.thumbnails.medium.url}
+                        height={channelInfo.snippet.thumbnails.medium.height}
+                        width={channelInfo.snippet.thumbnails.medium.width}
                     />
                     <div className={style.channel__text}>
-                        <h2>{res.brandingSettings.channel.title}</h2>
+                        <h2>{channelInfo.brandingSettings.channel.title}</h2>
                         <div className={style.channel__statistics}>
                             <span>
-                                {res.snippet.customUrl}
+                                {channelInfo.snippet.customUrl}
                                 {" • "}
                                 구독자{" "}
-                                {formatNumber(res.statistics.subscriberCount)}
+                                {formatNumber(
+                                    channelInfo.statistics.subscriberCount
+                                )}
                                 {" • "}
-                                동영상 {formatNumber(res.statistics.videoCount)}
+                                동영상{" "}
+                                {formatNumber(
+                                    channelInfo.statistics.videoCount
+                                )}
                             </span>
                         </div>
                         <div className={style.channel__description}>
-                            {res.snippet.description}
+                            {channelInfo.snippet.description}
                         </div>
                     </div>
                 </div>
