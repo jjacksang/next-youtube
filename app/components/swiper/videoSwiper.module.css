@@ -1,0 +1,15 @@
+.swiper__container {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.swiper__wrapper {
+    width: 100%;
+    display: flex;
+}
+
+.swiper__wrapper .swiper__slide {
+    width: 25%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+}
