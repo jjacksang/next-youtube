@@ -8,6 +8,7 @@ import { IVideoDetail } from "../utils/type";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
+import { formatNumber } from "../utils/formatNumber";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -80,7 +81,7 @@ export const VideoDetail = ({
                             <div className={style.count}>
                                 <span className={style.view}>
                                     <CiRead />
-                                    <span>{`${videoDetail.statistics.viewCount}회`}</span>
+                                    <span>{`${formatNumber(videoDetail.statistics.viewCount)}회`}</span>
                                     <div className={style.dot}>•</div>
                                     <span>{`${elapsedTime(videoDetail.snippet.publishedAt)}`}</span>
                                 </span>
