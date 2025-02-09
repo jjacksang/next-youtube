@@ -2,6 +2,7 @@ import style from "./page.module.css";
 
 import { fetchChannelVideos } from "@/app/utils/api";
 import { VideoSwiper } from "@/app/components/videoSwiper";
+import { Video } from "@/app/utils/type";
 
 export default async function Page({
     params,
@@ -22,6 +23,7 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
     const channelVideo = await fetchChannelVideos(id);
+
     console.log(channelVideo);
 
     return (

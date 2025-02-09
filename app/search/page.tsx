@@ -9,28 +9,16 @@ type Props = {
 };
 
 async function SearchResult({ q }: { q: string }) {
-    console.log(q);
     const res = await fetchYoutubeVideos(q);
 
     console.log(res);
-    // const videos = await Promise.all(
-    //     res.items.map(async (video: Video) => {
-    //         const details = await fetchVideoDetail(video.id.videoId);
-    //         return {
-    //             video,
-    //             viewCount: details.statistics.viewCount,
-    //         };
-    //     })
-    // );
-    // console.log(videos);
-
-    // return (
-    //     <>
-    //         {videos.map((item) => (
-    //             <VideoItem key={item.id} video={item} />
-    //         ))}
-    //     </>
-    // );
+    return (
+        <>
+            {res.items.map((item: Video) => (
+                <VideoItem key={item.id.videoId} video={item} />
+            ))}
+        </>
+    );
 }
 
 export default async function Search({ searchParams }: Props) {
