@@ -1,7 +1,7 @@
 import style from "./page.module.css";
 import { Suspense } from "react";
-import { fetchYoutubeVideos } from "../utils/api";
-import { Video } from "../utils/type";
+import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
+import { IVideoDetail, Video } from "../utils/type";
 import VideoItem from "../components/video-item";
 
 type Props = {
@@ -13,14 +13,24 @@ async function SearchResult({ q }: { q: string }) {
     const res = await fetchYoutubeVideos(q);
 
     console.log(res);
+    // const videos = await Promise.all(
+    //     res.items.map(async (video: Video) => {
+    //         const details = await fetchVideoDetail(video.id.videoId);
+    //         return {
+    //             video,
+    //             viewCount: details.statistics.viewCount,
+    //         };
+    //     })
+    // );
+    // console.log(videos);
 
-    return (
-        <>
-            {res.items.map((video: Video) => (
-                <VideoItem video={video} key={video.id.videoId} />
-            ))}
-        </>
-    );
+    // return (
+    //     <>
+    //         {videos.map((item) => (
+    //             <VideoItem key={item.id} video={item} />
+    //         ))}
+    //     </>
+    // );
 }
 
 export default async function Search({ searchParams }: Props) {

@@ -2,17 +2,15 @@ import Link from "next/link";
 import style from "./video-item.module.css";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
-import { Video } from "../utils/type";
+import { IVideoDetail, Video } from "../utils/type";
+import { formatNumber } from "../utils/formatNumber";
 
-interface IVideo {
-    video: Video;
-}
-
-export default function VideoItem({ video }: IVideo) {
+export default function VideoItem({ video }: { video: Video }) {
+    console.log(video.snippet.thumbnails.medium.url);
     return (
         <div className={style.container}>
             <div className={style.thumbnail__img}>
-                <Link href={`/video/${video.id.videoId}`}>
+                <Link href={`/video/${video.id}`}>
                     <Image
                         alt="h"
                         width={68}
@@ -25,9 +23,9 @@ export default function VideoItem({ video }: IVideo) {
             <div className={style.info__content}>
                 <h3 className={style.content__title}>{video.snippet.title}</h3>
                 <div className={style.content__text}>
-                    {/* <img src={video.snippet.thumbnails.default.url} /> */}
                     <span className={style.content__author}>
                         {video.snippet.channelTitle}
+                        <div className={style.dot}>•</div>
                     </span>
                     <span className={style.publishTime}>
                         <div className={style.dot}>•</div>

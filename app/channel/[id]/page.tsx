@@ -1,12 +1,7 @@
-import { VideoSwiper } from "@/app/components/swiper/VideoSwiper";
 import style from "./page.module.css";
 
-import VideoItem from "@/app/components/video-item";
 import { fetchChannelVideos } from "@/app/utils/api";
-import { Video } from "@/app/utils/type";
-import Image from "next/image";
-import Link from "next/link";
-import { elapsedTime } from "@/app/utils/elapsedTime";
+import { VideoSwiper } from "@/app/components/videoSwiper";
 
 export default async function Page({
     params,
@@ -15,8 +10,8 @@ export default async function Page({
 }) {
     return (
         <div className={style.video__wrapper}>
+            <h2>추천 영상</h2>
             <div className={style.reco__video}>
-                <h2>추천 영상</h2>
                 <RecoVideo params={params} />
             </div>
         </div>
@@ -35,53 +30,7 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper>
-                        {channelVideo.items.map((video: Video) => (
-                            <div key={video.id.videoId}>
-                                <div>
-                                    <Link href={`/video/${video.id.videoId}`}>
-                                        <Image
-                                            src={
-                                                video.snippet.thumbnails.medium
-                                                    .url
-                                            }
-                                            alt={video.snippet.description}
-                                            width={
-                                                video.snippet.thumbnails.medium
-                                                    .width
-                                            }
-                                            height={
-                                                video.snippet.thumbnails.medium
-                                                    .height
-                                            }
-                                        />
-                                    </Link>
-                                </div>
-                                <div>
-                                    <span>{video.snippet.title}</span>
-                                    <div>
-                                        <div className={style.content__text}>
-                                            <span
-                                                className={
-                                                    style.content__author
-                                                }
-                                            >
-                                                {video.snippet.channelTitle}
-                                            </span>
-                                            <span className={style.publishTime}>
-                                                <div className={style.dot}>
-                                                    •
-                                                </div>
-                                                {elapsedTime(
-                                                    video.snippet.publishTime
-                                                )}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </VideoSwiper>
+                    <VideoSwiper video={channelVideo} />
                 </>
             )}
         </>
