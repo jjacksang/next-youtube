@@ -65,12 +65,13 @@
 }
 .content__text {
     display: flex;
+    flex-direction: column;
 }
 
 .dot {
     margin: 0 4px;
 }
-.publishTime {
+.preview__info {
     display: flex;
     flex-direction: row;
     color: #666;

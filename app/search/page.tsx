@@ -1,7 +1,7 @@
 import style from "./page.module.css";
 import { Suspense } from "react";
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
-import { IVideoDetail, Video } from "../utils/type";
+import { Video } from "../utils/type";
 import VideoItem from "../components/video-item";
 
 type Props = {

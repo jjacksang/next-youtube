@@ -3,6 +3,7 @@ import style from "./video-item.module.css";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
 import { Video } from "../utils/type";
+import { formatNumber } from "../utils/formatNumber";
 
 interface VideoItemProps {
     video: Video;
@@ -29,10 +30,11 @@ export default function VideoItem({ video, viewCount }: VideoItemProps) {
                     <span className={style.content__author}>
                         {video.snippet.channelTitle}
                     </span>
-                    <span className={style.publishTime}>
+                    <div className={style.preview__info}>
+                        <span>{`조회수 ${formatNumber(viewCount ?? 0)}회`}</span>
                         <div className={style.dot}>•</div>
-                        {elapsedTime(video.snippet.publishTime)}
-                    </span>
+                        <span>{elapsedTime(video.snippet.publishTime)}</span>
+                    </div>
                 </div>
             </div>
         </div>
