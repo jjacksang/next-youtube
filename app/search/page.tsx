@@ -8,14 +8,35 @@ type Props = {
     searchParams: Promise<{ q: string }>;
 };
 
-async function SearchResult({ q }: { q: string }) {
-    const res = await fetchYoutubeVideos(q);
+interface IEnrichedVideo extends Video {
+    viewCount: number;
+}
 
-    console.log(res);
+async function SearchResult({ q }: { q: string }) {
+    const searchResults = await fetchYoutubeVideos(q);
+
+    const videoViewCount = await Promise.all(
+        searchResults.items.map((item: Video) =>
+            fetchVideoDetail(item.id.videoId)
+        )
+    );
+    const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
+        (item: Video, index: number) => ({
+            ...item,
+            viewCount: videoViewCount[index].statistics.viewCount,
+        })
+    );
+
+    console.log(addNewVideoData);
+
     return (
         <>
-            {res.items.map((item: Video) => (
-                <VideoItem key={item.id.videoId} video={item} />
+            {addNewVideoData.map((item: IEnrichedVideo) => (
+                <VideoItem
+                    key={item.id.videoId}
+                    video={item}
+                    viewCount={item.viewCount}
+                />
             ))}
         </>
     );

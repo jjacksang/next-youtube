@@ -30,7 +30,7 @@ export const fetchVideoDetail = async (id: string) => {
         );
         if (!response.ok) console.log("fetch VideoDetail failed");
         const data = await response.json();
-        console.log(data);
+
         return data.items[0];
     } catch (error) {
         console.error("Error: ", error);

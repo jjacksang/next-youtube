@@ -4,8 +4,12 @@ import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
 import { Video } from "../utils/type";
 
-export default function VideoItem({ video }: { video: Video }) {
-    console.log(video);
+interface VideoItemProps {
+    video: Video;
+    viewCount?: number;
+}
+
+export default function VideoItem({ video, viewCount }: VideoItemProps) {
     return (
         <div className={style.container} key={video.id.videoId}>
             <div className={style.thumbnail__img}>

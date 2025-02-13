@@ -1,8 +1,7 @@
 import style from "./page.module.css";
 
 import { fetchChannelVideos } from "@/app/utils/api";
-import { VideoSwiper } from "@/app/components/videoSwiper";
-import { Video } from "@/app/utils/type";
+import { VideoSwiper } from "@/app/components/swiper/videoSwiper";
 
 export default async function Page({
     params,
