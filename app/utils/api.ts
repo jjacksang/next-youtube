@@ -55,6 +55,24 @@ export const fetchChannelDetail = async (id: string) => {
     }
 };
 
+export const fetchVideoCommnetList = async (id: string) => {
+    try {
+        const res = await fetch(
+            `${baseURL}/commentThreads?part=snippet&videoId=${id}&maxResults=100`,
+            options
+        );
+
+        if (res.ok) {
+            let data = await res.json();
+            console.log(data);
+
+            return data;
+        }
+    } catch (error) {
+        console.log("fetch failed commnet list", error);
+    }
+};
+
 export const fetchChannelVideos = async (id: string) => {
     try {
         const res = await fetch(

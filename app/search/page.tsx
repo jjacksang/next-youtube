@@ -20,6 +20,8 @@ async function SearchResult({ q }: { q: string }) {
             fetchVideoDetail(item.id.videoId)
         )
     );
+
+    console.log(videoViewCount);
     const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
         (item: Video, index: number) => ({
             ...item,
@@ -27,7 +29,7 @@ async function SearchResult({ q }: { q: string }) {
         })
     );
 
-    console.log(addNewVideoData);
+    console.log(videoViewCount);
 
     return (
         <>
