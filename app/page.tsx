@@ -1,4 +1,3 @@
-import { VideoSwiper } from "./components/swiper/VideoSwiper";
 import styles from "./page.module.css";
 
 async function DeverloperVideo() {

@@ -25,7 +25,7 @@ export const fetchYoutubeVideos = async (q: string) => {
 export const fetchVideoDetail = async (id: string) => {
     try {
         const response = await fetch(
-            `${baseURL}/videos?part=snippet&id=${id}`,
+            `${baseURL}/videos?part=snippet&statistics&id=${id}`,
             options
         );
         if (!response.ok) console.log("fetch VideoDetail failed");
