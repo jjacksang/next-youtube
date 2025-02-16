@@ -4,6 +4,13 @@ export interface Thumbnail {
     height: number;
 }
 
+type IStatistics = {
+    commentCount?: string;
+    likeCount?: string;
+    favoriteCount?: string;
+    viewCount: string;
+};
+
 export interface Video {
     id: { videoId: string };
     snippet: {
@@ -18,6 +25,7 @@ export interface Video {
         };
         title: string;
     };
+    statistics: IStatistics;
 }
 
 export interface IVideoDetail {
@@ -36,11 +44,7 @@ export interface IVideoDetail {
             medium: Thumbnail;
         };
     };
-    statistics: {
-        commentCount: number;
-        likeCount: number;
-        viewCount: number;
-    };
+    statistics: IStatistics;
 }
 
 export interface IChannelDetail {

@@ -1,7 +1,7 @@
 import style from "./page.module.css";
 import { Suspense } from "react";
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
-import { Video } from "../utils/type";
+import { IVideoDetail, Video } from "../utils/type";
 import VideoItem from "../components/video-item";
 
 type Props = {
@@ -13,35 +13,46 @@ interface IEnrichedVideo extends Video {
 }
 
 async function SearchResult({ q }: { q: string }) {
-    const searchResults = await fetchYoutubeVideos(q);
+    try {
+        const searchResults = await fetchYoutubeVideos(q);
 
-    const videoViewCount = await Promise.all(
-        searchResults.items.map((item: Video) =>
-            fetchVideoDetail(item.id.videoId)
-        )
-    );
+        if (!searchResults || !searchResults.items) {
+            return <div>검색 결과를 찾을 수 없습니다.</div>;
+        }
 
-    console.log(videoViewCount);
-    const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
-        (item: Video, index: number) => ({
-            ...item,
-            viewCount: videoViewCount[index].statistics.viewCount,
-        })
-    );
+        const videoViewCount: IVideoDetail[] = await Promise.all(
+            searchResults.items.map((item: Video) =>
+                fetchVideoDetail(item.id.videoId)
+            )
+        );
 
-    console.log(videoViewCount);
+        console.log(searchResults);
 
-    return (
-        <>
-            {addNewVideoData.map((item: IEnrichedVideo) => (
-                <VideoItem
-                    key={item.id.videoId}
-                    video={item}
-                    viewCount={item.viewCount}
-                />
-            ))}
-        </>
-    );
+        console.log(videoViewCount);
+
+        const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
+            (item: Video, index: number) => ({
+                ...item,
+                viewCount: parseInt(
+                    videoViewCount[index].statistics.viewCount ?? "0"
+                ),
+            })
+        );
+        return (
+            <>
+                {addNewVideoData.map((item: IEnrichedVideo) => (
+                    <VideoItem
+                        key={item.id.videoId}
+                        video={item}
+                        viewCount={item.viewCount}
+                    />
+                ))}
+            </>
+        );
+    } catch (error) {
+        console.log("Video Fetching Error", error);
+        return <div>fetching Error</div>;
+    }
 }
 
 export default async function Search({ searchParams }: Props) {
