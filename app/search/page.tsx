@@ -20,17 +20,20 @@ async function SearchResult({ q }: { q: string }) {
             return <div>검색 결과를 찾을 수 없습니다.</div>;
         }
 
-        const videoViewCount: IVideoDetail[] = await Promise.all(
-            searchResults.items.map((item: Video) =>
-                fetchVideoDetail(item.id.videoId)
-            )
+        const validItems: Video[] = searchResults.items.filter(
+            (item: Video) => item && item.id && item.id.videoId
         );
 
         console.log(searchResults);
+        console.log(validItems);
+
+        const videoViewCount: IVideoDetail[] = await Promise.all(
+            validItems.map((item: Video) => fetchVideoDetail(item.id.videoId))
+        );
 
         console.log(videoViewCount);
 
-        const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
+        const addNewVideoData: IEnrichedVideo[] = validItems.map(
             (item: Video, index: number) => ({
                 ...item,
                 viewCount: parseInt(
