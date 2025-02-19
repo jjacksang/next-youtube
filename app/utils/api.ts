@@ -1,3 +1,5 @@
+import { Video } from "./type";
+
 const baseURL = process.env.NEXT_PUBLIC_RAPID_API_URL as string;
 const options = {
     method: "GET",
@@ -7,15 +9,45 @@ const options = {
     },
 };
 
-export const fetchYoutubeVideos = async (q: string) => {
+interface IEnrichedVideo extends Video {
+    viewCount: number;
+}
+
+interface IFetchVideoParams {
+    q: string;
+    maxResults: number;
+    nextPageToken?: string;
+}
+
+export const fetchYoutubeVideos = async ({
+    q,
+    maxResults,
+    nextPageToken,
+}: IFetchVideoParams) => {
     try {
         const response = await fetch(
-            `${baseURL}/search?q=${q}&part=snippet&maxResults=24&order=date`,
+            `${baseURL}/search?q=${q}&maxResults=${maxResults}&part=snippet&order=date`,
             options
         );
         if (!response.ok) console.log("fetch Search failed");
+
         const data = await response.json();
-        return data;
+
+        const validItems: Video[] = data.items.filter(
+            (item: Video) => item && item.id && item.id.videoId
+        );
+
+        if (validItems.length < maxResults && data.nextPageToken) {
+            const addResults: Video[] = await fetchYoutubeVideos({
+                q,
+                maxResults: maxResults - data.items.length,
+                nextPageToken: data.nextPageToken,
+            });
+
+            return [...validItems, ...addResults];
+        }
+
+        return validItems;
     } catch (error) {
         console.error("Error:", error);
         throw error;

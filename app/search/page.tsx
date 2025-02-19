@@ -14,26 +14,23 @@ interface IEnrichedVideo extends Video {
 
 async function SearchResult({ q }: { q: string }) {
     try {
-        const searchResults = await fetchYoutubeVideos(q);
+        const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
 
-        if (!searchResults || !searchResults.items) {
+        if (!searchResults || searchResults.length !== 24) {
             return <div>검색 결과를 찾을 수 없습니다.</div>;
         }
 
-        const validItems: Video[] = searchResults.items.filter(
-            (item: Video) => item && item.id && item.id.videoId
-        );
-
         console.log(searchResults);
-        console.log(validItems);
 
         const videoViewCount: IVideoDetail[] = await Promise.all(
-            validItems.map((item: Video) => fetchVideoDetail(item.id.videoId))
+            searchResults.map((item: Video) =>
+                fetchVideoDetail(item.id.videoId)
+            )
         );
 
         console.log(videoViewCount);
 
-        const addNewVideoData: IEnrichedVideo[] = validItems.map(
+        const addNewVideoData: IEnrichedVideo[] = searchResults.map(
             (item: Video, index: number) => ({
                 ...item,
                 viewCount: parseInt(
@@ -41,6 +38,7 @@ async function SearchResult({ q }: { q: string }) {
                 ),
             })
         );
+
         return (
             <>
                 {addNewVideoData.map((item: IEnrichedVideo) => (
