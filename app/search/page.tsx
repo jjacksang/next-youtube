@@ -16,21 +16,21 @@ async function SearchResult({ q }: { q: string }) {
     try {
         const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
 
-        if (!searchResults || searchResults.length !== 24) {
+        if (!searchResults || searchResults.items.length !== 24) {
             return <div>검색 결과를 찾을 수 없습니다.</div>;
         }
 
         console.log(searchResults);
 
         const videoViewCount: IVideoDetail[] = await Promise.all(
-            searchResults.map((item: Video) =>
+            searchResults.items.map((item: Video) =>
                 fetchVideoDetail(item.id.videoId)
             )
         );
 
         console.log(videoViewCount);
 
-        const addNewVideoData: IEnrichedVideo[] = searchResults.map(
+        const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
             (item: Video, index: number) => ({
                 ...item,
                 viewCount: parseInt(

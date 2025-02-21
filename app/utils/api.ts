@@ -9,8 +9,13 @@ const options = {
     },
 };
 
-interface IEnrichedVideo extends Video {
-    viewCount: number;
+interface YoutubeResponse {
+    items: Video[];
+    nextPageToken?: string;
+    pageInfo: {
+        totalResults: number;
+        resultsPerPage: number;
+    };
 }
 
 interface IFetchVideoParams {
@@ -23,28 +28,45 @@ export const fetchYoutubeVideos = async ({
     q,
     maxResults,
     nextPageToken,
-}: IFetchVideoParams) => {
+}: IFetchVideoParams): Promise<YoutubeResponse> => {
     try {
         const response = await fetch(
-            `${baseURL}/search?q=${q}&maxResults=${maxResults}&part=snippet&order=date`,
+            `${baseURL}/search?q=${q}&part=snippet&maxResults=${maxResults}&order=date&nextPageToken=${nextPageToken}`,
             options
         );
         if (!response.ok) console.log("fetch Search failed");
 
-        const data = await response.json();
+        const data: YoutubeResponse = await response.json();
 
-        const validItems: Video[] = data.items.filter(
-            (item: Video) => item && item.id && item.id.videoId
-        );
+        console.log("res", data);
 
-        if (validItems.length < maxResults && data.nextPageToken) {
-            const addResults: Video[] = await fetchYoutubeVideos({
+        const validItems: YoutubeResponse = {
+            ...data,
+            items: data.items.filter(
+                (item: Video) => item && item.id && item.id.videoId
+            ),
+        };
+
+        console.log(validItems);
+
+        if (validItems.items.length < maxResults && data.nextPageToken) {
+            const addResults = await fetchYoutubeVideos({
                 q,
-                maxResults: maxResults - data.items.length,
+                maxResults: maxResults - validItems.items.length,
                 nextPageToken: data.nextPageToken,
             });
 
-            return [...validItems, ...addResults];
+            console.log(addResults);
+            const combinedResults = {
+                ...addResults,
+                items: [...validItems.items, ...addResults.items],
+                pageInfo: {
+                    ...data.pageInfo,
+                    resultsPerPage:
+                        validItems.items.length + addResults.items.length,
+                },
+            };
+            return combinedResults;
         }
 
         return validItems;
