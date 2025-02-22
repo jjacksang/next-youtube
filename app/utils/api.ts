@@ -30,16 +30,32 @@ export const fetchYoutubeVideos = async ({
     nextPageToken,
 }: IFetchVideoParams): Promise<YoutubeResponse> => {
     try {
+        // url에 집어넣을 params들값
+        const urlParams = [
+            `q=${q}`,
+            "part=snippet",
+            `maxResults=${maxResults}`,
+            "order=date",
+        ];
+
+        // nextPageToken이 있을때 추가
+        if (nextPageToken) {
+            urlParams.push(`pageToken=${nextPageToken}`);
+        }
+
         const response = await fetch(
-            `${baseURL}/search?q=${q}&part=snippet&maxResults=${maxResults}&order=date&pageToken=${nextPageToken}`,
+            `${baseURL}/search?${urlParams.join("&")}`,
             options
         );
+
         if (!response.ok) console.log("fetch Search failed");
 
         const data: YoutubeResponse = await response.json();
 
         console.log("res", data);
 
+        // 검색 데이터에 items에 빈 값이 있으면 그 값을 제거하고
+        // maxResults의 값만큼 채워서 돌려주기
         const validItems: YoutubeResponse = {
             ...data,
             items: data.items.filter(
@@ -49,6 +65,7 @@ export const fetchYoutubeVideos = async ({
 
         console.log(validItems);
 
+        // maxReults값에 맞게 items 데이터 요청
         if (validItems.items.length < maxResults && data.nextPageToken) {
             const addResults = await fetchYoutubeVideos({
                 q,
