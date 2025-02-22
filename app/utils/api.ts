@@ -31,7 +31,7 @@ export const fetchYoutubeVideos = async ({
 }: IFetchVideoParams): Promise<YoutubeResponse> => {
     try {
         const response = await fetch(
-            `${baseURL}/search?q=${q}&part=snippet&maxResults=${maxResults}&order=date&nextPageToken=${nextPageToken}`,
+            `${baseURL}/search?q=${q}&part=snippet&maxResults=${maxResults}&order=date&pageToken=${nextPageToken}`,
             options
         );
         if (!response.ok) console.log("fetch Search failed");
