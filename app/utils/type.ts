@@ -76,3 +76,7 @@ export interface IChannelDetail {
 }
 
 export interface IContentDetails {}
+
+export interface IEnrichedVideo extends Video {
+    viewCount: number;
+}

@@ -1,15 +1,10 @@
-import style from "./page.module.css";
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
-import { IVideoDetail, Video } from "../utils/type";
-import VideoItem from "../components/video-item";
+import { IEnrichedVideo, IVideoDetail, Video } from "../utils/type";
+import { VideoListClient } from "./video-list-client";
 
 type Props = {
     searchParams: Promise<{ q: string }>;
 };
-
-interface IEnrichedVideo extends Video {
-    viewCount: number;
-}
 
 async function SearchResult({ q }: { q: string }) {
     try {
@@ -27,8 +22,6 @@ async function SearchResult({ q }: { q: string }) {
             )
         );
 
-        console.log(videoViewCount);
-
         const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
             (item: Video, index: number) => ({
                 ...item,
@@ -38,20 +31,15 @@ async function SearchResult({ q }: { q: string }) {
             })
         );
 
+        console.log(addNewVideoData);
+
         return (
             <>
-                <div className={style.video}>
-                    {addNewVideoData.map((item: IEnrichedVideo) => (
-                        <VideoItem
-                            key={item.id.videoId}
-                            video={item}
-                            viewCount={item.viewCount}
-                        />
-                    ))}
-                </div>
-                <div className={style.moreBtn}>
-                    <button>더보기</button>
-                </div>
+                <VideoListClient
+                    initialQuery={q}
+                    initialVideos={addNewVideoData}
+                    nextPageToken={searchResults.nextPageToken || ""}
+                />
             </>
         );
     } catch (error) {
