@@ -1,5 +1,4 @@
 import style from "./page.module.css";
-import { Suspense } from "react";
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
 import { IVideoDetail, Video } from "../utils/type";
 import VideoItem from "../components/video-item";
@@ -41,13 +40,18 @@ async function SearchResult({ q }: { q: string }) {
 
         return (
             <>
-                {addNewVideoData.map((item: IEnrichedVideo) => (
-                    <VideoItem
-                        key={item.id.videoId}
-                        video={item}
-                        viewCount={item.viewCount}
-                    />
-                ))}
+                <div className={style.video}>
+                    {addNewVideoData.map((item: IEnrichedVideo) => (
+                        <VideoItem
+                            key={item.id.videoId}
+                            video={item}
+                            viewCount={item.viewCount}
+                        />
+                    ))}
+                </div>
+                <div className={style.moreBtn}>
+                    <button>더보기</button>
+                </div>
             </>
         );
     } catch (error) {
@@ -61,14 +65,7 @@ export default async function Search({ searchParams }: Props) {
 
     return (
         <section>
-            <div className={style.video}>
-                <Suspense fallback={<div>Loading...</div>}>
-                    <SearchResult q={q || ""} />
-                </Suspense>
-            </div>
-            <div className={style.moreBtn}>
-                <button>더보기</button>
-            </div>
+            <SearchResult q={q || ""} />
         </section>
     );
 }
