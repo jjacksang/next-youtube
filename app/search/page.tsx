@@ -1,5 +1,6 @@
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
 import { IEnrichedVideo, IVideoDetail, Video } from "../utils/type";
+import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
 
 type Props = {
@@ -16,20 +17,9 @@ async function SearchResult({ q }: { q: string }) {
 
         console.log(searchResults);
 
-        const videoViewCount: IVideoDetail[] = await Promise.all(
-            searchResults.items.map((item: Video) =>
-                fetchVideoDetail(item.id.videoId)
-            )
-        );
-
-        const addNewVideoData: IEnrichedVideo[] = searchResults.items.map(
-            (item: Video, index: number) => ({
-                ...item,
-                viewCount: parseInt(
-                    videoViewCount[index].statistics.viewCount ?? "0"
-                ),
-            })
-        );
+        // searchResults의 데이터를
+        const { addNewVideoData, nextPageToken } =
+            await processVideoData(searchResults);
 
         console.log(addNewVideoData);
 

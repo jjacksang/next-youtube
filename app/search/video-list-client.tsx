@@ -23,12 +23,14 @@ export const VideoListClient = ({
 
     console.log(videos);
 
-    const handleLoadMore = () => {
-        const response = fetchYoutubeVideos({
+    const handleLoadMore = async () => {
+        const response = await fetchYoutubeVideos({
             q: initialQuery,
             maxResults: 24,
             nextPageToken: nextPageToken,
         });
+
+        console.log(response);
     };
 
     return (
