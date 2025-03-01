@@ -1,9 +1,11 @@
 "use client";
 
-import style from "./page.module.css";
+import style from "./video-list-client.module.css";
 
-import { IEnrichedVideo, Video } from "../utils/type";
+import { IEnrichedVideo } from "../utils/type";
 import VideoItem from "../components/video-item";
+import { fetchYoutubeVideos } from "../utils/api";
+import { useState } from "react";
 
 interface IVideoListProps {
     initialQuery: string;
@@ -16,6 +18,19 @@ export const VideoListClient = ({
     initialVideos,
     nextPageToken,
 }: IVideoListProps) => {
+    const [videos, setVideos] = useState<IEnrichedVideo[]>(initialVideos);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    console.log(videos);
+
+    const handleLoadMore = () => {
+        const response = fetchYoutubeVideos({
+            q: initialQuery,
+            maxResults: 24,
+            nextPageToken: nextPageToken,
+        });
+    };
+
     return (
         <>
             <div className={style.video}>
@@ -28,7 +43,7 @@ export const VideoListClient = ({
                 ))}
             </div>
             <div className={style.moreBtn}>
-                <button>더보기</button>
+                <button onClick={handleLoadMore}>더보기</button>
             </div>
         </>
     );
