@@ -26,9 +26,9 @@ export const VideoListClient = ({
                         viewCount={item.viewCount}
                     />
                 ))}
-                <div className={style.moreBtn}>
-                    <button>더보기</button>
-                </div>
+            </div>
+            <div className={style.moreBtn}>
+                <button>더보기</button>
             </div>
         </>
     );
