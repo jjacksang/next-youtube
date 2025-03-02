@@ -6,6 +6,7 @@ import { IEnrichedVideo } from "../utils/type";
 import VideoItem from "../components/video-item";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useState } from "react";
+import { processVideoData } from "../utils/process-video-data";
 
 interface IVideoListProps {
     initialQuery: string;
@@ -20,15 +21,22 @@ export const VideoListClient = ({
 }: IVideoListProps) => {
     const [videos, setVideos] = useState<IEnrichedVideo[]>(initialVideos);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-
+    const [pageToken, setPageToken] = useState<string>(nextPageToken);
     console.log(videos);
 
     const handleLoadMore = async () => {
         const response = await fetchYoutubeVideos({
             q: initialQuery,
             maxResults: 24,
-            nextPageToken: nextPageToken,
+            nextPageToken: pageToken,
         });
+
+        const nextProcessVideos = await processVideoData(response);
+
+        setVideos((prev) => [...prev, ...nextProcessVideos.addNewVideoData]);
+        setPageToken(nextProcessVideos.nextPageToken);
+
+        console.log(nextProcessVideos);
 
         console.log(response);
     };
@@ -36,7 +44,7 @@ export const VideoListClient = ({
     return (
         <>
             <div className={style.video}>
-                {initialVideos.map((item: IEnrichedVideo) => (
+                {videos.map((item: IEnrichedVideo) => (
                     <VideoItem
                         key={item.id.videoId}
                         video={item}
