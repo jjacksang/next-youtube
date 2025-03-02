@@ -24,6 +24,7 @@ export const VideoListClient = ({
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
     console.log(videos);
 
+    // 더보기 버튼
     const handleLoadMore = async () => {
         const response = await fetchYoutubeVideos({
             q: initialQuery,
@@ -31,8 +32,10 @@ export const VideoListClient = ({
             nextPageToken: pageToken,
         });
 
+        // 해당 데이터를 검열 후 반환
         const nextProcessVideos = await processVideoData(response);
 
+        // nextPageToken을 가지고 다음 데이터와 pageToken 저장
         setVideos((prev) => [...prev, ...nextProcessVideos.addNewVideoData]);
         setPageToken(nextProcessVideos.nextPageToken);
 
