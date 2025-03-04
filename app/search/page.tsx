@@ -1,5 +1,4 @@
 import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
-import { IEnrichedVideo, IVideoDetail, Video } from "../utils/type";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
 

@@ -22,6 +22,7 @@ interface IFetchVideoParams {
     q: string;
     maxResults: number;
     nextPageToken?: string;
+    order?: string;
 }
 
 export const fetchYoutubeVideos = async ({
@@ -144,10 +145,10 @@ export const fetchVideoCommnetList = async (id: string) => {
     }
 };
 
-export const fetchChannelVideos = async (id: string) => {
+export const fetchChannelVideos = async (id: string, order: string) => {
     try {
         const res = await fetch(
-            `${baseURL}/search?part=snippet&order=date&maxResults=12&channelId=${id}`,
+            `${baseURL}/search?part=snippet&order=${order}&maxResults=12&channelId=${id}`,
             options
         );
 

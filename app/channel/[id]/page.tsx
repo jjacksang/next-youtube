@@ -14,6 +14,10 @@ export default async function Page({
             <div className={style.reco__video}>
                 <RecoVideo params={params} />
             </div>
+            <h2>인기 영상</h2>
+            <div className={style.popularVideos}>
+                <PopularVideos params={params} />
+            </div>
         </div>
     );
 }
@@ -21,7 +25,7 @@ export default async function Page({
 const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
-    const channelVideo = await fetchChannelVideos(id);
+    const channelVideo = await fetchChannelVideos(id, "date");
 
     console.log(channelVideo);
 
@@ -32,6 +36,30 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
             ) : (
                 <>
                     <VideoSwiper video={channelVideo} />
+                </>
+            )}
+        </>
+    );
+};
+
+const PopularVideos = async ({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) => {
+    const { id } = await params;
+
+    const popularVideos = await fetchChannelVideos(id, "viewCount");
+
+    console.log(popularVideos);
+
+    return (
+        <>
+            {popularVideos.length === 0 ? (
+                <div>none</div>
+            ) : (
+                <>
+                    <VideoSwiper video={popularVideos} />
                 </>
             )}
         </>
