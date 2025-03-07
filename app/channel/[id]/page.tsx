@@ -2,6 +2,7 @@ import style from "./page.module.css";
 
 import { fetchChannelVideos } from "@/app/utils/api";
 import { VideoSwiper } from "@/app/components/swiper/videoSwiper";
+import { processVideoData } from "@/app/utils/process-video-data";
 
 export default async function Page({
     params,
@@ -27,15 +28,17 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
 
     const channelVideo = await fetchChannelVideos(id, "date");
 
-    console.log(channelVideo);
+    const recoVideosWithViewCount = await processVideoData(channelVideo);
+
+    console.log(recoVideosWithViewCount);
 
     return (
         <>
-            {channelVideo.length === 0 ? (
+            {recoVideosWithViewCount.addNewVideoData.length === 0 ? (
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper video={channelVideo} />
+                    <VideoSwiper videos={recoVideosWithViewCount} />
                 </>
             )}
         </>
@@ -51,15 +54,19 @@ const PopularVideos = async ({
 
     const popularVideos = await fetchChannelVideos(id, "viewCount");
 
-    console.log(popularVideos);
+    const popularVideosWithViewCount = await processVideoData(popularVideos);
+
+    console.log(popularVideosWithViewCount);
 
     return (
         <>
-            {popularVideos.length === 0 ? (
+            {popularVideosWithViewCount.addNewVideoData.length === 0 ? (
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper video={popularVideos} />
+                    <VideoSwiper
+                        videos={popularVideosWithViewCount}
+                    />
                 </>
             )}
         </>

@@ -11,8 +11,6 @@ interface YoutubeResponse {
 }
 
 export async function processVideoData(searchResults: YoutubeResponse) {
-    console.log(searchResults);
-
     // searchResults에 대한 상세정보를 통해 viewCount를 받아와
     // VideoItem컴포넌트에 전달
     const videoViewCount: IVideoDetail[] = await Promise.all(
@@ -30,6 +28,8 @@ export async function processVideoData(searchResults: YoutubeResponse) {
             ),
         })
     );
+
+    console.log(addNewVideoData);
 
     return {
         addNewVideoData,

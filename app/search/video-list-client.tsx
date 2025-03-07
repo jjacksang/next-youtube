@@ -14,6 +14,8 @@ interface IVideoListProps {
     nextPageToken: string;
 }
 
+const observer = new IntersectionObserver((entries, observer) => {});
+
 export const VideoListClient = ({
     initialQuery,
     initialVideos,
