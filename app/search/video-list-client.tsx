@@ -14,8 +14,6 @@ interface IVideoListProps {
     nextPageToken: string;
 }
 
-const observer = new IntersectionObserver((entries, observer) => {});
-
 export const VideoListClient = ({
     initialQuery,
     initialVideos,
@@ -58,7 +56,11 @@ export const VideoListClient = ({
                 ))}
             </div>
             <div className={style.moreBtn}>
-                <button onClick={handleLoadMore}>더보기</button>
+                {isLoading ? (
+                    "로딩 중"
+                ) : (
+                    <button onClick={handleLoadMore}>더보기</button>
+                )}
             </div>
         </>
     );

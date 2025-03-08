@@ -9,6 +9,8 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
         channelId
     ).then((data) => data.items[0]);
 
+    console.log(channelInfo);
+
     return (
         <div className={style.channel}>
             <section className={style.channel__section}>
