@@ -1,12 +1,8 @@
-import { fetchVideoDetail, fetchYoutubeVideos } from "../utils/api";
+import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
 
-type Props = {
-    searchParams: Promise<{ q: string }>;
-};
-
-async function SearchResult({ q }: { q: string }) {
+export default async function Search({ q }: { q: string }) {
     try {
         const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
 
@@ -35,14 +31,4 @@ async function SearchResult({ q }: { q: string }) {
         console.log("Video Fetching Error", error);
         return <div>fetching Error</div>;
     }
-}
-
-export default async function Search({ searchParams }: Props) {
-    const { q } = await searchParams;
-
-    return (
-        <section>
-            <SearchResult q={q || ""} />
-        </section>
-    );
 }
