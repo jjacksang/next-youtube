@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import style from "./searchbar.module.css";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -10,14 +10,26 @@ export default function Searchbar() {
     const searchParams = useSearchParams();
     const q = searchParams.get("q");
     const router = useRouter();
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
     };
 
-    const onSubmit = () => {
-        if (!search || q === search) return;
-        router.push(`/search?q=${search}`);
+    const onSubmit = (e?: React.FormEvent) => {
+        if (e) {
+            e.preventDefault();
+        }
+
+        const trimmedSearch = search.trim();
+        if (!trimmedSearch || q === trimmedSearch) return;
+
+        router.push(`/search?q=${encodeURIComponent(trimmedSearch)}`);
+
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+
         setSearch("");
     };
 
@@ -28,16 +40,23 @@ export default function Searchbar() {
     };
 
     return (
-        <div className={style.search__inner}>
-            <label htmlFor="searchInput">
-                <span className={style.ir}>검색</span>
-            </label>
-            <input
-                value={search}
-                onChange={onChangeSearch}
-                onKeyDown={onKeyDown}
-                placeholder="검색어를 입력해주세요."
-            />
-        </div>
+        <form onSubmit={onSubmit} role="search">
+            <div className={style.search__inner}>
+                <label htmlFor="searchInput">
+                    <span className={style.ir}>검색</span>
+                </label>
+                <input
+                    id="searchInput"
+                    ref={inputRef}
+                    type="search"
+                    value={search}
+                    onChange={onChangeSearch}
+                    onKeyDown={onKeyDown}
+                    placeholder="검색어를 입력해주세요."
+                    aria-label="동영상 검색"
+                    autoComplete="off"
+                />
+            </div>
+        </form>
     );
 }
