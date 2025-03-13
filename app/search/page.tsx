@@ -2,7 +2,14 @@ import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
 
-export default async function Search({ q }: { q: string }) {
+export default async function Search({
+    searchParams,
+}: {
+    searchParams: { q: string };
+}) {
+    const q = searchParams.q || "";
+    console.log("Search Page : ", q);
+
     try {
         const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
 
