@@ -26,11 +26,11 @@ export default function Searchbar() {
 
         router.push(`/search?q=${encodeURIComponent(trimmedSearch)}`);
 
+        setSearch("");
+
         if (inputRef.current) {
             inputRef.current.focus();
         }
-
-        setSearch("");
     };
 
     const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +53,6 @@ export default function Searchbar() {
                     onChange={onChangeSearch}
                     onKeyDown={onKeyDown}
                     placeholder="검색어를 입력해주세요."
-                    aria-label="동영상 검색"
                     autoComplete="off"
                 />
             </div>

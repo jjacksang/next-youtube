@@ -24,6 +24,7 @@ export const VideoListClient = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
     console.log(videos);
+    console.log(nextPageToken);
 
     const searchParams = useSearchParams();
     const currentQuery = searchParams.get("q") || "";
@@ -33,14 +34,18 @@ export const VideoListClient = ({
 
     // 더보기 버튼
     const handleLoadMore = async () => {
+        console.log(pageToken);
+
         const response = await fetchYoutubeVideos({
             q: initialQuery,
             maxResults: 24,
             nextPageToken: pageToken,
         });
 
-        // 해당 데이터를 검열 후 반환
+        console.log("response nextPageToken", response.nextPageToken);
+
         const nextProcessVideos = await processVideoData(response);
+        // 해당 데이터를 검열 후 반환
 
         // nextPageToken을 가지고 다음 데이터와 pageToken 저장
         setVideos((prev) => [...prev, ...nextProcessVideos.addNewVideoData]);
@@ -52,32 +57,35 @@ export const VideoListClient = ({
     };
 
     useEffect(() => {
-        const fetchNewResult = async () => {
-            if (currentQuery !== initialQuery) {
-                setIsLoading(true);
-                console.log("useEffect active!!");
-                try {
-                    const newResults = await fetchYoutubeVideos({
-                        q: currentQuery,
-                        maxResults: 24,
-                    });
-                    if (!newResults || newResults.items.length !== 24) {
-                        return <div>검색 결과를 찾을 수 없습니다.</div>;
-                    }
+        console.log("Update pageToken", pageToken);
+    }, [pageToken]);
+    // useEffect(() => {
+    //     const fetchNewResult = async () => {
+    //         if (currentQuery !== initialQuery) {
+    //             setIsLoading(true);
+    //             console.log("useEffect active!!");
+    //             try {
+    //                 const newResults = await fetchYoutubeVideos({
+    //                     q: currentQuery,
+    //                     maxResults: 24,
+    //                 });
+    //                 if (!newResults || newResults.items.length !== 24) {
+    //                     return <div>검색 결과를 찾을 수 없습니다.</div>;
+    //                 }
 
-                    const { addNewVideoData, nextPageToken } =
-                        await processVideoData(newResults);
-                    setVideos(addNewVideoData);
-                } catch (error) {
-                    console.log("fetch new results failed", error);
-                } finally {
-                    setIsLoading(false);
-                }
-            }
-        };
+    //                 const { addNewVideoData, nextPageToken } =
+    //                     await processVideoData(newResults);
+    //                 setVideos(addNewVideoData);
+    //             } catch (error) {
+    //                 console.log("fetch new results failed", error);
+    //             } finally {
+    //                 setIsLoading(false);
+    //             }
+    //         }
+    //     };
 
-        fetchNewResult();
-    }, [currentQuery, initialQuery]);
+    //     fetchNewResult();
+    // }, [currentQuery, initialQuery]);
 
     return (
         <>

@@ -24,13 +24,14 @@ export default async function Search({
             await processVideoData(searchResults);
 
         console.log(addNewVideoData);
+        console.log(nextPageToken);
 
         return (
             <>
                 <VideoListClient
                     initialQuery={q}
                     initialVideos={addNewVideoData}
-                    nextPageToken={searchResults.nextPageToken || ""}
+                    nextPageToken={nextPageToken || ""}
                 />
             </>
         );
