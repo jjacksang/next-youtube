@@ -6,7 +6,6 @@ import { IEnrichedVideo } from "../utils/type";
 import VideoItem from "../components/video-item";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
-import { processVideoData } from "../utils/process-video-data";
 import { useSearchParams } from "next/navigation";
 
 interface IVideoListProps {
@@ -15,22 +14,14 @@ interface IVideoListProps {
     nextPageToken: string;
 }
 
-export const VideoListClient = ({
-    initialQuery,
-    initialVideos,
-    nextPageToken,
-}: IVideoListProps) => {
-    const [videos, setVideos] = useState<IEnrichedVideo[]>(initialVideos);
+export const VideoListClient = ({ initialQuery }: { initialQuery: string }) => {
+    const [videos, setVideos] = useState<IEnrichedVideo[]>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [pageToken, setPageToken] = useState<string>(nextPageToken);
+    const [pageToken, setPageToken] = useState<string>();
     console.log(videos);
-    console.log(nextPageToken);
 
     const searchParams = useSearchParams();
     const currentQuery = searchParams.get("q") || "";
-
-    console.log(initialQuery);
-    console.log(currentQuery);
 
     // 더보기 버튼
     const handleLoadMore = async () => {
@@ -42,18 +33,9 @@ export const VideoListClient = ({
             nextPageToken: pageToken,
         });
 
-        console.log("response nextPageToken", response.nextPageToken);
+        console.log("response nextPageToken", response);
 
-        const nextProcessVideos = await processVideoData(response);
         // 해당 데이터를 검열 후 반환
-
-        // nextPageToken을 가지고 다음 데이터와 pageToken 저장
-        setVideos((prev) => [...prev, ...nextProcessVideos.addNewVideoData]);
-        setPageToken(nextProcessVideos.nextPageToken);
-
-        console.log(nextProcessVideos);
-
-        console.log(response);
     };
 
     useEffect(() => {
@@ -89,7 +71,7 @@ export const VideoListClient = ({
 
     return (
         <>
-            <div className={style.video}>
+            {/* <div className={style.video}>
                 {videos.map((item: IEnrichedVideo) => (
                     <VideoItem
                         key={item.id.videoId}
@@ -104,7 +86,7 @@ export const VideoListClient = ({
                 ) : (
                     <button onClick={handleLoadMore}>더보기</button>
                 )}
-            </div>
+            </div> */}
         </>
     );
 };

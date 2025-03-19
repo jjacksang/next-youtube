@@ -1,22 +1,20 @@
 import styles from "./page.module.css";
 
 async function DeverloperVideo() {
+    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
+    const apiUrl = process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string;
+
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_RAPID_API_URL as string}/search?q=코딩애플&part=snippet`,
-        {
-            headers: {
-                "X-RapidAPI-Key": process.env
-                    .NEXT_PUBLIC_RAPID_API_KEY as string,
-                "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
-            },
-        }
+        `${apiUrl}/search?part=snippet&maxResults=24&q=코딩애플&key=${apiKey}`
     );
+
+    const data = await res.json();
+
+    console.log(data);
     if (!res.ok) {
         console.log("error!!");
         return <div>Response Error!!</div>;
     }
-
-    console.log(await res.json());
 
     return (
         <>

@@ -12,27 +12,15 @@ export default async function Search({
 
     try {
         const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
-
-        if (!searchResults || searchResults.items.length !== 24) {
-            return <div>검색 결과를 찾을 수 없습니다.</div>;
-        }
+        // const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
 
         console.log(searchResults);
 
         // searchResults의 데이터를
-        const { addNewVideoData, nextPageToken } =
-            await processVideoData(searchResults);
-
-        console.log(addNewVideoData);
-        console.log(nextPageToken);
 
         return (
             <>
-                <VideoListClient
-                    initialQuery={q}
-                    initialVideos={addNewVideoData}
-                    nextPageToken={nextPageToken || ""}
-                />
+                <VideoListClient initialQuery={q} />
             </>
         );
     } catch (error) {

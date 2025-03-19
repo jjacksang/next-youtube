@@ -1,10 +1,10 @@
 import { Video } from "./type";
 
-const baseURL = process.env.NEXT_PUBLIC_RAPID_API_URL as string;
+const baseURL = process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string;
 const options = {
     method: "GET",
     headers: {
-        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_RAPID_API_KEY as string,
+        "X-RapidAPI-Key": process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
         "X-RapidAPI-Host": "youtube-v31.p.rapidapi.com",
     },
 };
@@ -29,68 +29,17 @@ export const fetchYoutubeVideos = async ({
     q,
     maxResults,
     nextPageToken,
-}: IFetchVideoParams): Promise<YoutubeResponse> => {
+}: IFetchVideoParams) => {
+    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
+
     try {
-        // url에 집어넣을 params들값
-        const urlParams = [
-            `q=${q}`,
-            "part=snippet",
-            `maxResults=${maxResults}`,
-            "order=date",
-        ];
-
-        // nextPageToken이 있을때 추가
-        if (nextPageToken) {
-            urlParams.push(`pageToken=${nextPageToken}`);
-        }
-
         const response = await fetch(
-            `${baseURL}/search?${urlParams.join("&")}`,
-            options
+            `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&maxResult=${maxResults}&pageToken=${nextPageToken}&q=${q}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
         );
 
-        if (!response.ok) console.log("fetch Search failed");
-
-        const data: YoutubeResponse = await response.json();
-
-        console.log("res", data);
-
-        // 검색 데이터에 items에 빈 값이 있으면 그 값을 제거하고
-        // maxResults의 값만큼 채워서 돌려주기
-        const validItems: YoutubeResponse = {
-            ...data,
-            items: data.items.filter(
-                (item: Video) => item && item.id && item.id.videoId
-            ),
-        };
-
-        console.log(validItems);
-
-        // maxReults값에 맞게 items 데이터 요청
-        if (validItems.items.length < maxResults && data.nextPageToken) {
-            const addResults = await fetchYoutubeVideos({
-                q,
-                maxResults: maxResults - validItems.items.length,
-                nextPageToken: data.nextPageToken,
-            });
-
-            console.log(addResults);
-            const combinedResults = {
-                ...addResults,
-                items: [...validItems.items, ...addResults.items],
-                pageInfo: {
-                    ...data.pageInfo,
-                    resultsPerPage:
-                        validItems.items.length + addResults.items.length,
-                },
-            };
-            return combinedResults;
-        }
-
-        return validItems;
+        console.log(response);
     } catch (error) {
-        console.error("Error:", error);
-        throw error;
+        console.log("fetch error", error);
     }
 };
 
