@@ -2,15 +2,11 @@
 
 import style from "./video-list-client.module.css";
 
-import { IEnrichedVideo, Video } from "../utils/type";
+import { Video } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import VideoItem from "../components/video-item";
-
-interface IinitialVideos {
-    items: Video[];
-}
 
 export const VideoListClient = ({
     initialQuery,
@@ -43,6 +39,8 @@ export const VideoListClient = ({
         console.log("response nextPageToken", response);
 
         // 해당 데이터를 검열 후 반환
+        setVideos((prev) => [...prev, ...response.items]);
+        setPageToken(response.nextPageToken);
     };
 
     useEffect(() => {

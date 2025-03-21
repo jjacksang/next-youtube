@@ -12,10 +12,15 @@ export const fetchYoutubeVideos = async ({
     maxResults,
     nextPageToken,
 }: IfetchProps) => {
+    let baseUrl = `${apiUrl}/search?part=snippet&order=date&maxResults=${maxResults}&q=${q}&key=${apiKey}`;
+
+    if (nextPageToken) {
+        baseUrl += `&pageToken=${nextPageToken}`;
+    }
+
+    console.log(baseUrl);
     try {
-        const response = await fetch(
-            `${apiUrl}/search?part=snippet&maxResults=${maxResults}&q=${q}&key=${apiKey}`
-        );
+        const response = await fetch(baseUrl);
 
         if (response.ok) return response.json();
     } catch (error) {
