@@ -2,23 +2,30 @@
 
 import style from "./video-list-client.module.css";
 
-import { IEnrichedVideo } from "../utils/type";
-import VideoItem from "../components/video-item";
+import { IEnrichedVideo, Video } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import VideoItem from "../components/video-item";
 
-interface IVideoListProps {
-    initialQuery: string;
-    initialVideos: IEnrichedVideo[];
-    nextPageToken: string;
+interface IinitialVideos {
+    items: Video[];
 }
 
-export const VideoListClient = ({ initialQuery }: { initialQuery: string }) => {
-    const [videos, setVideos] = useState<IEnrichedVideo[]>();
+export const VideoListClient = ({
+    initialQuery,
+    initialVideos,
+    nextPageToken,
+}: {
+    initialQuery: string;
+    initialVideos: Video[];
+    nextPageToken: string;
+}) => {
+    const [videos, setVideos] = useState<Video[]>(initialVideos);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [pageToken, setPageToken] = useState<string>();
-    console.log(videos);
+    const [pageToken, setPageToken] = useState<string>(nextPageToken);
+    console.log(initialVideos);
+    console.log(nextPageToken);
 
     const searchParams = useSearchParams();
     const currentQuery = searchParams.get("q") || "";
@@ -41,43 +48,12 @@ export const VideoListClient = ({ initialQuery }: { initialQuery: string }) => {
     useEffect(() => {
         console.log("Update pageToken", pageToken);
     }, [pageToken]);
-    // useEffect(() => {
-    //     const fetchNewResult = async () => {
-    //         if (currentQuery !== initialQuery) {
-    //             setIsLoading(true);
-    //             console.log("useEffect active!!");
-    //             try {
-    //                 const newResults = await fetchYoutubeVideos({
-    //                     q: currentQuery,
-    //                     maxResults: 24,
-    //                 });
-    //                 if (!newResults || newResults.items.length !== 24) {
-    //                     return <div>검색 결과를 찾을 수 없습니다.</div>;
-    //                 }
-
-    //                 const { addNewVideoData, nextPageToken } =
-    //                     await processVideoData(newResults);
-    //                 setVideos(addNewVideoData);
-    //             } catch (error) {
-    //                 console.log("fetch new results failed", error);
-    //             } finally {
-    //                 setIsLoading(false);
-    //             }
-    //         }
-    //     };
-
-    //     fetchNewResult();
-    // }, [currentQuery, initialQuery]);
 
     return (
         <>
-            {/* <div className={style.video}>
-                {videos.map((item: IEnrichedVideo) => (
-                    <VideoItem
-                        key={item.id.videoId}
-                        video={item}
-                        viewCount={item.viewCount}
-                    />
+            <div className={style.video}>
+                {videos.map((item) => (
+                    <VideoItem key={item.id.videoId} video={item} />
                 ))}
             </div>
             <div className={style.moreBtn}>
@@ -86,7 +62,7 @@ export const VideoListClient = ({ initialQuery }: { initialQuery: string }) => {
                 ) : (
                     <button onClick={handleLoadMore}>더보기</button>
                 )}
-            </div> */}
+            </div>
         </>
     );
 };

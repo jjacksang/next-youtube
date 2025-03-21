@@ -1,26 +1,27 @@
 import { fetchYoutubeVideos } from "../utils/api";
-import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
 
 export default async function Search({
     searchParams,
 }: {
-    searchParams: { q: string };
+    searchParams: Promise<{ q: string }>;
 }) {
-    const q = searchParams.q || "";
+    const { q } = await searchParams;
     console.log("Search Page : ", q);
 
     try {
-        const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
-        // const searchResults = await fetchYoutubeVideos({ q, maxResults: 24 });
+        const data = await fetchYoutubeVideos({ q: q, maxResults: 25 });
 
-        console.log(searchResults);
-
-        // searchResults의 데이터를
+        // data에 처음 조회요청에 0번 인덱스는 채널 정보임으로 이후 데이터만 가공
+        const videoItems = data.items.slice(1, 25);
 
         return (
             <>
-                <VideoListClient initialQuery={q} />
+                <VideoListClient
+                    initialQuery={q}
+                    initialVideos={videoItems}
+                    nextPageToken={data.nextPageToken}
+                />
             </>
         );
     } catch (error) {

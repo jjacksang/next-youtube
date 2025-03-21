@@ -7,10 +7,9 @@ import { formatNumber } from "../utils/formatNumber";
 
 interface VideoItemProps {
     video: Video;
-    viewCount?: number;
 }
 
-export default function VideoItem({ video, viewCount }: VideoItemProps) {
+export default function VideoItem({ video }: VideoItemProps) {
     return (
         <div className={style.container} key={video.id.videoId}>
             <div className={style.thumbnail__img}>
@@ -31,7 +30,6 @@ export default function VideoItem({ video, viewCount }: VideoItemProps) {
                         {video.snippet.channelTitle}
                     </span>
                     <div className={style.preview__info}>
-                        <span>{`조회수 ${formatNumber(viewCount ?? 0)}회`}</span>
                         <div className={style.dot}>•</div>
                         <span>{elapsedTime(video.snippet.publishTime)}</span>
                     </div>

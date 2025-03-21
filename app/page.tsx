@@ -1,21 +1,7 @@
 import styles from "./page.module.css";
+import { fetchYoutubeVideos } from "./utils/api";
 
 async function DeverloperVideo() {
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
-    const apiUrl = process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string;
-
-    const res = await fetch(
-        `${apiUrl}/search?part=snippet&maxResults=24&q=코딩애플&key=${apiKey}`
-    );
-
-    const data = await res.json();
-
-    console.log(data);
-    if (!res.ok) {
-        console.log("error!!");
-        return <div>Response Error!!</div>;
-    }
-
     return (
         <>
             <div className={styles.youtuber}>
