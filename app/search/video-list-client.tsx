@@ -5,7 +5,6 @@ import style from "./video-list-client.module.css";
 import { Video } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import VideoItem from "../components/video-item";
 
 export const VideoListClient = ({
@@ -28,7 +27,7 @@ export const VideoListClient = ({
 
     // search/page.tsx에서 내려주는 데이터가 변경 시 props로 내려주는
     // initialVideos에 값은 변경되지만 videos에 저장된 값이 다름으로
-    // 새로운 데이터를 내려받았을 때 videos값을 변경
+    // 새로운 query를 내려받았을 때 videos값을 변경
     useEffect(() => {
         if (initialQuery !== currentQuery) {
             setVideos(initialVideos);
