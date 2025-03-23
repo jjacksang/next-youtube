@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { fetchChannelDetail, fetchChannelVideos } from "../utils/api";
 import style from "./channelDetail.module.css";
 import { IChannelDetail } from "../utils/type";
 import { formatNumber } from "../utils/formatNumber";

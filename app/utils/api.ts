@@ -27,3 +27,19 @@ export const fetchYoutubeVideos = async ({
         console.log("Fetch videos Error", error);
     }
 };
+
+export const fetchVideoDetails = async ({ id }: { id: string }) => {
+    const response = await fetch(
+        `${apiUrl}/videos?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`
+    );
+
+    if (response.ok) return response.json();
+};
+
+export const fetchChannelDetails = async ({ id }: { id: string }) => {
+    console.log(id);
+    const response = await fetch(
+        `${apiUrl}/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${id}&key=${apiKey}`
+    );
+    if (response.ok) return response.json();
+};

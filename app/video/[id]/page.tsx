@@ -1,10 +1,6 @@
 import { VideoDetail } from "@/app/components/videoDetail";
-import {
-    fetchVideoDetail,
-    fetchChannelDetail,
-    fetchVideoCommnetList,
-} from "@/app/utils/api";
 import style from "./page.module.css";
+import { fetchChannelDetails, fetchVideoDetails } from "@/app/utils/api";
 
 export default async function Page({
     params,
@@ -13,33 +9,30 @@ export default async function Page({
 }) {
     const { id } = await params;
 
-    const videoDetail = await fetchVideoDetail(id);
-    const channelDetail = await fetchChannelDetail(
-        videoDetail.snippet.channelId
-    );
+    const videoDetails = await fetchVideoDetails({ id });
+    console.log(videoDetails);
 
-    const videoCommentList = await fetchVideoCommnetList(id);
-    console.log(videoCommentList);
+    const channelDetails = await fetchChannelDetails({
+        id: videoDetails.items[0].snippet.channelId,
+    });
 
-    const channelThumbnail =
-        channelDetail.items[0].snippet.thumbnails.default.url;
+    console.log(channelDetails);
+    //     const channelThumbnail =
+    //         channelDetail.items[0].snippet.thumbnails.default.url;
 
     return (
         <div>
-            <VideoDetail
-                videoDetail={videoDetail}
-                channelThumbnail={channelThumbnail}
-            />
+            <VideoDetail videoDetail={videoDetails} channelThumbnail={id} />
             <div className={style.comment__container}>
                 <div className={style.comment__form}>
-                    <h3>{`댓글 ${videoDetail.statistics.commentCount} 개`}</h3>
+                    <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>
                 </div>
-                <div>
-                    {
-                        videoCommentList.items[0].snippet.topLevelComment
-                            .snippet.textOriginal
-                    }
-                </div>
+                {/* <div>
+                        {
+                            videoCommentList.items[0].snippet.topLevelComment
+                                .snippet.textOriginal
+                        }
+                    </div> */}
             </div>
         </div>
     );

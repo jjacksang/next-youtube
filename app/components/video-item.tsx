@@ -3,7 +3,6 @@ import style from "./video-item.module.css";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
 import { Video } from "../utils/type";
-import { formatNumber } from "../utils/formatNumber";
 
 interface VideoItemProps {
     video: Video;

@@ -1,11 +1,5 @@
 import { CiBaseball } from "react-icons/ci";
 import { CiCoins1 } from "react-icons/ci";
-import { CiBoxes } from "react-icons/ci";
-import { CiBullhorn } from "react-icons/ci";
-import { CiCoffeeCup } from "react-icons/ci";
-import { CiDumbbell } from "react-icons/ci";
-import { CiFries } from "react-icons/ci";
-import { CiMoneyBill } from "react-icons/ci";
 import { SiYoutubeshorts } from "react-icons/si";
 
 import { SiVelog } from "react-icons/si";

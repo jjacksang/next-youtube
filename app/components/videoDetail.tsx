@@ -8,7 +8,6 @@ import { IVideoDetail } from "../utils/type";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
-import { formatNumber } from "../utils/formatNumber";
 
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
@@ -34,13 +33,18 @@ const convertUrls = (text: string) => {
     });
 };
 
+interface IVideoDetailProps {
+    items: IVideoDetail[];
+}
+
 export const VideoDetail = ({
     videoDetail,
     channelThumbnail,
 }: {
-    videoDetail: IVideoDetail;
+    videoDetail: IVideoDetailProps;
     channelThumbnail: string;
 }) => {
+    console.log(videoDetail);
     return (
         <section className={style.videoViewPage}>
             {videoDetail && (
@@ -48,7 +52,7 @@ export const VideoDetail = ({
                     <div className={style.video__play}>
                         <ReactPlayer
                             playing={true}
-                            url={`https://www.youtube.com/watch?v=${videoDetail.id}`}
+                            url={`https://www.youtube.com/watch?v=${videoDetail.items[0].id}`}
                             width="100%"
                             height="100%"
                             style={{
@@ -60,20 +64,23 @@ export const VideoDetail = ({
                     </div>
                     <div className={style.video__info}>
                         <h2 className={style.video__title}>
-                            {videoDetail.snippet.title}
+                            {videoDetail.items[0].snippet.title}
                         </h2>
                         <div className={style.video__channel}>
                             <div className={style.id}>
                                 <Link
-                                    href={`/channel/${videoDetail.snippet.channelId}`}
+                                    href={`/channel/${videoDetail.items[0].snippet.channelId}`}
                                 >
-                                    <Image
+                                    {/* <Image
                                         src={channelThumbnail}
-                                        alt={videoDetail.snippet.channelTitle}
+                                        alt={
+                                            videoDetail.items[0].snippet
+                                                .channelTitle
+                                        }
                                         width={40}
                                         height={40}
                                     />
-                                    {videoDetail.snippet.channelTitle}
+                                    {videoDetail.items[0].snippet.channelTitle} */}
                                 </Link>
                             </div>
                         </div>
@@ -81,13 +88,14 @@ export const VideoDetail = ({
                             <div className={style.count}>
                                 <span className={style.view}>
                                     <CiRead />
-                                    <span>{`${formatNumber(videoDetail.statistics.viewCount)}회`}</span>
                                     <div className={style.dot}>•</div>
-                                    <span>{`${elapsedTime(videoDetail.snippet.publishedAt)}`}</span>
+                                    <span>{`${elapsedTime(videoDetail.items[0].snippet.publishedAt)}`}</span>
                                 </span>
                             </div>
                             <div className={style.description}>
-                                {convertUrls(videoDetail.snippet.description)}
+                                {convertUrls(
+                                    videoDetail.items[0].snippet.description
+                                )}
                             </div>
                         </div>
                     </div>
