@@ -10,16 +10,15 @@ export default async function Search({
     console.log("Search Page : ", q);
 
     try {
-        const data = await fetchYoutubeVideos({ q: q, maxResults: 25 });
+        const data = await fetchYoutubeVideos({ q: q, maxResults: 24 });
 
-        // data에 처음 조회요청에 0번 인덱스는 채널 정보임으로 이후 데이터만 가공
-        const videoItems = data.items.slice(1, 25);
+        console.log("Page >> ", data);
 
         return (
             <>
                 <VideoListClient
                     initialQuery={q}
-                    initialVideos={videoItems}
+                    initialVideos={data.items}
                     nextPageToken={data.nextPageToken}
                 />
             </>
