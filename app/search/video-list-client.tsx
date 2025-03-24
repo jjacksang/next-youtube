@@ -2,10 +2,11 @@
 
 import style from "./video-list-client.module.css";
 
-import { Video } from "../utils/type";
+import { IChannel, Video } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";
+import { RecoChannel } from "../components/reco-channel";
 
 export const VideoListClient = ({
     initialQuery,
@@ -17,13 +18,17 @@ export const VideoListClient = ({
     nextPageToken: string;
 }) => {
     const [currentQuery, setCurrentQuery] = useState(initialQuery);
-    const [videos, setVideos] = useState<Video[]>(initialVideos);
+    // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
+    const [videos, setVideos] = useState<Video[]>(
+        initialVideos.filter((item) => item.id.kind !== "youtube#channel")
+    );
+    // 해당 채널에 대한 데이터를 저장
+    const [channel, setChannel] = useState(
+        initialVideos.filter((item) => item.id.kind === "youtube#channel")
+    );
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
-    console.log(initialQuery);
-    console.log(initialVideos);
-    console.log(nextPageToken);
-    console.log("video-list", currentQuery);
+    console.log(channel);
 
     // search/page.tsx에서 내려주는 데이터가 변경 시 props로 내려주는
     // initialVideos에 값은 변경되지만 videos에 저장된 값이 다름으로
@@ -61,6 +66,7 @@ export const VideoListClient = ({
 
     return (
         <>
+            <RecoChannel channel={channel[0]} />
             <div className={style.video} key="video-list">
                 {videos.map((item) => (
                     <VideoItem key={item.id.videoId} video={item} />

@@ -12,7 +12,8 @@ type IStatistics = {
 };
 
 export interface Video {
-    id: { videoId: string };
+    id: { videoId: string; kind: string };
+
     snippet: {
         channelId: string;
         channelTitle: string;
@@ -36,7 +37,7 @@ export interface IVideoDetail {
         description: string;
         publishedAt: string;
         title: string;
-        uploadDate: string;
+        publishTime: string;
         viewCount: string;
         thumbnails: {
             default: Thumbnail;
@@ -75,7 +76,25 @@ export interface IChannelDetail {
     };
 }
 
-export interface IContentDetails {}
+export interface IChannel {
+    id: {
+        kind: string;
+        channelId: string;
+    };
+    snippet: {
+        channelId: string;
+        channelTitle: string;
+        description: string;
+        publishTime: string;
+        publishedAt: string;
+        thumbnails: {
+            default: Thumbnail;
+            high: Thumbnail;
+            medium: Thumbnail;
+        };
+        title: string;
+    };
+}
 
 export interface IEnrichedVideo extends Video {
     viewCount: number;
