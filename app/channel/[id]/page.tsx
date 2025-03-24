@@ -1,8 +1,6 @@
 import style from "./page.module.css";
 
-import { fetchChannelVideos } from "@/app/utils/api";
 import { VideoSwiper } from "@/app/components/swiper/videoSwiper";
-import { processVideoData } from "@/app/utils/process-video-data";
 
 export default async function Page({
     params,
@@ -25,10 +23,6 @@ export default async function Page({
 
 const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
-
-    const channelVideo = await fetchChannelVideos(id, "date");
-
-    const recoVideosWithViewCount = await processVideoData(channelVideo);
 
     console.log(recoVideosWithViewCount);
 
@@ -64,9 +58,7 @@ const PopularVideos = async ({
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper
-                        videos={popularVideosWithViewCount}
-                    />
+                    <VideoSwiper videos={popularVideosWithViewCount} />
                 </>
             )}
         </>

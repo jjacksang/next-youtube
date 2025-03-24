@@ -21,16 +21,30 @@ export default function VideoItem({ video }: VideoItemProps) {
                     />
                 </Link>
             </div>
+            <div className={style.info__container}>
+                <Image
+                    src={video.snippet.thumbnails.default.url}
+                    alt={video.snippet.description}
+                    width={40}
+                    height={40}
+                    className={style.channel__img}
+                />
+                <div className={style.info__content}>
+                    <h3 className={style.content__title}>
+                        {video.snippet.title}
+                    </h3>
+                    <div className={style.content__area}>
+                        <span className={style.content__author}>
+                            {video.snippet.channelTitle}
+                        </span>
 
-            <div className={style.info__content}>
-                <h3 className={style.content__title}>{video.snippet.title}</h3>
-                <div className={style.content__text}>
-                    <span className={style.content__author}>
-                        {video.snippet.channelTitle}
-                    </span>
-                    <div className={style.preview__info}>
-                        <div className={style.dot}>•</div>
-                        <span>{elapsedTime(video.snippet.publishTime)}</span>
+                        <div className={style.preview__info}>
+                            <span>조회수</span>
+                            <div className={style.dot}>•</div>
+                            <span>
+                                {elapsedTime(video.snippet.publishTime)}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

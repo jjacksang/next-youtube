@@ -60,12 +60,17 @@
     height: 160px;
 }
 
+.channel__img {
+    border-radius: 100%;
+    margin-right: 0.875rem;
+}
+
 .content__author {
     color: #666;
     font-size: 0.875rem;
     font-weight: bold;
 }
-.content__text {
+.content__area {
     display: flex;
     flex-direction: column;
 }
@@ -77,4 +82,9 @@
     display: flex;
     flex-direction: row;
     color: #666;
+}
+
+.info__container {
+    display: flex;
+    flex-direction: row;
 }

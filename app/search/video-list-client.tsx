@@ -61,7 +61,7 @@ export const VideoListClient = ({
 
     return (
         <>
-            <div className={style.video} key="video-item-list">
+            <div className={style.video} key="video-list">
                 {videos.map((item) => (
                     <VideoItem key={item.id.videoId} video={item} />
                 ))}
