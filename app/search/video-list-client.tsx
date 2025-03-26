@@ -8,23 +8,29 @@ import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";
 import { RecoChannel } from "../components/reco-channel";
 
+type YoutubeItems = Video | IChannel;
+
 export const VideoListClient = ({
     initialQuery,
     initialVideos,
     nextPageToken,
 }: {
     initialQuery: string;
-    initialVideos: Video[];
+    initialVideos: YoutubeItems[];
     nextPageToken: string;
 }) => {
     const [currentQuery, setCurrentQuery] = useState(initialQuery);
     // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
     const [videos, setVideos] = useState<Video[]>(
-        initialVideos.filter((item) => item.id.kind !== "youtube#channel")
+        initialVideos.filter(
+            (item): item is Video => item.id.kind !== "youtube#channel"
+        )
     );
     // 해당 채널에 대한 데이터를 저장
-    const [channel, setChannel] = useState(
-        initialVideos.filter((item) => item.id.kind === "youtube#channel")
+    const [channel, setChannel] = useState<IChannel[]>(
+        initialVideos.filter(
+            (item): item is IChannel => item.id.kind === "youtube#channel"
+        )
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
@@ -35,7 +41,11 @@ export const VideoListClient = ({
     // 새로운 query를 내려받았을 때 videos값을 변경
     useEffect(() => {
         if (initialQuery !== currentQuery) {
-            setVideos(initialVideos);
+            setVideos(
+                initialVideos.filter(
+                    (item): item is Video => item.id.kind !== "youtube#channel"
+                )
+            );
             setCurrentQuery(initialQuery);
             setPageToken(nextPageToken);
             console.log("검색어 변경으로 비디오 목록 초기화: ", initialQuery);

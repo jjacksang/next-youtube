@@ -12,13 +12,14 @@ type IStatistics = {
 };
 
 export interface Video {
-    id: { videoId: string; kind: string };
+    id: { kind: string; videoId: string };
 
     snippet: {
         channelId: string;
         channelTitle: string;
         description: string;
         publishTime: string;
+        publishedAt: string;
         thumbnails: {
             default: Thumbnail;
             high: Thumbnail;
@@ -26,7 +27,27 @@ export interface Video {
         };
         title: string;
     };
-    statistics: IStatistics;
+}
+
+export interface IChannel {
+    id: {
+        kind: string;
+        channelId: string;
+    };
+    snippet: {
+        channelId: string;
+        channelTitle: string;
+        description: string;
+        publishTime: string;
+        publishedAt: string;
+        thumbnails: {
+            default: Thumbnail;
+            high: Thumbnail;
+            medium: Thumbnail;
+        };
+        title: string;
+        statistics: IStatistics;
+    };
 }
 
 export interface IVideoDetail {
@@ -45,7 +66,6 @@ export interface IVideoDetail {
             medium: Thumbnail;
         };
     };
-    statistics: IStatistics;
 }
 
 export interface IChannelDetail {
@@ -73,26 +93,6 @@ export interface IChannelDetail {
         subscriberCount: number;
         viewCount: number;
         videoCount: number;
-    };
-}
-
-export interface IChannel {
-    id: {
-        kind: string;
-        channelId: string;
-    };
-    snippet: {
-        channelId: string;
-        channelTitle: string;
-        description: string;
-        publishTime: string;
-        publishedAt: string;
-        thumbnails: {
-            default: Thumbnail;
-            high: Thumbnail;
-            medium: Thumbnail;
-        };
-        title: string;
     };
 }
 

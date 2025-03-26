@@ -1,0 +1,7 @@
+.channel__container {
+    display: flex;
+}
+
+.channel__img {
+    border: 100%;
+}
