@@ -14,16 +14,16 @@ export const RecoChannel = ({ channel }: RecoChannelProps) => {
                 <Image
                     src={channel.snippet.thumbnails.high.url}
                     alt={channel.snippet.description}
-                    width={240}
-                    height={240}
+                    width={180}
+                    height={180}
                     className={style.channel__img}
                 />
             </div>
-            <div>
+            <div className={style.channel__info}>
                 <div>
                     <h3>{channel.snippet.channelTitle}</h3>
-                    <span>채널ID, 구독자 수</span>
-                    <span>채널 소개</span>
+                    <span></span>
+                    <span>{channel.snippet.description}</span>
                 </div>
                 <button>구독</button>
             </div>

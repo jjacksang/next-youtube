@@ -48,6 +48,12 @@ export const VideoListClient = ({
             );
             setCurrentQuery(initialQuery);
             setPageToken(nextPageToken);
+            setChannel(
+                initialVideos.filter(
+                    (item): item is IChannel =>
+                        item.id.kind === "youtube#channel"
+                )
+            );
             console.log("검색어 변경으로 비디오 목록 초기화: ", initialQuery);
         }
     }, [initialQuery, initialVideos, nextPageToken, currentQuery]);
@@ -76,7 +82,11 @@ export const VideoListClient = ({
 
     return (
         <>
-            <RecoChannel channel={channel[0]} />
+            {channel && channel.length > 0 ? (
+                <RecoChannel channel={channel[0]} />
+            ) : (
+                <></>
+            )}
             <div className={style.video} key="video-list">
                 {videos.map((item) => (
                     <VideoItem key={item.id.videoId} video={item} />
