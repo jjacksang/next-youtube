@@ -20,12 +20,14 @@ export const RecoChannel = ({ channel }: RecoChannelProps) => {
                 />
             </div>
             <div className={style.channel__info}>
-                <div>
-                    <h3>{channel.snippet.channelTitle}</h3>
+                <div className={style.channel__text}>
+                    <h2>{channel.snippet.channelTitle}</h2>
                     <span></span>
                     <span>{channel.snippet.description}</span>
                 </div>
-                <button>구독</button>
+                <div className={style.subscribe__button}>
+                    <button>구독</button>
+                </div>
             </div>
         </div>
     );
