@@ -61,6 +61,11 @@
 }
 
 .channel__img {
+    display: flex;
+    align-items: center;
+}
+
+.channel__img > img {
     border-radius: 100%;
     margin-right: 0.875rem;
 }
