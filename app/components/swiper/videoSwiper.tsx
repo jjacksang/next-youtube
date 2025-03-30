@@ -34,11 +34,7 @@ export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
                         className={style.swiper__slide}
                         key={video.id.videoId}
                     >
-                        <VideoItem
-                            video={video}
-                            viewCount={video.viewCount}
-                            key={video.id.videoId}
-                        />
+                        <VideoItem video={video} key={video.id.videoId} />
                     </SwiperSlide>
                 ))}
             </Swiper>
