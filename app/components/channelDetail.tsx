@@ -2,11 +2,12 @@ import Image from "next/image";
 import style from "./channelDetail.module.css";
 import { IChannelDetail } from "../utils/type";
 import { formatNumber } from "../utils/formatNumber";
+import { fetchChannelDetails } from "../utils/api";
 
 export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
-    const channelInfo: IChannelDetail = await fetchChannelDetail(
-        channelId
-    ).then((data) => data.items[0]);
+    const channelInfo: IChannelDetail = await fetchChannelDetails({
+        id: channelId,
+    }).then((data) => data.items[0]);
 
     console.log(channelInfo);
 
@@ -21,7 +22,7 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
                         width={channelInfo.snippet.thumbnails.medium.width}
                     />
                     <div className={style.channel__text}>
-                        <h2>{channelInfo.brandingSettings.channel.title}</h2>
+                        <h2>{channelInfo.snippet.title}</h2>
                         <div className={style.channel__statistics}>
                             <span>
                                 {channelInfo.snippet.customUrl}

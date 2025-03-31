@@ -69,12 +69,7 @@ export interface IVideoDetail {
 }
 
 export interface IChannelDetail {
-    brandingSettings: {
-        channel: {
-            title: string;
-            description: string;
-        };
-    };
+    id: string;
     contentDetails: {
         id: string;
     };
@@ -87,6 +82,7 @@ export interface IChannelDetail {
             medium: Thumbnail;
         };
         publishedAt: string;
+        title: string;
     };
 
     statistics: {
