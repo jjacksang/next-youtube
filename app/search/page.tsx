@@ -1,4 +1,5 @@
-import { fetchYoutubeVideos } from "../utils/api";
+import { fetchVideoDetails, fetchYoutubeVideos } from "../utils/api";
+import { Video } from "../utils/type";
 import { VideoListClient } from "./video-list-client";
 
 export default async function Search({
@@ -10,9 +11,15 @@ export default async function Search({
     console.log("Search Page : ", q);
 
     try {
-        const data = await fetchYoutubeVideos({ q: q, maxResults: 24 });
-
+        const data = await fetchYoutubeVideos(
+            { q: q, maxResults: 24 },
+            {
+                cache: "no-store",
+            }
+        );
         console.log("Page >> ", data);
+
+        // const videoViewCount = await Promise.all(data.items.map((item: Video) => fetchVideoDetails(item.id.videoId)))
 
         return (
             <>

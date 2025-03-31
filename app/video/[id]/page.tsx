@@ -17,12 +17,15 @@ export default async function Page({
     });
 
     console.log(channelDetails);
-    //     const channelThumbnail =
-    //         channelDetail.items[0].snippet.thumbnails.default.url;
+    const channelThumbnail =
+        channelDetails.items[0].snippet.thumbnails.default.url;
 
     return (
         <div>
-            <VideoDetail videoDetail={videoDetails} channelThumbnail={id} />
+            <VideoDetail
+                videoDetail={videoDetails}
+                channelThumbnail={channelThumbnail}
+            />
             <div className={style.comment__container}>
                 <div className={style.comment__form}>
                     <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>

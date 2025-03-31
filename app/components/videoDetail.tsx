@@ -45,6 +45,7 @@ export const VideoDetail = ({
     channelThumbnail: string;
 }) => {
     console.log(videoDetail);
+    console.log(channelThumbnail);
     return (
         <section className={style.videoViewPage}>
             {videoDetail && (
@@ -72,7 +73,7 @@ export const VideoDetail = ({
                                 <Link
                                     href={`/channel/${videoDetail.items[0].snippet.channelId}`}
                                 >
-                                    {/* <Image
+                                    <Image
                                         src={channelThumbnail}
                                         alt={
                                             videoDetail.items[0].snippet
@@ -81,7 +82,7 @@ export const VideoDetail = ({
                                         width={40}
                                         height={40}
                                     />
-                                    {videoDetail.items[0].snippet.channelTitle} */}
+                                    {videoDetail.items[0].snippet.channelTitle}
                                 </Link>
                             </div>
                         </div>
