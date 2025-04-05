@@ -2,10 +2,11 @@ import Link from "next/link";
 import style from "./video-item.module.css";
 import Image from "next/image";
 import { elapsedTime } from "../utils/elapsedTime";
-import { Video } from "../utils/type";
+import { IEnrichedVideo, Video } from "../utils/type";
+import { formatNumber } from "../utils/formatNumber";
 
 interface VideoItemProps {
-    video: Video;
+    video: IEnrichedVideo;
 }
 
 export default function VideoItem({ video }: VideoItemProps) {
@@ -40,7 +41,9 @@ export default function VideoItem({ video }: VideoItemProps) {
                         </span>
 
                         <div className={style.preview__info}>
-                            <span>조회수</span>
+                            <span>
+                                조회수 {formatNumber(video.viewCount)}회
+                            </span>
                             <div className={style.dot}>•</div>
                             <span>
                                 {elapsedTime(video.snippet.publishTime)}

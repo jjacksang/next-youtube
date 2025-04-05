@@ -63,8 +63,6 @@ export interface IVideoDetail {
         description: string;
         publishedAt: string;
         title: string;
-        publishTime: string;
-        viewCount: string;
         thumbnails: {
             default: Thumbnail;
             high: Thumbnail;
