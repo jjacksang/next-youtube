@@ -27,6 +27,11 @@ export interface Video {
         };
         title: string;
     };
+    statistics: {
+        subscriberCount: number;
+        viewCount: string;
+        videoCount: number;
+    };
 }
 
 export interface IChannel {
@@ -65,6 +70,11 @@ export interface IVideoDetail {
             high: Thumbnail;
             medium: Thumbnail;
         };
+    };
+    statistics: {
+        subscriberCount: number;
+        viewCount: string;
+        videoCount: number;
     };
 }
 
