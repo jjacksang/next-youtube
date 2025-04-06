@@ -2,7 +2,7 @@
 
 import style from "./video-list-client.module.css";
 
-import { IChannel, IEnrichedVideo, Video } from "../utils/type";
+import { IChannel, IEnrichedVideo } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";

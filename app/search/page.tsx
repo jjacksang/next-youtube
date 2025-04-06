@@ -19,6 +19,8 @@ export default async function Search({
             }
         );
 
+        console.log(searchData);
+
         const { videoWithViewCount, nextPageToken } =
             await processVideoData(searchData);
         console.log("Page >> ", videoWithViewCount);

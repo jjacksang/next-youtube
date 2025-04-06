@@ -1,4 +1,5 @@
 import styles from "./page.module.css";
+import { fetchYoutubeVideos } from "./utils/api";
 
 async function DeverloperVideo() {
     return (
@@ -49,6 +50,27 @@ async function DeverloperVideo() {
     );
 }
 
+let developerChannelId = {
+    이정환: "UCn7yFtl60fQsRtEaoyuzFUg",
+};
+
+async function RecoDeveloper() {
+    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
+    const searchDevelpoer = await fetch(
+        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&channelId=${developerChannelId.이정환}&maxResults=12&key=${apiKey}`
+    ).then((response) => {
+        if (response.ok) return response.json();
+    });
+
+    console.log(searchDevelpoer);
+
+    return (
+        <div>
+            <div>{searchDevelpoer.items[0].snippet.title}</div>
+        </div>
+    );
+}
+
 export default function Home() {
     return (
         <div className={styles.home}>
@@ -61,6 +83,7 @@ export default function Home() {
             <div className={styles.video__list}>
                 <section>
                     <h2>Next.js 유튜브 영상</h2>
+                    <RecoDeveloper />
                 </section>
             </div>
         </div>
