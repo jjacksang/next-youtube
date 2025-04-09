@@ -24,12 +24,14 @@ export default function VideoItem({ video }: VideoItemProps) {
             </div>
             <div className={style.info__container}>
                 <div className={style.channel__img}>
-                    <Image
-                        src={video.snippet.thumbnails.default.url}
-                        alt={video.snippet.description}
-                        width={40}
-                        height={40}
-                    />
+                    <Link href={`/channel/${video.snippet.channelId}`}>
+                        <Image
+                            src={video.snippet.thumbnails.default.url}
+                            alt={video.snippet.description}
+                            width={40}
+                            height={40}
+                        />
+                    </Link>
                 </div>
                 <div className={style.info__content}>
                     <h3 className={style.content__title}>

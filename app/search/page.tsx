@@ -25,15 +25,6 @@ export default async function Search({
             await processVideoData(searchData);
         console.log("Page >> ", videoWithViewCount);
 
-        if (searchData?.items?.length > 0) {
-            const videoIds = searchData.items
-                .map((item: Video) => item.id.videoId)
-                .filter((id: string) => !!id)
-                .join(",");
-            const videoDetails = await fetchVideoDetails(videoIds);
-            console.log(videoDetails);
-        }
-
         return (
             <>
                 <VideoListClient
@@ -44,7 +35,10 @@ export default async function Search({
             </>
         );
     } catch (error) {
-        console.log("Video Fetching Error", error);
+        console.error("Video Fetching Error", error);
+        if (error instanceof Error) {
+            console.error("Error stack:", error.stack);
+        }
         return <div>fetching Error</div>;
     }
 }

@@ -50,7 +50,7 @@
     height: 100%;
 }
 
-.info__content > img {
+.info__content > a {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -66,7 +66,7 @@
     align-items: center;
 }
 
-.channel__img > img {
+.channel__img img {
     border-radius: 100%;
     margin-right: 0.875rem;
 }
