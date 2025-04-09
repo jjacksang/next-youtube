@@ -2,6 +2,7 @@ import { fetchChannelDetails } from "@/app/utils/api";
 import style from "./page.module.css";
 
 import { VideoSwiper } from "@/app/components/swiper/videoSwiper";
+import { processVideoData } from "@/app/utils/process-video-data";
 
 export default async function Page({
     params,
@@ -12,57 +13,83 @@ export default async function Page({
         <div className={style.video__wrapper}>
             <h2>추천 영상</h2>
             <div className={style.reco__video}>
-                {/* <RecoVideo params={params} /> */}
+                <RecoVideo params={params} />
             </div>
             <h2>인기 영상</h2>
             <div className={style.popularVideos}>
-                {/* <PopularVideos params={params} /> */}
+                <PopularVideos params={params} />
             </div>
         </div>
     );
 }
 
-// const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
-//     const { id } = await params;
+const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
+    const { id } = await params;
 
-//     const channelData = await fetchChannelDetails({ id });
-//     console.log(channelData);
+    const channelData = await fetchChannelDetails({ id });
 
-//     return (
-//         <>
-//             {recoVideosWithViewCount.addNewVideoData.length === 0 ? (
-//                 <div>none</div>
-//             ) : (
-//                 <>
-//                     <VideoSwiper videos={recoVideosWithViewCount} />
-//                 </>
-//             )}
-//         </>
-//     );
-// };
+    const fetchChannelVideos = await fetch(
+        `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&channelId=${id}&order=date&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+    ).then((res) => {
+        if (!res.ok) {
+            throw new Error(`failed fetch channel videos : ${res.status}`);
+        } else {
+            return res.json();
+        }
+    });
+    console.log("date", fetchChannelVideos);
+    console.log(channelData);
 
-// const PopularVideos = async ({
-//     params,
-// }: {
-//     params: Promise<{ id: string }>;
-// }) => {
-//     const { id } = await params;
+    const recoVideosWithViewCount = await processVideoData(fetchChannelVideos);
 
-//     const popularVideos = await fetchChannelVideos(id, "viewCount");
+    console.log(recoVideosWithViewCount);
 
-//     const popularVideosWithViewCount = await processVideoData(popularVideos);
+    return (
+        <>
+            {recoVideosWithViewCount === null ? (
+                <div>none</div>
+            ) : (
+                <>
+                    <VideoSwiper videos={recoVideosWithViewCount} />
+                </>
+            )}
+        </>
+    );
+};
 
-//     console.log(popularVideosWithViewCount);
+const PopularVideos = async ({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) => {
+    const { id } = await params;
 
-//     return (
-//         <>
-//             {popularVideosWithViewCount.addNewVideoData.length === 0 ? (
-//                 <div>none</div>
-//             ) : (
-//                 <>
-//                     <VideoSwiper videos={popularVideosWithViewCount} />
-//                 </>
-//             )}
-//         </>
-//     );
-// };
+    const fetchChannelVideos = await fetch(
+        `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&channelId=${id}&order=videoCount&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+    ).then((res) => {
+        if (!res.ok) {
+            throw new Error(`failed fetch channel videos : ${res.status}`);
+        } else {
+            return res.json();
+        }
+    });
+
+    console.log("populer", fetchChannelVideos);
+
+    const popularVideosWithViewCount =
+        await processVideoData(fetchChannelVideos);
+
+    console.log(popularVideosWithViewCount);
+
+    return (
+        <>
+            {popularVideosWithViewCount === null ? (
+                <div>none</div>
+            ) : (
+                <>
+                    <VideoSwiper videos={popularVideosWithViewCount} />
+                </>
+            )}
+        </>
+    );
+};

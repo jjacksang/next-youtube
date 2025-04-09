@@ -19,16 +19,22 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     // VideoItem컴포넌트에 전달
     console.log(searchResults);
 
+    const videoItems = searchResults.items.filter(
+        (item: Video) => item.id && item.id.videoId
+    );
+
+    console.log("video Items", videoItems);
+
     const videoViewCount: VideoDetailResponse[] = await Promise.all(
-        searchResults.items.map((item: Video) =>
+        videoItems.map((item: Video) =>
             fetchVideoDetails({ id: item.id.videoId })
         )
     );
 
-    console.log(videoViewCount);
+    console.log("videoViewCount", videoViewCount);
 
     // video view count 추가하여 새로운 데이터 반환
-    const videoWithViewCount: IEnrichedVideo[] = searchResults.items.map(
+    const videoWithViewCount: IEnrichedVideo[] = videoItems.map(
         (item: Video, index: number) => ({
             ...item,
             viewCount: parseInt(
@@ -37,7 +43,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         })
     );
 
-    console.log(videoWithViewCount);
+    console.log("viewoWhiteViewCount", videoWithViewCount);
 
     return {
         videoWithViewCount,

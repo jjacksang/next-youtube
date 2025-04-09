@@ -11,13 +11,13 @@ import VideoItem from "../video-item";
 
 interface IVideoSwiperProps {
     videos: {
-        addNewVideoData: IEnrichedVideo[];
+        videoWithViewCount: IEnrichedVideo[];
         nextPageToken?: string;
     };
 }
 
 export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
-    console.log(videos);
+    console.log("videoSwiper", videos);
 
     return (
         <div className={style.swiper__container}>
@@ -29,7 +29,7 @@ export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
                 modules={[Navigation, Pagination]}
                 direction="horizontal"
             >
-                {videos.addNewVideoData.map((video: IEnrichedVideo) => (
+                {videos.videoWithViewCount.map((video: IEnrichedVideo) => (
                     <SwiperSlide
                         className={style.swiper__slide}
                         key={video.id.videoId}

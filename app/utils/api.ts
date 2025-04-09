@@ -42,7 +42,11 @@ export const fetchVideoDetails = async ({ id }: { id: string }) => {
         `${apiUrl}/videos?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`
     );
 
-    if (response.ok) return response.json();
+    if (!response.ok) {
+        throw new Error(`Failed fetch video details: ${response.status}`);
+    } else {
+        return response.json();
+    }
 };
 
 export const fetchChannelDetails = async ({ id }: { id: string }) => {
@@ -50,5 +54,9 @@ export const fetchChannelDetails = async ({ id }: { id: string }) => {
     const response = await fetch(
         `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${id}&key=${apiKey}`
     );
-    if (response.ok) return response.json();
+    if (!response.ok) {
+        throw new Error(`failed fetch channel details: ${response.status}`);
+    } else {
+        return response.json();
+    }
 };

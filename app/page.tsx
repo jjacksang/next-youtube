@@ -50,14 +50,23 @@ async function DeverloperVideo() {
     );
 }
 
-let developerChannelId = {
-    이정환: "UCn7yFtl60fQsRtEaoyuzFUg",
-};
+let developerChannelId: IDeveloperId[] = [
+    { name: "이정환", key: "UCn7yFtl60fQsRtEaoyuzFUg" },
+    { name: "생활코딩", key: "UCvc8kv-i5fvFTJBFAk6n1SA" },
+];
 
-async function RecoDeveloper() {
+let arr = {};
+
+interface IDeveloperId {
+    name: string;
+    key: string;
+}
+
+async function RecoDeveloper({ channelId }: { channelId: string }) {
+    console.log(channelId);
     const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
     const searchDevelpoer = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&channelId=${developerChannelId.이정환}&maxResults=12&key=${apiKey}`
+        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channelId}&maxResults=12&key=${apiKey}`
     ).then((response) => {
         if (response.ok) return response.json();
     });
@@ -65,9 +74,7 @@ async function RecoDeveloper() {
     console.log(searchDevelpoer);
 
     return (
-        <div>
-            <div>{searchDevelpoer.items[0].snippet.title}</div>
-        </div>
+        <div>{/* <div>{searchDevelpoer.items[0].snippet.title}</div> */}</div>
     );
 }
 
@@ -82,8 +89,12 @@ export default function Home() {
             </div>
             <div className={styles.video__list}>
                 <section>
-                    <h2>Next.js 유튜브 영상</h2>
-                    <RecoDeveloper />
+                    {developerChannelId.map((item) => (
+                        <div key={item.key}>
+                            <h2 key={item.key}>{item.name}님의 영상목록</h2>
+                            <RecoDeveloper channelId={item.key} />
+                        </div>
+                    ))}
                 </section>
             </div>
         </div>
