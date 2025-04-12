@@ -1,5 +1,5 @@
 import { fetchVideoDetails } from "./api";
-import { IChannel, IEnrichedVideo, IVideoDetail, Video } from "./type";
+import { IChannel, IEnrichedVideo, Video } from "./type";
 
 interface YoutubeResponse {
     items: SearchResultItem[];
@@ -52,7 +52,10 @@ export async function processVideoData(searchResults: YoutubeResponse) {
             }));
         }
 
-        const combinedItems = [...processedVideoViewCount, ...channelItem];
+        const combinedItems: (IEnrichedVideo | IChannel)[] = [
+            ...processedVideoViewCount,
+            ...channelItem,
+        ];
 
         return {
             videoWithViewCount: combinedItems,
@@ -62,7 +65,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         console.error("Error in processVideoData: ", error);
 
         return {
-            videoWithViewCount: searchResults.items || [],
+            videoWithViewCount: [],
             nextPageToken: searchResults.nextPageToken || "",
         };
     }

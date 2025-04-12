@@ -25,6 +25,10 @@ export interface YoutubeItem {
         };
         title: string;
     };
+    pageInfo: {
+        resultsPerPage: number;
+        totalResults: number;
+    };
 }
 
 export interface Video extends YoutubeItem {
@@ -40,27 +44,6 @@ export interface IChannel extends YoutubeItem {
         channelId: string;
     };
 }
-
-// export interface IChannel {
-//     id: {
-//         kind: string;
-//         channelId: string;
-//     };
-//     snippet: {
-//         channelId: string;
-//         channelTitle: string;
-//         description: string;
-//         publishTime: string;
-//         publishedAt: string;
-//         thumbnails: {
-//             default: Thumbnail;
-//             high: Thumbnail;
-//             medium: Thumbnail;
-//         };
-//         title: string;
-//         statistics: IStatistics;
-//     };
-// }
 
 export interface IVideoDetail {
     id: string;

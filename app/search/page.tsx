@@ -1,6 +1,5 @@
-import { fetchVideoDetails, fetchYoutubeVideos } from "../utils/api";
+import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
-import { Video } from "../utils/type";
 import { VideoListClient } from "./video-list-client";
 
 export default async function Search({

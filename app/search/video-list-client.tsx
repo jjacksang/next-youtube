@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";
 import { RecoChannel } from "../components/reco-channel";
 
-type YoutubeItems = IEnrichedVideo | IChannel;
+type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
 export const VideoListClient = ({
     initialQuery,
@@ -16,9 +16,11 @@ export const VideoListClient = ({
     nextPageToken,
 }: {
     initialQuery: string;
-    initialVideos: YoutubeItems[];
+    initialVideos: YoutubeItems;
     nextPageToken: string;
 }) => {
+    console.log("initialVideos >> ", initialVideos);
+
     const [currentQuery, setCurrentQuery] = useState(initialQuery);
     // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
     const [videos, setVideos] = useState<IEnrichedVideo[]>(
