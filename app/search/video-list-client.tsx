@@ -75,7 +75,11 @@ export const VideoListClient = ({
         console.log("response nextPageToken", response);
 
         setVideos((prev) => [...prev, ...response.items]);
-        setPageToken(response.nextPageToken);
+        if (response.nextPageToken) {
+            setPageToken(response.nextPageToken);
+        } else {
+            setPageToken("");
+        }
         setIsLoading(false);
     };
 
@@ -96,8 +100,8 @@ export const VideoListClient = ({
                 ))}
             </div>
             <div className={style.moreBtn}>
-                {isLoading ? (
-                    "로딩 중"
+                {isLoading === false && pageToken === "" ? (
+                    <button>검색 결과가 없습니다</button>
                 ) : (
                     <button onClick={handleLoadMore}>더보기</button>
                 )}

@@ -15,7 +15,7 @@ type SearchResultItem = Video | IChannel;
 export async function processVideoData(searchResults: YoutubeResponse) {
     // searchResults에 대한 상세정보를 통해 viewCount를 받아와
     // VideoItem컴포넌트에 전달
-    console.log(searchResults);
+    console.log("searchResults!!", searchResults);
 
     try {
         const isVideos = (item: SearchResultItem): item is Video =>
@@ -27,6 +27,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         const channelItem = searchResults.items.filter(isChannel);
         console.log("video Items", videoItems);
         console.log("channel data : ", channelItem);
+        console.log("process-video-data", searchResults.nextPageToken);
 
         let processedVideoViewCount: IEnrichedVideo[] = [];
         if (videoItems.length > 0) {
