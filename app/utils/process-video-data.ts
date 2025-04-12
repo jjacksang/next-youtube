@@ -1,8 +1,8 @@
 import { fetchVideoDetails } from "./api";
-import { IEnrichedVideo, IVideoDetail, Video } from "./type";
+import { IChannel, IEnrichedVideo, IVideoDetail, Video } from "./type";
 
 interface YoutubeResponse {
-    items: Video[];
+    items: SearchResultItem[];
     nextPageToken?: string;
     pageInfo: {
         totalResults: number;
@@ -10,43 +10,60 @@ interface YoutubeResponse {
     };
 }
 
-interface VideoDetailResponse {
-    items: IVideoDetail[];
-}
+type SearchResultItem = Video | IChannel;
 
 export async function processVideoData(searchResults: YoutubeResponse) {
     // searchResults에 대한 상세정보를 통해 viewCount를 받아와
     // VideoItem컴포넌트에 전달
     console.log(searchResults);
 
-    const videoItems = searchResults.items.filter(
-        (item: Video) => item.id && item.id.videoId
-    );
+    try {
+        const isVideos = (item: SearchResultItem): item is Video =>
+            item.id?.kind === "youtube#video" && "videoId" in item.id;
+        const isChannel = (item: SearchResultItem): item is IChannel =>
+            item.id?.kind === "youtube#channel" && "channelId" in item.id;
 
-    console.log("video Items", videoItems);
+        const videoItems = searchResults.items.filter(isVideos);
+        const channelItem = searchResults.items.filter(isChannel);
+        console.log("video Items", videoItems);
+        console.log("channel data : ", channelItem);
 
-    const videoViewCount: VideoDetailResponse[] = await Promise.all(
-        videoItems.map((item: Video) =>
-            fetchVideoDetails({ id: item.id.videoId })
-        )
-    );
+        let processedVideoViewCount: IEnrichedVideo[] = [];
+        if (videoItems.length > 0) {
+            const videoViewCountPromises = videoItems.map((item: Video) => {
+                try {
+                    return fetchVideoDetails({ id: item.id.videoId });
+                } catch (error) {
+                    console.error(
+                        `videoViewCountPromises / Error fetching videoDetails ${item.id.videoId}: `,
+                        error
+                    );
+                    return { items: { viewCount: "0" } };
+                }
+            });
 
-    console.log("videoViewCount", videoViewCount);
+            const videoViewCount = await Promise.all(videoViewCountPromises);
 
-    // video view count 추가하여 새로운 데이터 반환
-    const videoWithViewCount: IEnrichedVideo[] = videoItems.map(
-        (item: Video, index: number) => ({
-            ...item,
-            viewCount: parseInt(
-                videoViewCount[index].items[0].statistics?.viewCount ?? "0"
-            ),
-        })
-    );
+            processedVideoViewCount = videoItems.map((item, idx) => ({
+                ...item,
+                viewCount: parseInt(
+                    videoViewCount[idx]?.items?.[0].statistics?.viewCount ?? "0"
+                ),
+            }));
+        }
 
-    console.log("viewoWhiteViewCount", videoWithViewCount);
+        const combinedItems = [...processedVideoViewCount, ...channelItem];
 
-    return {
-        videoWithViewCount,
-        nextPageToken: searchResults.nextPageToken || "",
-    };
+        return {
+            videoWithViewCount: combinedItems,
+            nextPageToken: searchResults.nextPageToken || "",
+        };
+    } catch (error) {
+        console.error("Error in processVideoData: ", error);
+
+        return {
+            videoWithViewCount: searchResults.items || [],
+            nextPageToken: searchResults.nextPageToken || "",
+        };
+    }
 }

@@ -11,12 +11,10 @@ type IStatistics = {
     viewCount: string;
 };
 
-export interface Video {
-    id: { kind: string; videoId: string };
-
+export interface YoutubeItem {
+    kind: string;
     snippet: {
         channelId: string;
-        channelTitle: string;
         description: string;
         publishTime: string;
         publishedAt: string;
@@ -27,33 +25,42 @@ export interface Video {
         };
         title: string;
     };
-    statistics: {
-        subscriberCount: number;
-        viewCount: string;
-        videoCount: number;
-    };
 }
 
-export interface IChannel {
+export interface Video extends YoutubeItem {
     id: {
-        kind: string;
-        channelId: string;
-    };
-    snippet: {
-        channelId: string;
-        channelTitle: string;
-        description: string;
-        publishTime: string;
-        publishedAt: string;
-        thumbnails: {
-            default: Thumbnail;
-            high: Thumbnail;
-            medium: Thumbnail;
-        };
-        title: string;
-        statistics: IStatistics;
+        kind: "youtube#video";
+        videoId: string;
     };
 }
+
+export interface IChannel extends YoutubeItem {
+    id: {
+        kind: "youtube#channel";
+        channelId: string;
+    };
+}
+
+// export interface IChannel {
+//     id: {
+//         kind: string;
+//         channelId: string;
+//     };
+//     snippet: {
+//         channelId: string;
+//         channelTitle: string;
+//         description: string;
+//         publishTime: string;
+//         publishedAt: string;
+//         thumbnails: {
+//             default: Thumbnail;
+//             high: Thumbnail;
+//             medium: Thumbnail;
+//         };
+//         title: string;
+//         statistics: IStatistics;
+//     };
+// }
 
 export interface IVideoDetail {
     id: string;
