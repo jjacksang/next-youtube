@@ -2,7 +2,7 @@
 
 import style from "./videoSwiper.module.css";
 
-import { IEnrichedVideo, Video } from "../../utils/type";
+import { IChannel, IEnrichedVideo, Video } from "../../utils/type";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -10,14 +10,20 @@ import { Navigation, Pagination } from "swiper/modules";
 import VideoItem from "../video-item";
 
 interface IVideoSwiperProps {
-    videos: {
-        videoWithViewCount: IEnrichedVideo[];
-        nextPageToken?: string;
-    };
+    videos: (IEnrichedVideo | IChannel)[];
 }
 
 export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
     console.log("videoSwiper", videos);
+
+    // channel, video데이터 구분 후 video데이터만 추출
+    const isEnrichedVideo = (
+        item: IEnrichedVideo | IChannel
+    ): item is IEnrichedVideo => {
+        return "videoId" in item.id && "viewCount" in item;
+    };
+
+    const videoItems = videos.filter(isEnrichedVideo);
 
     return (
         <div className={style.swiper__container}>
@@ -29,7 +35,7 @@ export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
                 modules={[Navigation, Pagination]}
                 direction="horizontal"
             >
-                {videos.videoWithViewCount.map((video: IEnrichedVideo) => (
+                {videoItems.map((video) => (
                     <SwiperSlide
                         className={style.swiper__slide}
                         key={video.id.videoId}

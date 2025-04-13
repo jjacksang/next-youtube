@@ -37,12 +37,11 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
             return res.json();
         }
     });
-    console.log("date", fetchChannelVideos);
-    console.log(channelData);
 
     const recoVideosWithViewCount = await processVideoData(fetchChannelVideos);
 
-    console.log(recoVideosWithViewCount);
+    console.log("reco origin data", fetchChannelVideos);
+    console.log("reco process data", recoVideosWithViewCount);
 
     return (
         <>
@@ -50,7 +49,9 @@ const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper videos={recoVideosWithViewCount} />
+                    <VideoSwiper
+                        videos={recoVideosWithViewCount.videoWithViewCount}
+                    />
                 </>
             )}
         </>
@@ -74,12 +75,11 @@ const PopularVideos = async ({
         }
     });
 
-    console.log("populer", fetchChannelVideos);
-
     const popularVideosWithViewCount =
         await processVideoData(fetchChannelVideos);
 
-    console.log(popularVideosWithViewCount);
+    console.log("populer origin data", fetchChannelVideos);
+    console.log("process data", popularVideosWithViewCount);
 
     return (
         <>
@@ -87,7 +87,9 @@ const PopularVideos = async ({
                 <div>none</div>
             ) : (
                 <>
-                    <VideoSwiper videos={popularVideosWithViewCount} />
+                    <VideoSwiper
+                        videos={popularVideosWithViewCount.videoWithViewCount}
+                    />
                 </>
             )}
         </>

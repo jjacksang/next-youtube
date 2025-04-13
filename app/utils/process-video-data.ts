@@ -19,7 +19,9 @@ export async function processVideoData(searchResults: YoutubeResponse) {
 
     try {
         const isVideos = (item: SearchResultItem): item is Video =>
-            item.id?.kind === "youtube#video" && "videoId" in item.id;
+            item.id?.kind === "youtube#video" ||
+            ("youtube#playlist" && "videoId" in item.id) ||
+            "playlistId" in item.id;
         const isChannel = (item: SearchResultItem): item is IChannel =>
             item.id?.kind === "youtube#channel" && "channelId" in item.id;
 
