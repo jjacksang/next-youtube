@@ -33,7 +33,7 @@ export interface YoutubeItem {
 
 export interface Video extends YoutubeItem {
     id: {
-        kind: "youtube#video";
+        kind: "youtube#video" | "youtube#playlist";
         videoId: string;
     };
 }
