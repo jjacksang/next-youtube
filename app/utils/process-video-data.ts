@@ -68,12 +68,25 @@ export async function processVideoData(searchResults: YoutubeResponse) {
 
             const videoViewCount = await Promise.all(videoViewCountPromises);
 
-            processedVideoViewCount = videoItems.map((item, idx) => ({
-                ...item,
-                viewCount: parseInt(
-                    videoViewCount[idx]?.items?.[0].statistics?.viewCount ?? "0"
-                ),
-            }));
+            processedVideoViewCount = videoItems.map((item, idx) => {
+                const viewCount =
+                    videoViewCount[idx]?.items?.[0].statistics?.viewCount ??
+                    "0";
+
+                // Video, PlayList 타입을 IEnrichedVideo로 변환
+                return {
+                    ...item,
+                    viewCount: parseInt(viewCount),
+                    //  id 속성 보정
+                    id:
+                        "videoId" in item.id
+                            ? item.id
+                            : {
+                                  kind: "youtube#video",
+                                  videoId: `${item.id.playlistId}`,
+                              },
+                } as IEnrichedVideo;
+            });
         }
 
         const combinedItems: (IEnrichedVideo | IChannel)[] = [

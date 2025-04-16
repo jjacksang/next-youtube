@@ -66,7 +66,7 @@ const PopularVideos = async ({
     const { id } = await params;
 
     const fetchChannelVideos = await fetch(
-        `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&channelId=${id}&order=videoCount&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+        `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&channelId=${id}&order=viewCount&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
     ).then((res) => {
         if (!res.ok) {
             throw new Error(`failed fetch channel videos : ${res.status}`);
