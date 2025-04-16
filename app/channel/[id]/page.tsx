@@ -78,8 +78,8 @@ const PopularVideos = async ({
     const popularVideosWithViewCount =
         await processVideoData(fetchChannelVideos);
 
-    console.log("populer origin data", fetchChannelVideos);
-    console.log("process data", popularVideosWithViewCount);
+    console.log("popular origin data", fetchChannelVideos);
+    console.log("popular process data", popularVideosWithViewCount);
 
     return (
         <>

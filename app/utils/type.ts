@@ -15,6 +15,7 @@ export interface YoutubeItem {
     kind: string;
     snippet: {
         channelId: string;
+        channelTitle: string;
         description: string;
         publishTime: string;
         publishedAt: string;
@@ -33,8 +34,15 @@ export interface YoutubeItem {
 
 export interface Video extends YoutubeItem {
     id: {
-        kind: "youtube#video" | "youtube#playlist";
+        kind: "youtube#video";
         videoId: string;
+    };
+}
+
+export interface PlayList extends YoutubeItem {
+    id: {
+        kind: "youtube#playlist";
+        playlistId: string;
     };
 }
 

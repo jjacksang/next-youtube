@@ -1,5 +1,7 @@
+import { VideoSwiper } from "./components/swiper/videoSwiper";
 import styles from "./page.module.css";
 import { fetchYoutubeVideos } from "./utils/api";
+import { processVideoData } from "./utils/process-video-data";
 
 async function DeverloperVideo() {
     return (
@@ -71,10 +73,16 @@ async function RecoDeveloper({ channelId }: { channelId: string }) {
         if (response.ok) return response.json();
     });
 
-    console.log(searchDevelpoer);
+    const videoData = await processVideoData(searchDevelpoer);
+
+    console.log(videoData);
 
     return (
-        <div>{/* <div>{searchDevelpoer.items[0].snippet.title}</div> */}</div>
+        <div>
+            <div>
+                <VideoSwiper videos={videoData.videoWithViewCount} />
+            </div>
+        </div>
     );
 }
 

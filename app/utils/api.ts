@@ -60,3 +60,15 @@ export const fetchChannelDetails = async ({ id }: { id: string }) => {
         return response.json();
     }
 };
+
+export const fetchPlaylistDetails = async ({ id }: { id: string }) => {
+    const response = await fetch(
+        `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${id}&key=${apiKey}`
+    );
+    if (!response.ok) {
+        throw new Error(`failed fetch playlist details: ${response.status}`);
+    } else {
+        console.log("playlist details: ", response.json());
+        return response.json();
+    }
+};

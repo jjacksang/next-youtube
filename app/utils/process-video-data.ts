@@ -1,5 +1,5 @@
-import { fetchVideoDetails } from "./api";
-import { IChannel, IEnrichedVideo, Video } from "./type";
+import { fetchPlaylistDetails, fetchVideoDetails } from "./api";
+import { IChannel, IEnrichedVideo, PlayList, Video } from "./type";
 
 interface YoutubeResponse {
     items: SearchResultItem[];
@@ -10,7 +10,7 @@ interface YoutubeResponse {
     };
 }
 
-type SearchResultItem = Video | IChannel;
+type SearchResultItem = Video | PlayList | IChannel;
 
 export async function processVideoData(searchResults: YoutubeResponse) {
     // searchResults에 대한 상세정보를 통해 viewCount를 받아와
@@ -18,10 +18,13 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     console.log("searchResults!!", searchResults);
 
     try {
-        const isVideos = (item: SearchResultItem): item is Video =>
-            item.id?.kind === "youtube#video" ||
-            ("youtube#playlist" && "videoId" in item.id) ||
-            "playlistId" in item.id;
+        const isVideos = (item: SearchResultItem): item is Video | PlayList => {
+            return (
+                (item.id?.kind === "youtube#video" && "videoId" in item.id) ||
+                (item.id?.kind === "youtube#playlist" &&
+                    "playlistId" in item.id)
+            );
+        };
         const isChannel = (item: SearchResultItem): item is IChannel =>
             item.id?.kind === "youtube#channel" && "channelId" in item.id;
 
@@ -33,17 +36,35 @@ export async function processVideoData(searchResults: YoutubeResponse) {
 
         let processedVideoViewCount: IEnrichedVideo[] = [];
         if (videoItems.length > 0) {
-            const videoViewCountPromises = videoItems.map((item: Video) => {
-                try {
-                    return fetchVideoDetails({ id: item.id.videoId });
-                } catch (error) {
-                    console.error(
-                        `videoViewCountPromises / Error fetching videoDetails ${item.id.videoId}: `,
-                        error
-                    );
-                    return { items: { viewCount: "0" } };
+            const videoViewCountPromises = videoItems.map(
+                (item: Video | PlayList) => {
+                    try {
+                        if (
+                            item.id.kind === "youtube#video" &&
+                            "videoId" in item.id
+                        ) {
+                            console.log(`item중 video항목이 있습니다 ${item}`);
+                            return fetchVideoDetails({ id: item.id.videoId });
+                        } else if (
+                            item.id.kind === "youtube#playlist" &&
+                            "playlist" in item.id
+                        ) {
+                            console.log(
+                                `item중 playlist 항목이 있습니다 ${item}`
+                            );
+                            return fetchPlaylistDetails({
+                                id: item.id.playlistId,
+                            });
+                        }
+                    } catch (error) {
+                        console.error(
+                            `videoViewCountPromises / Error fetching videoDetails ${item.id}: `,
+                            error
+                        );
+                        return { items: { viewCount: "0" } };
+                    }
                 }
-            });
+            );
 
             const videoViewCount = await Promise.all(videoViewCountPromises);
 
