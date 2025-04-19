@@ -2,8 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import style from "./searchbar.module.css";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Searchbar() {
     const [search, setSearch] = useState("");

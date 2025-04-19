@@ -1,8 +1,22 @@
+import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
+import NotFound from "../not-found";
 
-export default async function Search({
+export default async function Page({
+    searchParams,
+}: {
+    searchParams: Promise<{ q: string }>;
+}) {
+    return (
+        <Suspense fallback={<NotFound />}>
+            <Search searchParams={searchParams} />
+        </Suspense>
+    );
+}
+
+async function Search({
     searchParams,
 }: {
     searchParams: Promise<{ q: string }>;
