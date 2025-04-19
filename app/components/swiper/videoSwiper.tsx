@@ -2,7 +2,7 @@
 
 import style from "./videoSwiper.module.css";
 
-import { IChannel, IEnrichedVideo, Video } from "../../utils/type";
+import { IChannel, IEnrichedVideo } from "../../utils/type";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
