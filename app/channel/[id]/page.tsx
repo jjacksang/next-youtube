@@ -1,4 +1,3 @@
-import { fetchChannelDetails } from "@/app/utils/api";
 import style from "./page.module.css";
 
 import { VideoSwiper } from "@/app/components/swiper/videoSwiper";
@@ -26,7 +25,7 @@ export default async function Page({
 const RecoVideo = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
-    const channelData = await fetchChannelDetails({ id });
+    // const channelData = await fetchChannelDetails({ id });
 
     const fetchChannelVideos = await fetch(
         `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL}/search?part=snippet&channelId=${id}&order=date&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`

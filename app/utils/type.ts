@@ -4,13 +4,6 @@ export interface Thumbnail {
     height: number;
 }
 
-type IStatistics = {
-    commentCount?: string;
-    likeCount?: string;
-    favoriteCount?: string;
-    viewCount: string;
-};
-
 export interface YoutubeItem {
     kind: string;
     snippet: {
