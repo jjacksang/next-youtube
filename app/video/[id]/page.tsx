@@ -1,6 +1,11 @@
 import { VideoDetail } from "@/app/components/videoDetail";
 import style from "./page.module.css";
-import { fetchChannelDetails, fetchVideoDetails } from "@/app/utils/api";
+import {
+    fetchChannelDetails,
+    fetchCommentList,
+    fetchVideoDetails,
+} from "@/app/utils/api";
+import { CommentList } from "@/app/components/commentList";
 
 export default async function Page({
     params,
@@ -20,6 +25,10 @@ export default async function Page({
     const channelThumbnail =
         channelDetails.items[0].snippet.thumbnails.default.url;
 
+    // 댓글 조회기능
+    const fetchComments = await fetchCommentList({ id });
+    console.log(fetchComments);
+
     return (
         <div>
             <VideoDetail
@@ -30,12 +39,9 @@ export default async function Page({
                 <div className={style.comment__form}>
                     <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>
                 </div>
-                {/* <div>
-                        {
-                            videoCommentList.items[0].snippet.topLevelComment
-                                .snippet.textOriginal
-                        }
-                    </div> */}
+                <div>
+                    <CommentList />
+                </div>
             </div>
         </div>
     );

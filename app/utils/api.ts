@@ -68,7 +68,19 @@ export const fetchPlaylistDetails = async ({ id }: { id: string }) => {
     if (!response.ok) {
         throw new Error(`failed fetch playlist details: ${response.status}`);
     } else {
-        console.log("playlist details: ", response.json());
+        return response.json();
+    }
+};
+
+export const fetchCommentList = async ({ id }: { id: string }) => {
+    const response = await fetch(
+        `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId=${id}&key=${apiKey}`
+    );
+
+    if (!response.ok) {
+        console.error(`comment list Error: ${response.statusText}`);
+        throw new Error(`failed fetch comment list: ${response.status}`);
+    } else {
         return response.json();
     }
 };
