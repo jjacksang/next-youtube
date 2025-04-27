@@ -44,8 +44,6 @@ export const VideoDetail = ({
     videoDetail: IVideoDetailProps;
     channelThumbnail: string;
 }) => {
-    console.log(videoDetail);
-    console.log(channelThumbnail);
     return (
         <section className={style.videoViewPage}>
             {videoDetail && (
