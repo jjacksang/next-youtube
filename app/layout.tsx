@@ -6,6 +6,7 @@ import "./globals.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Suspense } from "react";
 
 export default function RootLayout({
     children,
@@ -18,7 +19,7 @@ export default function RootLayout({
                 <Header />
                 <main className={style.main} id="main" role="main">
                     <Searchbar />
-                    {children}
+                    <Suspense>{children}</Suspense>
                 </main>
             </body>
         </html>

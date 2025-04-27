@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
-import NotFound from "../not-found";
+import NotFound from "./not-found";
 
 export default async function Page({
     searchParams,
