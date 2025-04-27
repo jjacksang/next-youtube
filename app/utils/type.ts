@@ -94,3 +94,31 @@ export interface IChannelDetail {
 export interface IEnrichedVideo extends Video {
     viewCount: number;
 }
+
+export interface ICommentList {
+    id: string;
+    snippet: {
+        canReply: boolean;
+        channelId: string;
+        isPublic: boolean;
+        topLevelComment: {
+            id: string;
+            snippet: {
+                authorChannelId: {
+                    value: string;
+                };
+                authorChannelUrl: string;
+                authorDisplayName: string;
+                authorProfileImageUrl: string;
+                channelId: string;
+                likeCount: number;
+                publishedAt: string;
+                textDisplay: string;
+                updateAt: string;
+                videoId: string;
+            };
+        };
+        totalReplyCount: number;
+        videoId: string;
+    };
+}

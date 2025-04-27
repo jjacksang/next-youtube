@@ -1,9 +1,35 @@
-export const CommentList = () => {
+import { ICommentList } from "../utils/type";
+
+type CommentProps = {
+    items: ICommentList[];
+};
+
+export const CommentList = ({ comments }: { comments: CommentProps }) => {
+    console.log("CommnetList component!!", comments);
+
     return (
         <div>
-            <div>
-                <input placeholder="댓글을 입력하세요." />
-            </div>
+            {comments.items.map((item: ICommentList) => (
+                <div key={item.id}>
+                    <div>
+                        <img
+                            src={
+                                item.snippet.topLevelComment.snippet
+                                    .authorProfileImageUrl
+                            }
+                            alt={
+                                item.snippet.topLevelComment.snippet
+                                    .authorChannelId.value
+                            }
+                        />
+                    </div>
+                    <div>
+                        <span>
+                            {item.snippet.topLevelComment.snippet.textDisplay}
+                        </span>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 };

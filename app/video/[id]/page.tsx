@@ -6,6 +6,7 @@ import {
     fetchVideoDetails,
 } from "@/app/utils/api";
 import { CommentList } from "@/app/components/commentList";
+import { ICommentList } from "@/app/utils/type";
 
 export default async function Page({
     params,
@@ -40,7 +41,7 @@ export default async function Page({
                     <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>
                 </div>
                 <div>
-                    <CommentList />
+                    <CommentList comments={fetchComments} />
                 </div>
             </div>
         </div>
