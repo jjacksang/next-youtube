@@ -33,6 +33,14 @@
     color: white;
 }
 
+.channel__description {
+    width: 100%;
+    max-width: 1200px;
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: pre-line;
+}
+
 .tabBar {
     display: flex;
     white-space: nowrap;
