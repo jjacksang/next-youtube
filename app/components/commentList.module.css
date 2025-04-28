@@ -1,0 +1,25 @@
+.comment__container {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 1.25rem;
+}
+
+.img__container > img {
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.main__container {
+    display: flex;
+    flex-direction: column;
+}
+
+.author__comment {
+    color: rgb(82, 82, 82);
+    margin-right: 8px;
+}
+
+.publishTime {
+    color: rgb(119, 119, 119);
+}

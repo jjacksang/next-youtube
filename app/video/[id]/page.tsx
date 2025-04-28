@@ -6,7 +6,6 @@ import {
     fetchVideoDetails,
 } from "@/app/utils/api";
 import { CommentList } from "@/app/components/commentList";
-import { ICommentList } from "@/app/utils/type";
 
 export default async function Page({
     params,
