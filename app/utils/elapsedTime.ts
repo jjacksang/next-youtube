@@ -20,9 +20,12 @@ export const elapsedTime = (date: string): string => {
     if (days < 7) return `${Math.floor(days)}일 전`;
     if (days < 30) return `${Math.floor(days / 7)}주 전`;
 
-    const months = days / 30;
-    if (months < 12) return `${Math.floor(months)}개월 전`;
+    const yearDiff = end.getFullYear() - start.getFullYear();
 
-    const years = days / 365;
-    return `${Math.floor(years)}년 전`;
+    if (yearDiff >= 1) {
+        return `${yearDiff}년 전`;
+    }
+
+    const months = days / 30;
+    return `${Math.floor(months)}개월 전`;
 };
