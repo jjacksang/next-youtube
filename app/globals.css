@@ -11,3 +11,18 @@ html {
 * {
     box-sizing: border-box;
 }
+
+.swiper-button-prev,
+.swiper-button-next {
+    background-color: #fff;
+    opacity: 0.5;
+    padding: 15px 5px;
+    border-radius: 20px;
+    color: black !important;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev::after {
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+}
