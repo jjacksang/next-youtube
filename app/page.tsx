@@ -1,6 +1,8 @@
+import { notFound } from "next/navigation";
 import { VideoSwiper } from "./components/swiper/videoSwiper";
 import styles from "./page.module.css";
 import { processVideoData } from "./utils/process-video-data";
+import { RecoDeveloper } from "./components/reco-developer";
 
 async function DeverloperVideo() {
     return (
@@ -83,34 +85,15 @@ async function DeverloperVideo() {
 
 const developerChannelId: IDeveloperId[] = [
     { name: "이정환", key: "UCn7yFtl60fQsRtEaoyuzFUg" },
+    { name: "Dave Gray", key: "UCY38RvRIxYODO4penyxUwTg" },
+    { name: "webdecoded", key: "UCObrjoZZJSjznfCO5Vx9qUQ" },
     { name: "생활코딩", key: "UCvc8kv-i5fvFTJBFAk6n1SA" },
+    { name: "코딩하는누나", key: "UCfBvs0ZJdTA43NQrnI9imGA" },
 ];
 
 interface IDeveloperId {
     name: string;
     key: string;
-}
-
-async function RecoDeveloper({ channelId }: { channelId: string }) {
-    console.log(channelId);
-    const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
-    const searchDevelpoer = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channelId}&maxResults=12&key=${apiKey}`
-    ).then((response) => {
-        if (response.ok) return response.json();
-    });
-
-    const videoData = await processVideoData(searchDevelpoer);
-
-    console.log(videoData);
-
-    return (
-        <div>
-            <div>
-                <VideoSwiper videos={videoData.videoWithViewCount} />
-            </div>
-        </div>
-    );
 }
 
 export default function Home() {
