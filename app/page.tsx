@@ -96,7 +96,26 @@ interface IDeveloperId {
     key: string;
 }
 
-export default function Home() {
+export default async function Home() {
+    const channelDataPromises = developerChannelId.map(async (channel) => {
+        try {
+            const response = await fetch(
+                `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+            );
+
+            if (response.ok) return response.json();
+
+            // const videoData = await processVideoData(searchDevelpoer);
+
+            console.log(response);
+        } catch (err) {
+            console.error(`channel promises is failed ${err}`);
+        }
+    });
+
+    const data = await Promise.all(channelDataPromises);
+    console.log(data);
+
     return (
         <div className={styles.home}>
             <div className={styles.swiper__section}>
