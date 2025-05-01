@@ -3,6 +3,7 @@ import { VideoSwiper } from "./components/swiper/videoSwiper";
 import styles from "./page.module.css";
 import { processVideoData } from "./utils/process-video-data";
 import { RecoDeveloper } from "./components/reco-developer";
+import { IEnrichedVideo, Video } from "./utils/type";
 
 async function DeverloperVideo() {
     return (
@@ -68,16 +69,33 @@ export default async function Home() {
                 `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
             );
 
-            if (response.ok) return response.json();
+            if (!response.ok) {
+                console.error(`Failed to fetch data ${channel.name}`);
+                return {
+                    videoWithViewCount: [],
+                    nextPageToken: "",
+                };
+            }
 
-            // const videoData = await processVideoData(searchDevelpoer);
+            const result = await response.json();
 
-            console.log(response);
+            const { videoWithViewCount, nextPageToken } =
+                await processVideoData(result);
+
+            return {
+                videoWithViewCount,
+                nextPageToken,
+            };
         } catch (err) {
             console.error(`channel promises is failed ${err}`);
+            return {
+                videoWithViewCount: [],
+                nextPageToken: "",
+            };
         }
     });
 
+    // 최종 데이터 반환
     const data = await Promise.all(channelDataPromises);
     console.log(data);
 
@@ -91,10 +109,16 @@ export default async function Home() {
             </div>
             <div className={styles.video__list}>
                 <section>
-                    {developerChannelId.map((item) => (
-                        <div key={item.key}>
-                            <h2 key={item.key}>{item.name}님의 영상목록</h2>
-                            <RecoDeveloper channelId={item.key} />
+                    {data.map((item, idx: number) => (
+                        <div key={item.videoWithViewCount[0].snippet.channelId}>
+                            <h2
+                                key={`youtube-channel-video-${developerChannelId[idx].name}`}
+                            >
+                                {developerChannelId[idx].name}님의 영상목록
+                            </h2>
+                            <RecoDeveloper
+                                channelVideos={item.videoWithViewCount}
+                            />
                         </div>
                     ))}
                 </section>
