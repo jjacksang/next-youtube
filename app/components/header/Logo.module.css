@@ -1,19 +1,11 @@
 .logo {
-<<<<<<< HEAD
     border-bottom: 1px solid #333;
-=======
-    border-bottom: 1px solid #111;
->>>>>>> f0ff9b2 (first)
 }
 
 .logo > a {
     display: flex;
-<<<<<<< HEAD
     /* margin: 10px; */
     padding: 12px 0 18px 10px;
-=======
-    margin: 10px;
->>>>>>> f0ff9b2 (first)
     color: white;
     text-decoration-line: none;
 }

@@ -6,9 +6,5 @@
     height: 100%;
     overflow-y: hidden;
     z-index: 10000;
-<<<<<<< HEAD
     border-right: 1px solid #333;
-=======
-    border-right: 1px solid #111;
->>>>>>> f0ff9b2 (first)
 }

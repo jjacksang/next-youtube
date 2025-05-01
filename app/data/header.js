@@ -1,77 +1,27 @@
 import { CiBaseball } from "react-icons/ci";
 import { CiCoins1 } from "react-icons/ci";
-<<<<<<< HEAD
 import { SiYoutubeshorts } from "react-icons/si";
 
 import { SiVelog } from "react-icons/si";
 import { AiFillGithub } from "react-icons/ai";
-=======
-import { CiBoxes } from "react-icons/ci";
-import { CiBullhorn } from "react-icons/ci";
-import { CiCoffeeCup } from "react-icons/ci";
-import { CiDumbbell } from "react-icons/ci";
-import { CiFries } from "react-icons/ci";
-import { CiMoneyBill } from "react-icons/ci";
-
-import { AiFillGithub } from "react-icons/ai";
-import { AiFillYoutube } from "react-icons/ai";
->>>>>>> f0ff9b2 (first)
 import { AiOutlineInstagram } from "react-icons/ai";
 
 export const headerMenus = [
     {
-<<<<<<< HEAD
         title: "Home",
-=======
-        title: "Choptube",
->>>>>>> f0ff9b2 (first)
         icon: <CiBaseball />,
         src: "/",
     },
     {
-<<<<<<< HEAD
         title: "Shorts",
         icon: <SiYoutubeshorts />,
         src: "/shorts",
-=======
-        title: "추천 영상",
-        icon: <CiMoneyBill />,
-        src: "/today",
->>>>>>> f0ff9b2 (first)
     },
     {
         title: "추천 개발자",
         icon: <CiCoins1 />,
         src: "/developer",
     },
-<<<<<<< HEAD
-=======
-    {
-        title: "웹디자인기능사",
-        icon: <CiBoxes />,
-        src: "/webd",
-    },
-    {
-        title: "웹표준 사이트",
-        icon: <CiBullhorn />,
-        src: "/website",
-    },
-    {
-        title: "GSAP Parallax",
-        icon: <CiCoffeeCup />,
-        src: "/gsap",
-    },
-    {
-        title: "포트폴리오 사이트",
-        icon: <CiDumbbell />,
-        src: "/port",
-    },
-    {
-        title: "유튜브 클론 사이트",
-        icon: <CiFries />,
-        src: "/youtube",
-    },
->>>>>>> f0ff9b2 (first)
 ];
 
 export const searchKeyword = [
@@ -120,30 +70,17 @@ export const searchKeyword = [
 export const snsLink = [
     {
         title: "github",
-<<<<<<< HEAD
         url: "https://github.com/jjacksang/next-youtube",
-=======
-        url: "https://github.com/webstoryboy",
->>>>>>> f0ff9b2 (first)
         icon: <AiFillGithub />,
     },
     {
         title: "youtube",
-<<<<<<< HEAD
         url: "https://velog.io/@jjacksang/posts",
         icon: <SiVelog />,
     },
     {
         title: "instagram",
         url: "https://www.instagram.com/ban_ko.1/",
-=======
-        url: "https://www.youtube.com/webstoryboy",
-        icon: <AiFillYoutube />,
-    },
-    {
-        title: "instagram",
-        url: "https://www.instagram.com/webstoryboy",
->>>>>>> f0ff9b2 (first)
         icon: <AiOutlineInstagram />,
     },
 ];

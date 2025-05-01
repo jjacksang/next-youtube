@@ -1,13 +1,9 @@
-<<<<<<< HEAD
 import { notFound } from "next/navigation";
 import { VideoSwiper } from "./components/swiper/videoSwiper";
-=======
->>>>>>> f0ff9b2 (first)
 import styles from "./page.module.css";
 import { processVideoData } from "./utils/process-video-data";
 import { RecoDeveloper } from "./components/reco-developer";
 
-<<<<<<< HEAD
 async function DeverloperVideo() {
     return (
         <>
@@ -21,7 +17,7 @@ async function DeverloperVideo() {
                 </div>
                 <div className={styles.youtuber__profile}>
                     <img
-                        src="https://yt3.googleusercontent.com/0eIqxAMRNI9gnG0HXSBnpFCmV5E5UjsxzZ3HtvG9Q9PD8QxnZRE9QWvuoiDS8HFEgeFd1Hc4=s160-c-k-c0x00ffffff-no-rj"
+                        src="https://yt3.ggpht.com/nv365KiAJyURPEBZyCh0SV3hSBnZXbvVXrzRwcNDfgUpXPn9-3_4PY0SkQrAJWnzQOxKqfUtrQ=s88-c-k-c0x00ffffff-no-rj"
                         alt="test-img"
                     />
                     <span>Dave Gray</span>
@@ -39,41 +35,6 @@ async function DeverloperVideo() {
                         alt="test-img"
                     />
                     <span>webdecoded</span>
-                </div>
-                <div className={styles.youtuber__profile}>
-                    <img
-                        src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-                        alt="test-img"
-                    />
-                    <span>잡캐헨리</span>
-                </div>
-                <div className={styles.youtuber__profile}>
-                    <img
-                        src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-                        alt="test-img"
-                    />
-                    <span>잡캐헨리</span>
-                </div>
-                <div className={styles.youtuber__profile}>
-                    <img
-                        src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-                        alt="test-img"
-                    />
-                    <span>잡캐헨리</span>
-                </div>
-                <div className={styles.youtuber__profile}>
-                    <img
-                        src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-                        alt="test-img"
-                    />
-                    <span>잡캐헨리</span>
-                </div>
-                <div className={styles.youtuber__profile}>
-                    <img
-                        src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-                        alt="test-img"
-                    />
-                    <span>잡캐헨리</span>
                 </div>
                 <div className={styles.youtuber__profile}>
                     <img
@@ -138,12 +99,6 @@ export default async function Home() {
                     ))}
                 </section>
             </div>
-=======
-export default function Home() {
-    return (
-        <div className={styles.page}>
-            <h1>page</h1>
->>>>>>> f0ff9b2 (first)
         </div>
     );
 }

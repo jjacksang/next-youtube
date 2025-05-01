@@ -25,14 +25,11 @@
     background-size: cover;
 }
 
-<<<<<<< HEAD
 .search__inner > button {
     width: 80px;
     border-radius: 40px;
 }
 
-=======
->>>>>>> f0ff9b2 (first)
 .ir {
     display: block;
     overflow: hidden;
