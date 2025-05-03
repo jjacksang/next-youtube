@@ -93,9 +93,20 @@ export const VideoDetail = ({
                                 </span>
                             </div>
                             <div className={style.description}>
-                                {convertUrls(
-                                    videoDetail.items[0].snippet.description
-                                )}
+                                <input
+                                    type="checkbox"
+                                    id="descriptionToggle"
+                                    className={style.description_more_btn}
+                                />
+                                <span className={style.description_text}>
+                                    {convertUrls(
+                                        videoDetail.items[0].snippet.description
+                                    )}
+                                </span>
+                                <label
+                                    htmlFor="descriptionToggle"
+                                    className={style.description_label}
+                                ></label>
                             </div>
                         </div>
                     </div>
