@@ -1,3 +1,5 @@
+"use client";
+
 import { VideoDetail } from "@/app/components/videoDetail";
 import style from "./page.module.css";
 import {

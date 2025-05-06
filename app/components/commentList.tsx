@@ -13,8 +13,8 @@ export const CommentList = ({ comments }: { comments: CommentProps }) => {
     return (
         <>
             {comments.items.map((item: ICommentList) => (
-                <div className={style.comment__container}>
-                    <div className={style.img__container} key={item.id}>
+                <div className={style.comment__container} key={item.id}>
+                    <div className={style.img__container}>
                         <img
                             src={
                                 item.snippet.topLevelComment.snippet
@@ -49,6 +49,9 @@ export const CommentList = ({ comments }: { comments: CommentProps }) => {
                                         .textDisplay
                                 }
                             </span>
+                        </div>
+                        <div className={style.comment__icon}>
+                            {item.snippet.topLevelComment.snippet.likeCount}
                         </div>
                     </div>
                 </div>

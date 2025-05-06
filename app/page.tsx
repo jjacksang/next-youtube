@@ -1,9 +1,6 @@
-import { notFound } from "next/navigation";
-import { VideoSwiper } from "./components/swiper/videoSwiper";
 import styles from "./page.module.css";
 import { processVideoData } from "./utils/process-video-data";
 import { RecoDeveloper } from "./components/reco-developer";
-import { IEnrichedVideo, Video } from "./utils/type";
 
 async function DeverloperVideo() {
     return (
@@ -78,6 +75,7 @@ export default async function Home() {
             }
 
             const result = await response.json();
+            console.log(result);
 
             const { videoWithViewCount, nextPageToken } =
                 await processVideoData(result);
@@ -110,7 +108,9 @@ export default async function Home() {
             <div className={styles.video__list}>
                 <section>
                     {data.map((item, idx: number) => (
-                        <div key={item.videoWithViewCount[0].snippet.channelId}>
+                        <div
+                            key={`${developerChannelId[idx].name}님의 영상목록`}
+                        >
                             <h2
                                 key={`youtube-channel-video-${developerChannelId[idx].name}`}
                             >
