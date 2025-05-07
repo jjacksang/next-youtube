@@ -1,5 +1,3 @@
-"use client";
-
 import { VideoDetail } from "@/app/components/videoDetail";
 import style from "./page.module.css";
 import {
@@ -8,6 +6,7 @@ import {
     fetchVideoDetails,
 } from "@/app/utils/api";
 import { CommentList } from "@/app/components/commentList";
+import { CommentProvider } from "@/app/provider/comment_provider";
 
 export default async function Page({
     params,
@@ -28,8 +27,8 @@ export default async function Page({
         channelDetails.items[0].snippet.thumbnails.default.url;
 
     // 댓글 조회기능
-    const fetchComments = await fetchCommentList({ id });
-    console.log(fetchComments);
+    // const fetchComments = await fetchCommentList({ id });
+    // console.log(fetchComments);
 
     return (
         <div>
@@ -42,7 +41,7 @@ export default async function Page({
                     <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>
                 </div>
                 <div>
-                    <CommentList comments={fetchComments} />
+                    <CommentProvider id={id} />
                 </div>
             </div>
         </div>
