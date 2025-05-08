@@ -7,12 +7,12 @@ type CommentProps = {
     items: ICommentList[];
 };
 
-export const CommentList = ({ comments }: { comments: CommentProps }) => {
+export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
     console.log("CommnetList component!!", comments);
 
     return (
         <>
-            {comments.items.map((item: ICommentList) => (
+            {comments.map((item: ICommentList) => (
                 <div className={style.comment__container} key={item.id}>
                     <div className={style.img__container}>
                         <img
