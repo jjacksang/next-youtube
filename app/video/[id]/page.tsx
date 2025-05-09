@@ -1,7 +1,6 @@
 import { VideoDetail } from "@/app/components/videoDetail";
 import style from "./page.module.css";
 import { fetchChannelDetails, fetchVideoDetails } from "@/app/utils/api";
-import { CommentList } from "@/app/components/commentList";
 import { CommentProvider } from "@/app/provider/comment_provider";
 
 export default async function Page({
@@ -18,7 +17,6 @@ export default async function Page({
         id: videoDetails.items[0].snippet.channelId,
     });
 
-    console.log(channelDetails);
     const channelThumbnail =
         channelDetails.items[0].snippet.thumbnails.default.url;
 

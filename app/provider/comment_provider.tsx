@@ -9,18 +9,13 @@ import { ICommentList } from "../utils/type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchCommentList } from "../utils/api";
 
-type CommentProps = {
-    items: ICommentList[];
-};
-
 export const CommentProvider = ({ id }: { id: string }) => {
-    const [comments, setComments] = useState<CommentProps>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [ref, inView] = useInView({
         threshold: 0.1,
         triggerOnce: false,
     });
 
+    // infiniteQuery로 호출 밑 상태 관리
     const { status, data, error, isFetching, fetchNextPage, hasNextPage } =
         useInfiniteQuery({
             queryFn: async ({ pageParam }) => {
@@ -31,6 +26,7 @@ export const CommentProvider = ({ id }: { id: string }) => {
             initialPageParam: undefined as unknown as string,
         });
 
+    // observer와 infiniteQuery에서 제공하는 상태를 통해 호출
     useEffect(() => {
         if (inView && !isFetching && hasNextPage) {
             fetchNextPage();
@@ -38,8 +34,25 @@ export const CommentProvider = ({ id }: { id: string }) => {
     }, [inView, isFetching, fetchNextPage, hasNextPage]);
 
     const allComments: ICommentList[] = useMemo(() => {
-        return data?.pages.flatMap((page) => page.items) || [];
-    }, [data]);
+        if (!data?.pages) return [];
+
+        // 최종 데이터를 하나의 배열로 조립
+        const allItems = data.pages.flatMap((page) => page.items || []);
+
+        // 무한스크롤중 length에 도달후 comment가 중복호출되는것을 방지
+        const uniqueIds = new Set<string>();
+
+        return allItems.filter((comment) => {
+            if (!comment.snippet.topLevelComment.etag) return false;
+
+            if (uniqueIds.has(comment.snippet.topLevelComment.etag)) {
+                return false;
+            }
+
+            uniqueIds.add(comment.snippet.topLevelComment.etag);
+            return true;
+        });
+    }, [data?.pages]);
 
     console.log("allComments!!", allComments);
 
@@ -48,17 +61,19 @@ export const CommentProvider = ({ id }: { id: string }) => {
     console.log(hasNextPage);
 
     return (
-        <form className={style.comment__form}>
-            <CommentList comments={allComments} />
+        <>
+            <form className={style.comment__form}>
+                <CommentList comments={allComments} />
+            </form>
             <div ref={ref} className="loading-trigger">
                 {isFetching ? (
                     <div>댓글 불러오는중...</div>
                 ) : hasNextPage ? (
                     <div>스크롤해보기</div>
                 ) : (
-                    <div>더 이상 댓글이 없습니다.</div>
+                    <div></div>
                 )}
             </div>
-        </form>
+        </>
     );
 };
