@@ -1,5 +1,7 @@
 "use client";
 
+import style from "./comment_provider.module.css";
+
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { CommentList } from "../components/commentList";
@@ -44,13 +46,19 @@ export const CommentProvider = ({ id }: { id: string }) => {
     console.log(data);
     console.log(data?.pages[0].nextPageToken);
     console.log(hasNextPage);
-    console.log(fetchNextPage);
+
     return (
-        <>
-            <CommentList comments={allComments} />;
+        <form className={style.comment__form}>
+            <CommentList comments={allComments} />
             <div ref={ref} className="loading-trigger">
-                {isFetching && <div>댓글 불러오는중...</div>}
+                {isFetching ? (
+                    <div>댓글 불러오는중...</div>
+                ) : hasNextPage ? (
+                    <div>스크롤해보기</div>
+                ) : (
+                    <div>더 이상 댓글이 없습니다.</div>
+                )}
             </div>
-        </>
+        </form>
     );
 };

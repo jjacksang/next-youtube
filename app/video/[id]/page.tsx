@@ -1,10 +1,6 @@
 import { VideoDetail } from "@/app/components/videoDetail";
 import style from "./page.module.css";
-import {
-    fetchChannelDetails,
-    fetchCommentList,
-    fetchVideoDetails,
-} from "@/app/utils/api";
+import { fetchChannelDetails, fetchVideoDetails } from "@/app/utils/api";
 import { CommentList } from "@/app/components/commentList";
 import { CommentProvider } from "@/app/provider/comment_provider";
 
@@ -25,10 +21,6 @@ export default async function Page({
     console.log(channelDetails);
     const channelThumbnail =
         channelDetails.items[0].snippet.thumbnails.default.url;
-
-    // 댓글 조회기능
-    // const fetchComments = await fetchCommentList({ id });
-    // console.log(fetchComments);
 
     return (
         <div>

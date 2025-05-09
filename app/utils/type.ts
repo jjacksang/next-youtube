@@ -97,6 +97,7 @@ export interface IEnrichedVideo extends Video {
 
 export interface ICommentList {
     id: string;
+    etag: string;
     snippet: {
         canReply: boolean;
         channelId: string;

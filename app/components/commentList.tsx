@@ -3,17 +3,13 @@ import style from "./commentList.module.css";
 import { ICommentList } from "../utils/type";
 import { elapsedTime } from "../utils/elapsedTime";
 
-type CommentProps = {
-    items: ICommentList[];
-};
-
 export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
     console.log("CommnetList component!!", comments);
 
     return (
         <>
             {comments.map((item: ICommentList) => (
-                <div className={style.comment__container} key={item.id}>
+                <div className={style.comment__container} key={item.etag}>
                     <div className={style.img__container}>
                         <img
                             src={
