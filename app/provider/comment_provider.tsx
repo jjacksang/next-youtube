@@ -9,7 +9,13 @@ import { ICommentList } from "../utils/type";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchCommentList } from "../utils/api";
 
-export const CommentProvider = ({ id }: { id: string }) => {
+export const CommentProvider = ({
+    id,
+    authorChannelId,
+}: {
+    id: string;
+    authorChannelId: string;
+}) => {
     const [ref, inView] = useInView({
         threshold: 0.1,
         triggerOnce: false,
@@ -39,10 +45,10 @@ export const CommentProvider = ({ id }: { id: string }) => {
         // 최종 데이터를 하나의 배열로 조립
         const allItems = data.pages.flatMap((page) => page.items || []);
 
-        // 무한스크롤중 length에 도달후 comment가 중복호출되는것을 방지
+        // 무한스크롤중 length에 도달 후 comment가 중복호출되는것을 방지
         const uniqueIds = new Set<string>();
 
-        return allItems.filter((comment) => {
+        const filteredComments = allItems.filter((comment) => {
             if (!comment.snippet.topLevelComment.etag) return false;
 
             if (uniqueIds.has(comment.snippet.topLevelComment.etag)) {
@@ -52,9 +58,25 @@ export const CommentProvider = ({ id }: { id: string }) => {
             uniqueIds.add(comment.snippet.topLevelComment.etag);
             return true;
         });
+
+        return filteredComments.sort((a, b) => {
+            const isAuthorCommentA =
+                a.snippet.topLevelComment.snippet.authorChannelId?.value ===
+                authorChannelId;
+            const isAuthorCommentB =
+                b.snippet.topLevelComment.snippet.authorChannelId?.value ===
+                authorChannelId;
+
+            if (isAuthorCommentA && !isAuthorCommentB) return -1;
+            if (!isAuthorCommentA && isAuthorCommentB) return 1;
+
+            return 0;
+        });
     }, [data?.pages]);
 
     console.log("allComments!!", allComments);
+
+    console.log(id);
 
     console.log(data);
     console.log(data?.pages[0].nextPageToken);

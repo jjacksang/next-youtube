@@ -5,9 +5,14 @@
     margin-bottom: 1.25rem;
 }
 
-.img__container > img {
+.author__img > img {
     border-radius: 50%;
     margin-right: 8px;
+    text-decoration: none;
+}
+
+.author {
+    text-decoration: none;
 }
 
 .main__container {

@@ -10,12 +10,18 @@ export default async function Page({
 }) {
     const { id } = await params;
 
+    console.log({ id });
+
     const videoDetails = await fetchVideoDetails({ id });
     console.log(videoDetails);
 
     const channelDetails = await fetchChannelDetails({
         id: videoDetails.items[0].snippet.channelId,
     });
+
+    const authorChannelId = channelDetails.items[0].id;
+
+    console.log(authorChannelId);
 
     const channelThumbnail =
         channelDetails.items[0].snippet.thumbnails.default.url;
@@ -31,7 +37,10 @@ export default async function Page({
                     <h3>{`댓글 ${videoDetails.items[0].statistics.commentCount} 개`}</h3>
                 </div>
                 <div>
-                    <CommentProvider id={id} />
+                    <CommentProvider
+                        id={id}
+                        authorChannelId={authorChannelId}
+                    />
                 </div>
             </div>
         </div>
