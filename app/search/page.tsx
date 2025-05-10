@@ -2,7 +2,8 @@ import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
-import NotFound from "./not-found";
+// import NotFound from "../_not_found/not-found";
+// import { notFound } from "next/navigation";
 
 export default async function Page({
     searchParams,
@@ -10,7 +11,7 @@ export default async function Page({
     searchParams: Promise<{ q: string }>;
 }) {
     return (
-        <Suspense fallback={<NotFound />}>
+        <Suspense fallback={<div>....</div>}>
             <Search searchParams={searchParams} />
         </Suspense>
     );

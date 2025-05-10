@@ -1,10 +1,18 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Suspense } from "react";
 import style from "./searchbar.module.css";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Searchbar() {
+    return (
+        <Suspense>
+            <Search />
+        </Suspense>
+    );
+}
+
+function Search() {
     const [search, setSearch] = useState("");
     const searchParams = useSearchParams();
     const q = searchParams.get("q");
