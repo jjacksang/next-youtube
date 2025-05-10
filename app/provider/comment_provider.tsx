@@ -2,7 +2,7 @@
 
 import style from "./comment_provider.module.css";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { CommentList } from "../components/commentList";
 import { ICommentList } from "../utils/type";
@@ -22,7 +22,7 @@ export const CommentProvider = ({
     });
 
     // infiniteQuery로 호출 밑 상태 관리
-    const { status, data, error, isFetching, fetchNextPage, hasNextPage } =
+    const { status, data, isFetching, fetchNextPage, hasNextPage } =
         useInfiniteQuery({
             queryFn: async ({ pageParam }) => {
                 return fetchCommentList({ id: id, pageToken: pageParam });
@@ -40,7 +40,11 @@ export const CommentProvider = ({
     }, [inView, isFetching, fetchNextPage, hasNextPage]);
 
     const allComments: ICommentList[] = useMemo(() => {
-        if (!data?.pages) return [];
+        if (!data?.pages) {
+            console.log("불러올 데이터가 없습니다.", status);
+
+            return [];
+        }
 
         // 최종 데이터를 하나의 배열로 조립
         const allItems = data.pages.flatMap((page) => page.items || []);
