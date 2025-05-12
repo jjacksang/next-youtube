@@ -2,8 +2,6 @@ import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
-// import NotFound from "../_not_found/not-found";
-// import { notFound } from "next/navigation";
 
 export default async function Page({
     searchParams,
@@ -41,13 +39,11 @@ async function Search({
         console.log("Page >> ", nextPageToken);
 
         return (
-            <>
-                <VideoListClient
-                    initialQuery={q}
-                    initialVideos={videoWithViewCount}
-                    nextPageToken={nextPageToken}
-                />
-            </>
+            <VideoListClient
+                initialQuery={q}
+                initialVideos={videoWithViewCount}
+                nextPageToken={nextPageToken}
+            />
         );
     } catch (error) {
         console.error("Video Fetching Error", error);
