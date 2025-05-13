@@ -7,6 +7,7 @@ import { fetchYoutubeVideos } from "../utils/api";
 import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";
 import { RecoChannel } from "../components/reco-channel";
+import useSearchInfinietQuery from "../hooks/useSearchInfiniteQuery";
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -20,6 +21,10 @@ export const VideoListClient = ({
     nextPageToken: string;
 }) => {
     console.log("initialVideos >> ", initialVideos);
+
+    const { data } = useSearchInfinietQuery(initialQuery);
+
+    console.log("REACT QUERY ACTIVE : ", data);
 
     const [currentQuery, setCurrentQuery] = useState(initialQuery);
     // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
