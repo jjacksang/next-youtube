@@ -4,7 +4,7 @@ import style from "./video-list-client.module.css";
 
 import { IChannel, IEnrichedVideo } from "../utils/type";
 import { fetchYoutubeVideos } from "../utils/api";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import VideoItem from "../components/video-item";
 import { RecoChannel } from "../components/reco-channel";
 import useSearchInfinietQuery from "../hooks/useSearchInfiniteQuery";
@@ -20,9 +20,8 @@ export const VideoListClient = ({
     initialVideos: YoutubeItems;
     nextPageToken: string;
 }) => {
-    console.log("initialVideos >> ", initialVideos);
-
-    const { data } = useSearchInfinietQuery(initialQuery);
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useSearchInfinietQuery(initialQuery, initialVideos, nextPageToken);
 
     console.log("REACT QUERY ACTIVE : ", data);
 
@@ -41,7 +40,6 @@ export const VideoListClient = ({
     );
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
-    console.log("video-list-client", videos);
 
     // search/page.tsx에서 내려주는 데이터가 변경 시 props로 내려주는
     // initialVideos에 값은 변경되지만 videos에 저장된 값이 다름으로
@@ -66,28 +64,6 @@ export const VideoListClient = ({
         }
     }, [initialQuery, initialVideos, nextPageToken, currentQuery]);
 
-    // 더보기 버튼
-    const handleLoadMore = async () => {
-        setIsLoading(true);
-        console.log(pageToken);
-
-        const response = await fetchYoutubeVideos({
-            q: initialQuery,
-            maxResults: 24,
-            nextPageToken: pageToken,
-        });
-
-        console.log("response nextPageToken", response);
-
-        setVideos((prev) => [...prev, ...response.items]);
-        if (response.nextPageToken) {
-            setPageToken(response.nextPageToken);
-        } else {
-            setPageToken("");
-        }
-        setIsLoading(false);
-    };
-
     useEffect(() => {
         console.log("Update pageToken", pageToken);
     }, [pageToken]);
@@ -108,7 +84,7 @@ export const VideoListClient = ({
                 {isLoading === false && pageToken === "" ? (
                     <button>검색 결과가 없습니다</button>
                 ) : (
-                    <button onClick={handleLoadMore}>더보기</button>
+                    <button>더보기</button>
                 )}
             </div>
         </>

@@ -4,46 +4,54 @@ import { processVideoData } from "../utils/process-video-data";
 import { IChannel, IEnrichedVideo, PlayList, Video } from "../utils/type";
 import { useMemo } from "react";
 
-type SearchResultItem = Video | PlayList | IChannel;
+type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
-interface YoutubeResponse {
-    items: SearchResultItem[];
-    nextPageToken?: string;
-    pageInfo: {
-        totalResults: number;
-        resultsPerPage: number;
-    };
-}
+export default function useSearchInfinietQuery(
+    searchParams: string,
+    initialVideos: YoutubeItems,
+    nextPageToken: string
+) {
+    const {
+        status,
+        data,
+        error,
+        isFetching,
+        fetchNextPage,
+        isFetchingNextPage,
+        hasNextPage,
+    } = useInfiniteQuery({
+        queryFn: async ({ pageParam }) => {
+            const response = await fetchYoutubeVideos({
+                q: searchParams,
+                maxResults: 24,
+                nextPageToken: pageParam as string | undefined,
+            });
 
-interface IProcessedData {
-    videoWithViewCount: (IEnrichedVideo | IChannel)[];
-    nextPageToken?: string;
-}
+            if (!response.ok) return;
 
-export default function useSearchInfinietQuery(searchParams: string) {
-    const { status, data, error, isFetching, fetchNextPage } = useInfiniteQuery(
-        {
-            queryFn: async ({ pageParam }) => {
-                const response = await fetchYoutubeVideos({
-                    q: searchParams,
-                    maxResults: 24,
-                    nextPageToken: pageParam as string | undefined,
-                });
+            const { videoWithViewCount, nextPageToken } =
+                await processVideoData(response);
 
-                const { videoWithViewCount, nextPageToken } =
-                    await processVideoData(response);
-
-                return {
-                    ...response,
-                    processedItems: videoWithViewCount,
-                    nextPageToken: nextPageToken,
-                };
-            },
-            getNextPageParam: (lastPage) => lastPage.nextPageToken || undefined,
-            queryKey: ["videos", searchParams],
-            initialPageParam: undefined,
-        }
-    );
+            return {
+                ...response,
+                processedItems: videoWithViewCount,
+                nextPageToken: nextPageToken,
+            };
+        },
+        getNextPageParam: (lastPage) => lastPage.nextPageToken || undefined,
+        queryKey: ["videos", searchParams],
+        initialPageParam: initialVideos
+            ? {
+                  pages: [
+                      {
+                          items: initialVideos,
+                          nextPageToken: nextPageToken,
+                      },
+                  ],
+                  pageParams: [undefined],
+              }
+            : undefined,
+    });
 
     const allVideos: IEnrichedVideo[] = useMemo(() => {
         if (!data?.pages) return [];
@@ -52,5 +60,9 @@ export default function useSearchInfinietQuery(searchParams: string) {
     }, [data?.pages]);
     return {
         data: allVideos,
+        fetchNextPage,
+        isFetching,
+        isFetchingNextPage,
+        hasNextPage,
     };
 }
