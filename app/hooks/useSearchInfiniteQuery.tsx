@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
-import { IChannel, IEnrichedVideo, PlayList, Video } from "../utils/type";
+import { IChannel, IEnrichedVideo } from "../utils/type";
 import { useMemo } from "react";
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
@@ -27,7 +27,10 @@ export default function useSearchInfinietQuery(
                 nextPageToken: pageParam as string | undefined,
             });
 
-            if (!response.ok) return;
+            if (!response.ok) {
+                console.error(status);
+                throw new Error();
+            }
 
             const { videoWithViewCount, nextPageToken } =
                 await processVideoData(response);
@@ -40,7 +43,8 @@ export default function useSearchInfinietQuery(
         },
         getNextPageParam: (lastPage) => lastPage.nextPageToken || undefined,
         queryKey: ["videos", searchParams],
-        initialPageParam: initialVideos
+        initialPageParam: undefined,
+        initialData: initialVideos
             ? {
                   pages: [
                       {

@@ -16,6 +16,7 @@ export default function VideoItem({ video }: VideoItemProps) {
                 <Link href={`/video/${video.id.videoId}`}>
                     <Image
                         alt="h"
+                        priority={true}
                         width={68}
                         height={68}
                         src={video.snippet.thumbnails.medium.url}

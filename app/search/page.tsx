@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
-import useSearchInfinietQuery from "../hooks/useSearchInfiniteQuery";
 
 export default async function Page({
     searchParams,
@@ -22,10 +21,8 @@ async function Search({
     searchParams: Promise<{ q: string }>;
 }) {
     const { q } = await searchParams;
-    
-    console.log("Search Page : ", q);
 
- 
+    console.log("Search Page : ", q);
 
     try {
         const searchData = await fetchYoutubeVideos(

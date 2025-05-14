@@ -20,11 +20,6 @@ export const VideoListClient = ({
     initialVideos: YoutubeItems;
     nextPageToken: string;
 }) => {
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-        useSearchInfinietQuery(initialQuery, initialVideos, nextPageToken);
-
-    console.log("REACT QUERY ACTIVE : ", data);
-
     const [currentQuery, setCurrentQuery] = useState(initialQuery);
     // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
     const [videos, setVideos] = useState<IEnrichedVideo[]>(
@@ -41,28 +36,10 @@ export const VideoListClient = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
 
-    // search/page.tsx에서 내려주는 데이터가 변경 시 props로 내려주는
-    // initialVideos에 값은 변경되지만 videos에 저장된 값이 다름으로
-    // 새로운 query를 내려받았을 때 videos값을 변경
-    useEffect(() => {
-        if (initialQuery !== currentQuery) {
-            setVideos(
-                initialVideos.filter(
-                    (item): item is IEnrichedVideo =>
-                        item.id.kind !== "youtube#channel"
-                )
-            );
-            setCurrentQuery(initialQuery);
-            setPageToken(nextPageToken);
-            setChannel(
-                initialVideos.filter(
-                    (item): item is IChannel =>
-                        item.id.kind === "youtube#channel"
-                )
-            );
-            console.log("검색어 변경으로 비디오 목록 초기화: ", initialQuery);
-        }
-    }, [initialQuery, initialVideos, nextPageToken, currentQuery]);
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+        useSearchInfinietQuery(initialQuery, initialVideos, nextPageToken);
+
+    console.log("REACT QUERY ACTIVE : ", data);
 
     useEffect(() => {
         console.log("Update pageToken", pageToken);
