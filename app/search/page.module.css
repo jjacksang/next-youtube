@@ -1,0 +1,7 @@
+.video {
+    display: grid;
+    grid-template-columns: repeat(4, 24%);
+    grid-gap: 15px;
+
+    width: 100%;
+}
