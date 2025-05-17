@@ -48,9 +48,16 @@ export const fetchVideoDetails = async ({ id }: { id: string }) => {
     }
 };
 
-export const fetchChannelDetails = async ({ id }: { id: string }) => {
+export const fetchChannelDetails = async ({
+    id,
+}: {
+    id: string | string[];
+}) => {
+    const idParam = Array.isArray(id) ? id.join(",") : id;
+    console.log(idParam);
+
     const response = await fetch(
-        `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${id}&key=${apiKey}`
+        `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${idParam}&key=${apiKey}`
     );
     if (!response.ok) {
         throw new Error(`failed fetch channel details: ${response.status}`);
