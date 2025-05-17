@@ -1,10 +1,24 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchYoutubeVideos } from "../utils/api";
+import { fetchChannelDetails, fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
-import { IChannel, IEnrichedVideo } from "../utils/type";
+import {
+    IChannel,
+    IChannelDetail,
+    IEnrichedVideo,
+    Thumbnail,
+    Video,
+} from "../utils/type";
 import { useMemo } from "react";
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
+
+interface ISearchProps extends YoutubeItems {
+    channelThumbnail: {
+        default: Thumbnail;
+        high: Thumbnail;
+        medium: Thumbnail;
+    };
+}
 
 export default function useSearchInfinietQuery(
     searchParams: string,
@@ -32,13 +46,42 @@ export default function useSearchInfinietQuery(
                 throw new Error();
             }
 
+            const channelIds = [
+                ...new Set(
+                    response.items
+                        .map((item: Video) => item.snippet.channelId)
+                        .filter(
+                            (id: string): id is string => typeof id === "string"
+                        )
+                ),
+            ] as string[];
+
+            const channelThumbnails: IChannel = await fetchChannelDetails({
+                id: channelIds,
+            });
+
             const { videoWithViewCount, nextPageToken } =
                 await processVideoData(response);
 
+            const enrichedVideos = videoWithViewCount.map((video) => {
+                console.log(channelThumbnails);
+                return {
+                    ...video,
+                    channelThumbnail:
+                        channelThumbnails.id.channelId ==
+                        video.snippet.channelId
+                            ? channelThumbnails.snippet.thumbnails.default.url
+                            : null,
+                };
+            });
+
+            console.log(enrichedVideos);
+
             return {
                 ...response,
-                processedItems: videoWithViewCount,
+                processedItems: enrichedVideos,
                 nextPageToken: nextPageToken,
+                channelThumbnails: channelThumbnails,
             };
         },
         getNextPageParam: (lastPage) => lastPage.nextPageToken || undefined,
@@ -48,7 +91,10 @@ export default function useSearchInfinietQuery(
             ? {
                   pages: [
                       {
-                          items: initialVideos,
+                          items: initialVideos.map((video) => ({
+                              ...video,
+                              channelThumbnail: null,
+                          })),
                           nextPageToken: nextPageToken,
                       },
                   ],
@@ -57,16 +103,20 @@ export default function useSearchInfinietQuery(
             : undefined,
     });
 
-    const allVideos: IEnrichedVideo[] = useMemo(() => {
+    console.log(data);
+
+    const allVideos: ISearchProps[] = useMemo(() => {
         if (!data?.pages) return [];
 
         return data.pages.flatMap((page) => page.items || []);
     }, [data?.pages]);
+
     return {
         data: allVideos,
         fetchNextPage,
         isFetching,
         isFetchingNextPage,
         hasNextPage,
+        test: data,
     };
 }
