@@ -3,8 +3,7 @@
 import style from "./video-list-client.module.css";
 
 import { IChannel, IEnrichedVideo } from "../utils/type";
-import { fetchYoutubeVideos } from "../utils/api";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import VideoItem from "../components/video-item";
 import { RecoChannel } from "../components/reco-channel";
 import useSearchInfinietQuery from "../hooks/useSearchInfiniteQuery";
@@ -20,7 +19,6 @@ export const VideoListClient = ({
     initialVideos: YoutubeItems;
     nextPageToken: string;
 }) => {
-    const [currentQuery, setCurrentQuery] = useState(initialQuery);
     // response에 첫 요청의 경우 channel의 정보를 같이 주는 경우가 있어 검열
     const [videos, setVideos] = useState<IEnrichedVideo[]>(
         initialVideos.filter(
@@ -36,9 +34,9 @@ export const VideoListClient = ({
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [pageToken, setPageToken] = useState<string>(nextPageToken);
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, test } =
         useSearchInfinietQuery(initialQuery, initialVideos, nextPageToken);
-
+    console.log(test.pages);
     console.log("REACT QUERY ACTIVE : ", data);
 
     useEffect(() => {
