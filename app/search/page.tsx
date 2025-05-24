@@ -1,15 +1,30 @@
+import style from "./page.module.css";
+
 import { Suspense } from "react";
 import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
 import { VideoListClient } from "./video-list-client";
+import { SkeletonSearch } from "../components/skeleton-search";
 
 export default async function Page({
     searchParams,
 }: {
     searchParams: Promise<{ q: string }>;
 }) {
+    const SkeletonList = ({ count }: { count: number }) => {
+        return new Array(count)
+            .fill(0)
+            .map((_, idx) => <SkeletonSearch key={`video-skeleton-${idx}`} />);
+    };
+
     return (
-        <Suspense fallback={<div>....</div>}>
+        <Suspense
+            fallback={
+                <div className={style.video}>
+                    <SkeletonList count={24} />
+                </div>
+            }
+        >
             <Search searchParams={searchParams} />
         </Suspense>
     );

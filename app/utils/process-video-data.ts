@@ -1,5 +1,17 @@
-import { fetchPlaylistDetails, fetchVideoDetails } from "./api";
-import { IChannel, IEnrichedVideo, PlayList, Video } from "./type";
+import {
+    fetchChannelDetails,
+    fetchPlaylistDetails,
+    fetchVideoDetails,
+} from "./api";
+import {
+    IChannel,
+    IChannelDetail,
+    IEnrichedVideo,
+    PlayList,
+    Video,
+} from "./type";
+
+type SearchResultItem = Video | PlayList | IChannel;
 
 interface YoutubeResponse {
     items: SearchResultItem[];
@@ -10,7 +22,9 @@ interface YoutubeResponse {
     };
 }
 
-type SearchResultItem = Video | PlayList | IChannel;
+interface ChannelThumbnailMap {
+    [channelId: string]: string;
+}
 
 export async function processVideoData(searchResults: YoutubeResponse) {
     // searchResults에 대한 상세정보를 통해 viewCount를 받아와
@@ -65,18 +79,57 @@ export async function processVideoData(searchResults: YoutubeResponse) {
                     }
                 }
             );
-
             const videoViewCount = await Promise.all(videoViewCountPromises);
+
+            const uniqueChannelIds = [
+                ...new Set(videoItems.map((item) => item.snippet.channelId)),
+            ];
+            let channelThumbnails: Record<string, string> = {};
+            if (uniqueChannelIds.length > 0) {
+                const channelDetails = await fetchChannelDetails({
+                    id: uniqueChannelIds.join(","),
+                });
+
+                try {
+                    const channelDetails = await fetchChannelDetails({
+                        id: uniqueChannelIds.join(","), // 여러 채널 ID를 쉼표로 구분
+                    });
+
+                    channelThumbnails = channelDetails.items.reduce(
+                        (
+                            acc: Record<string, string>,
+                            channel: IChannelDetail
+                        ) => {
+                            acc[channel.id] =
+                                channel.snippet.thumbnails.default.url;
+                            return acc;
+                        },
+                        {} as Record<string, string>
+                    );
+                    console.log(channelThumbnails);
+                } catch (error) {
+                    console.error(
+                        "Error fetching channel details/thumbnail: ",
+                        error
+                    );
+                }
+            }
 
             processedVideoViewCount = videoItems.map((item, idx) => {
                 const viewCount =
                     videoViewCount[idx]?.items?.[0].statistics?.viewCount ??
                     "0";
+                const channelThumbnail =
+                    channelThumbnails[item.snippet.channelId] || "";
 
                 // Video, PlayList 타입을 IEnrichedVideo로 변환
                 return {
                     ...item,
                     viewCount: parseInt(viewCount),
+                    snippet: {
+                        ...item.snippet,
+                        channelThumbnail,
+                    },
                     //  id 속성 보정
                     id:
                         "videoId" in item.id
@@ -87,6 +140,8 @@ export async function processVideoData(searchResults: YoutubeResponse) {
                               },
                 } as IEnrichedVideo;
             });
+
+            console.log(processedVideoViewCount);
         }
 
         const combinedItems: (IEnrichedVideo | IChannel)[] = [

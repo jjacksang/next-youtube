@@ -27,7 +27,7 @@ export default function VideoItem({ video }: VideoItemProps) {
                 <div className={style.channel__img}>
                     <Link href={`/channel/${video.snippet.channelId}`}>
                         <Image
-                            src={video.snippet.thumbnails.default.url}
+                            src={video.snippet.channelThumbnail!}
                             alt={video.snippet.description}
                             width={40}
                             height={40}
