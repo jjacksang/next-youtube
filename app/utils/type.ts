@@ -93,6 +93,9 @@ export interface IChannelDetail {
 
 export interface IEnrichedVideo extends Video {
     viewCount: number;
+    snippet: Video["snippet"] & {
+        channelThumbnail: string | null;
+    };
 }
 
 export interface ICommentList {
