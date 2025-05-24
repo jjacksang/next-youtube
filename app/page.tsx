@@ -63,11 +63,14 @@ export default async function Home() {
     const channelDataPromises = developerChannelId.map(async (channel) => {
         try {
             const response = await fetch(
-                `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`
+                `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}`,
+                { cache: "force-cache" }
             );
 
             if (!response.ok) {
-                console.error(`Failed to fetch data ${channel.name}`);
+                console.error(
+                    `Failed to fetch data ${channel.name}, ${response.statusText}`
+                );
                 return {
                     videoWithViewCount: [],
                     nextPageToken: "",
