@@ -15,7 +15,7 @@ export default function VideoItem({ video }: VideoItemProps) {
             <div className={style.thumbnail__img}>
                 <Link href={`/video/${video.id.videoId}`}>
                     <Image
-                        alt="h"
+                        alt={video.snippet.description}
                         priority={true}
                         width={68}
                         height={68}
