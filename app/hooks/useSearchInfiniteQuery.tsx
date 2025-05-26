@@ -1,30 +1,41 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchChannelDetails, fetchYoutubeVideos } from "../utils/api";
+import { fetchYoutubeVideos } from "../utils/api";
 import { processVideoData } from "../utils/process-video-data";
-import {
-    IChannel,
-    IChannelDetail,
-    IEnrichedVideo,
-    Thumbnail,
-    Video,
-} from "../utils/type";
+import { IChannel, IEnrichedVideo } from "../utils/type";
 import { useMemo } from "react";
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
-interface ISearchProps extends YoutubeItems {
-    channelThumbnail: {
-        default: Thumbnail;
-        high: Thumbnail;
-        medium: Thumbnail;
-    };
+export interface InitialYoutubeData {
+    items: YoutubeItems;
+    nextPageToken?: string;
+}
+
+interface ProcessedYoutubePageData {
+    videos: IEnrichedVideo[];
+    channels: IChannel[];
+    nextPageToken?: string;
+}
+
+interface UseSearchInfiniteQueryReturn {
+    allVideos: IEnrichedVideo[];
+    allChannels: IChannel[];
+
+    isFetching: boolean;
+    isFetchingNextPage: boolean;
+    hasNextPage: boolean;
+    error: Error | null;
+
+    fetchNextPage: () => void;
+
+    currentPageToken?: string;
+    totalPages: number;
 }
 
 export default function useSearchInfinietQuery(
     searchParams: string,
-    initialVideos: YoutubeItems,
-    nextPageToken: string
-) {
+    initialData: InitialYoutubeData
+): UseSearchInfiniteQueryReturn {
     const {
         status,
         data,
@@ -33,7 +44,8 @@ export default function useSearchInfinietQuery(
         fetchNextPage,
         isFetchingNextPage,
         hasNextPage,
-    } = useInfiniteQuery({
+    } = useInfiniteQuery<ProcessedYoutubePageData>({
+        queryKey: ["videos", searchParams],
         queryFn: async ({ pageParam }) => {
             const response = await fetchYoutubeVideos({
                 q: searchParams,
@@ -41,82 +53,92 @@ export default function useSearchInfinietQuery(
                 nextPageToken: pageParam as string | undefined,
             });
 
+            console.log(response);
+
             if (!response.ok) {
-                console.error(status);
-                throw new Error();
+                console.error("API Error:", response.status);
+                throw new Error("Failed to fetch Youtube videos");
             }
-
-            const channelIds = [
-                ...new Set(
-                    response.items
-                        .map((item: Video) => item.snippet.channelId)
-                        .filter(
-                            (id: string): id is string => typeof id === "string"
-                        )
-                ),
-            ] as string[];
-
-            const channelThumbnails: IChannel = await fetchChannelDetails({
-                id: channelIds,
-            });
 
             const { videoWithViewCount, nextPageToken } =
                 await processVideoData(response);
 
-            const enrichedVideos = videoWithViewCount.map((video) => {
-                console.log(channelThumbnails);
-                return {
-                    ...video,
-                    channelThumbnail:
-                        channelThumbnails.id.channelId ==
-                        video.snippet.channelId
-                            ? channelThumbnails.snippet.thumbnails.default.url
-                            : null,
-                };
-            });
+            const videos = videoWithViewCount.filter(
+                (item): item is IEnrichedVideo =>
+                    item.id.kind !== "youtube#channel"
+            );
 
-            console.log(enrichedVideos);
+            const channels = videoWithViewCount.filter(
+                (item): item is IChannel => item.id.kind === "youtube#channel"
+            );
 
             return {
-                ...response,
-                processedItems: enrichedVideos,
-                nextPageToken: nextPageToken,
-                channelThumbnails: channelThumbnails,
+                channels,
+                videos,
+                nextPageToken,
             };
         },
         getNextPageParam: (lastPage) => lastPage.nextPageToken || undefined,
-        queryKey: ["videos", searchParams],
         initialPageParam: undefined,
-        initialData: initialVideos
+        initialData: initialData
             ? {
                   pages: [
                       {
-                          items: initialVideos.map((video) => ({
-                              ...video,
-                              channelThumbnail: null,
-                          })),
-                          nextPageToken: nextPageToken,
+                          channels: initialData.items.filter(
+                              (item): item is IChannel =>
+                                  item.id.kind === "youtube#channel"
+                          ),
+                          videos: initialData.items.filter(
+                              (item): item is IEnrichedVideo =>
+                                  item.id.kind === "youtube#video"
+                          ),
+                          nextPageToken: initialData.nextPageToken,
                       },
                   ],
                   pageParams: [undefined],
               }
             : undefined,
+        staleTime: 5 * 60 * 1000, // 5분
+        gcTime: 30 * 60 * 1000, // 30분
+
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 
     console.log(data);
 
-    const allVideos: ISearchProps[] = useMemo(() => {
+    const allVideos = useMemo((): IEnrichedVideo[] => {
         if (!data?.pages) return [];
 
-        return data.pages.flatMap((page) => page.items || []);
+        return data.pages.flatMap((page) => page.videos);
+    }, [data?.pages]);
+
+    const allChannels = useMemo((): IChannel[] => {
+        if (!data?.pages) return [];
+
+        return data.pages.flatMap((page) => page.channels);
+    }, [data?.pages]);
+
+    const currentPageToken = useMemo(() => {
+        if (!data?.pages || data.pages.length === 0) return undefined;
+        return data.pages[data.pages.length - 1].nextPageToken;
     }, [data?.pages]);
 
     return {
-        data: allVideos,
-        fetchNextPage,
+        // 데이터
+        allChannels: allChannels,
+        allVideos: allVideos,
+
+        // 상태
         isFetching,
         isFetchingNextPage,
         hasNextPage,
-        test: data,
+        error: error as Error | null,
+
+        // 액션함수
+        fetchNextPage,
+
+        currentPageToken,
+        totalPages: data?.pages?.length || 0,
     };
 }
