@@ -21,6 +21,7 @@ interface UseSearchInfiniteQueryReturn {
     allVideos: IEnrichedVideo[];
     allChannels: IChannel[];
 
+    status: "error" | "pending" | 'success';
     isFetching: boolean;
     isFetchingNextPage: boolean;
     hasNextPage: boolean;
@@ -56,7 +57,7 @@ export default function useSearchInfinietQuery(
             console.log(response);
 
             if (!response.ok) {
-                console.error("API Error:", response.status);
+                console.error("API Error:", response.error);
                 throw new Error("Failed to fetch Youtube videos");
             }
 
@@ -126,10 +127,11 @@ export default function useSearchInfinietQuery(
 
     return {
         // 데이터
-        allChannels: allChannels,
-        allVideos: allVideos,
+        allChannels,
+        allVideos,
 
         // 상태
+        status,
         isFetching,
         isFetchingNextPage,
         hasNextPage,
