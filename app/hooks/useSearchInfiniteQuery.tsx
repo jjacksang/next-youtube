@@ -54,8 +54,6 @@ export default function useSearchInfinietQuery(
         nextPageToken: pageParam as string | undefined,
       });
 
-      console.log(response);
-
       if (!response.ok) {
         console.error('API Error:', response.status, response.statusText);
         throw new Error(
@@ -83,7 +81,7 @@ export default function useSearchInfinietQuery(
     getNextPageParam: lastPage => {
       console.log('getNextpageParam', lastPage);
       console.log('returning: ', lastPage.nextPageToken || undefined);
-      lastPage.nextPageToken || undefined;
+      return lastPage.nextPageToken || undefined;
     },
 
     initialPageParam: undefined,

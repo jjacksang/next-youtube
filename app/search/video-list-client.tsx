@@ -25,14 +25,8 @@ export const VideoListClient = ({
     nextPageToken: nextPageToken,
   };
 
-  const {
-    status,
-    allVideos,
-    allChannels,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  } = useSearchInfinietQuery(initialQuery, initialData);
+  const { allVideos, allChannels, fetchNextPage, hasNextPage } =
+    useSearchInfinietQuery(initialQuery, initialData);
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
   return (

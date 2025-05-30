@@ -70,31 +70,31 @@ export async function processVideoData(searchResults: YoutubeResponse) {
       const uniqueChannelIds = [
         ...new Set(videoItems.map(item => item.snippet.channelId)),
       ];
-      // let channelThumbnails: Record<string, string> = {};
-      // if (uniqueChannelIds.length > 0) {
-      // try {
-      //   const channelDetails = await fetchChannelDetails({
-      //     id: uniqueChannelIds.join(','), // 여러 채널 ID를 쉼표로 구분
-      //   });
+      let channelThumbnails: Record<string, string> = {};
+      if (uniqueChannelIds.length > 0) {
+        try {
+          const channelDetails = await fetchChannelDetails({
+            id: uniqueChannelIds.join(','), // 여러 채널 ID를 쉼표로 구분
+          });
 
-      //   channelThumbnails = channelDetails.items.reduce(
-      //     (acc: Record<string, string>, channel: IChannelDetail) => {
-      //       acc[channel.id] = channel.snippet.thumbnails.default.url;
-      //       return acc;
-      //     },
-      //     {} as Record<string, string>,
-      //   );
-      //   console.log(channelThumbnails);
-      // } catch (error) {
-      //   console.error('Error fetching channel details/thumbnail: ', error);
-      // }
-      // }
+          channelThumbnails = channelDetails.items.reduce(
+            (acc: Record<string, string>, channel: IChannelDetail) => {
+              acc[channel.id] = channel.snippet.thumbnails.default.url;
+              return acc;
+            },
+            {} as Record<string, string>,
+          );
+          console.log(channelThumbnails);
+        } catch (error) {
+          console.error('Error fetching channel details/thumbnail: ', error);
+        }
+      }
 
       processedVideoViewCount = videoItems.map((item, idx) => {
         const viewCount =
           videoViewCount[idx]?.items?.[0].statistics?.viewCount ?? '0';
-        // const channelThumbnail =
-        //   channelThumbnails[item.snippet.channelId] || '';
+        const channelThumbnail =
+          channelThumbnails[item.snippet.channelId] || '';
 
         // Video, PlayList 타입을 IEnrichedVideo로 변환
         return {
@@ -102,7 +102,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
           viewCount: parseInt(viewCount),
           snippet: {
             ...item.snippet,
-            // channelThumbnail,
+            channelThumbnail,
           },
           //  id 속성 보정
           id:
