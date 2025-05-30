@@ -1,16 +1,19 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "**",
-            },
-        ],
-        unoptimized: true,
-    },
-    missingSuspenseWithCSRBailout: false,
+  experimental: {
+    optimizeCss: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    unoptimized: true,
+  },
+  missingSuspenseWithCSRBailout: false,
 };
 
 export default nextConfig;

@@ -18,15 +18,17 @@ export default async function Page({
   };
 
   return (
-    <Suspense
-      fallback={
-        <div className={style.video}>
-          <SkeletonList count={24} />
-        </div>
-      }
-    >
-      <Search searchParams={searchParams} />
-    </Suspense>
+    <div className={style.contanier}>
+      <Suspense
+        fallback={
+          <div className={style.video}>
+            <SkeletonList count={24} />
+          </div>
+        }
+      >
+        <Search searchParams={searchParams} />
+      </Suspense>
+    </div>
   );
 }
 
