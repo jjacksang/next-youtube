@@ -49,8 +49,9 @@ export const fetchVideoDetails = async ({ id }: { id: string }) => {
 };
 
 export const fetchChannelDetails = async ({ id }: { id: string }) => {
+  console.log(id);
   const response = await fetch(
-    `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${id}&key=${apiKey}`,
+    `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`,
   );
   if (!response.ok) {
     throw new Error(`failed fetch channel details: ${response.status}`);

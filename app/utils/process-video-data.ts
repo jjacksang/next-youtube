@@ -3,13 +3,7 @@ import {
   fetchPlaylistDetails,
   fetchVideoDetails,
 } from './api';
-import {
-  IChannel,
-  IChannelDetail,
-  IEnrichedVideo,
-  PlayList,
-  Video,
-} from './type';
+import { IChannel, IEnrichedVideo, PlayList, Video } from './type';
 
 type SearchResultItem = Video | PlayList | IChannel;
 
@@ -24,109 +18,73 @@ export async function processVideoData(searchResults: YoutubeResponse) {
   console.log('searchResults!!', searchResults);
 
   try {
-    const isVideos = (item: SearchResultItem): item is Video | PlayList => {
-      return (
-        (item.id?.kind === 'youtube#video' && 'videoId' in item.id) ||
-        (item.id?.kind === 'youtube#playlist' && 'playlistId' in item.id)
-      );
-    };
+    // item.id.kind 에 따라 각 데이터 수집
+    const isVideos = (item: SearchResultItem): item is Video =>
+      item.id?.kind === 'youtube#video' && typeof item.id.videoId === 'string';
+    const isPlaylist = (item: SearchResultItem): item is PlayList =>
+      item.id?.kind === 'youtube#playlist' &&
+      typeof item.id.playlistId === 'string';
     const isChannel = (item: SearchResultItem): item is IChannel =>
-      item.id?.kind === 'youtube#channel' && 'channelId' in item.id;
+      item.id?.kind === 'youtube#channel' &&
+      typeof item.snippet.channelId === 'string';
 
     const videoItems = searchResults.items.filter(isVideos);
-    const channelItem = searchResults.items.filter(isChannel);
-    console.log('video Items', videoItems);
-    console.log('channel data : ', channelItem);
-    console.log('process-video-data', searchResults.nextPageToken);
+    const playlistItems = searchResults.items.filter(isPlaylist);
+    const channelItems = searchResults.items.filter(isChannel);
 
-    let processedVideoViewCount: IEnrichedVideo[] = [];
-    if (videoItems.length > 0) {
-      const videoViewCountPromises = videoItems.map(
-        (item: Video | PlayList) => {
-          try {
-            if (item.id.kind === 'youtube#video' && 'videoId' in item.id) {
-              console.log(`item중 video항목이 있습니다 ${item}`);
-              return fetchVideoDetails({ id: item.id.videoId });
-            } else if (
-              item.id.kind === 'youtube#playlist' &&
-              'playlist' in item.id
-            ) {
-              console.log(`item중 playlist 항목이 있습니다 ${item}`);
-              return fetchPlaylistDetails({
-                id: item.id.playlistId,
-              });
-            }
-          } catch (error) {
-            console.error(
-              `videoViewCountPromises / Error fetching videoDetails ${item.id}: `,
-              error,
-            );
-            return { items: { viewCount: '0' } };
-          }
-        },
-      );
-      const videoViewCount = await Promise.all(videoViewCountPromises);
-
-      const uniqueChannelIds = [
-        ...new Set(videoItems.map(item => item.snippet.channelId)),
-      ];
-      let channelThumbnails: Record<string, string> = {};
-      if (uniqueChannelIds.length > 0) {
-        try {
-          const channelDetails = await fetchChannelDetails({
-            id: uniqueChannelIds.join(','), // 여러 채널 ID를 쉼표로 구분
-          });
-
-          channelThumbnails = channelDetails.items.reduce(
-            (acc: Record<string, string>, channel: IChannelDetail) => {
-              acc[channel.id] = channel.snippet.thumbnails.default.url;
-              return acc;
-            },
-            {} as Record<string, string>,
-          );
-          console.log(channelThumbnails);
-        } catch (error) {
-          console.error('Error fetching channel details/thumbnail: ', error);
-        }
-      }
-
-      processedVideoViewCount = videoItems.map((item, idx) => {
-        const viewCount =
-          videoViewCount[idx]?.items?.[0].statistics?.viewCount ?? '0';
-        const channelThumbnail =
-          channelThumbnails[item.snippet.channelId] || '';
-
-        // Video, PlayList 타입을 IEnrichedVideo로 변환
-        return {
-          ...item,
-          viewCount: parseInt(viewCount),
-          snippet: {
-            ...item.snippet,
-            channelThumbnail,
-          },
-          //  id 속성 보정
-          id:
-            'videoId' in item.id
-              ? item.id
-              : {
-                  kind: 'youtube#video',
-                  videoId: `${item.id.playlistId}`,
-                },
-        } as IEnrichedVideo;
-      });
-
-      console.log(processedVideoViewCount);
-    }
-
-    const combinedItems: (IEnrichedVideo | IChannel)[] = [
-      ...processedVideoViewCount,
-      ...channelItem,
+    // 각 데이터에 따라 id값 맵핑
+    let videoIds = [...new Set(videoItems.map(item => item.id.videoId))];
+    let playlistIds = [
+      ...new Set(playlistItems.map(item => item.id.playlistId)),
+    ];
+    let channelIds = [
+      ...new Set(channelItems.map(item => item.snippet.channelId)),
+    ];
+    let channelIdsFromAllItems = [
+      ...videoItems.map(item => item.snippet.channelId),
+      ...playlistItems.map(item => item.snippet.channelId),
     ];
 
-    return {
-      videoWithViewCount: combinedItems,
-      nextPageToken: searchResults.nextPageToken || '',
-    };
+    // channel thumbnail을 가져오기 위해 videos, playlists 에 각 channelId 수집
+    const uniqueChannelIds = [
+      ...new Set(channelIdsFromAllItems.filter(Boolean)),
+    ];
+
+    console.log('ChannelIds Mapping :', uniqueChannelIds);
+
+    // quota cost를 고려하여 최소 요청으로 줄이기 위해 병렬 배치
+    // 만약 해당 id값이 없을땐 빈 배열 반환
+    const videoDetailsPromise =
+      videoIds.length > 0
+        ? fetchVideoDetails({ id: videoIds.join(',') })
+        : Promise.resolve({ items: [] });
+    const playlistDetailsPromise =
+      playlistIds.length > 0
+        ? fetchPlaylistDetails({ id: playlistIds.join(',') })
+        : Promise.resolve({ items: [] });
+    const channelDetailsPromise =
+      channelIds.length > 0
+        ? fetchChannelDetails({ id: channelIds.join(',') })
+        : Promise.resolve({ items: [] });
+
+    // channel thumbnail을 가져오기 위해 요청
+    const channelDetailsFromAllItems =
+      uniqueChannelIds.length > 0
+        ? fetchChannelDetails({ id: uniqueChannelIds.join(',') })
+        : Promise.resolve({ items: [] });
+
+    const [videoResults, playlistResults, channelResults, eachChannelDetails] =
+      await Promise.allSettled([
+        videoDetailsPromise,
+        playlistDetailsPromise,
+        channelDetailsPromise,
+        channelDetailsFromAllItems,
+      ]);
+
+    console.log('videoDetails :', videoResults);
+    console.log('channelDetails :', playlistResults);
+    console.log('playlistDetails : ', channelResults);
+    console.log('eachChannelDetails', eachChannelDetails);
   } catch (error) {
     console.error('Error in processVideoData: ', error);
 
