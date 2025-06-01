@@ -4,7 +4,7 @@ const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
 const apiUrl = process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string;
 
 interface IfetchProps {
-  q: string | string[];
+  q: string;
   maxResults: number;
   nextPageToken?: string;
 }
@@ -21,9 +21,7 @@ export const fetchYoutubeVideos = async (
   { q, maxResults, nextPageToken }: IfetchProps,
   options?: IFetchOptions,
 ) => {
-  const idParam = Array.isArray(q) ? q.join(',') : q;
-
-  let baseUrl = `${apiUrl}/search?part=snippet&order=date&maxResults=${maxResults}&q=${idParam}&key=${apiKey}`;
+  let baseUrl = `${apiUrl}/search?part=snippet&order=date&maxResults=${maxResults}&q=${q}&key=${apiKey}`;
 
   if (nextPageToken) {
     baseUrl += `&pageToken=${nextPageToken}`;
@@ -38,11 +36,9 @@ export const fetchYoutubeVideos = async (
   }
 };
 
-export const fetchVideoDetails = async ({ id }: { id: string | string[] }) => {
-  const idParam = Array.isArray(id) ? id.join(',') : id;
-
+export const fetchVideoDetails = async ({ id }: { id: string }) => {
   const response = await fetch(
-    `${apiUrl}/videos?part=snippet%2Cstatistics&id=${idParam}&key=${apiKey}`,
+    `${apiUrl}/videos?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`,
   );
 
   if (!response.ok) {
@@ -52,16 +48,9 @@ export const fetchVideoDetails = async ({ id }: { id: string | string[] }) => {
   }
 };
 
-export const fetchChannelDetails = async ({
-  id,
-}: {
-  id: string | string[];
-}) => {
-  const idParam = Array.isArray(id) ? id.join(',') : id;
-  console.log(idParam);
-
+export const fetchChannelDetails = async ({ id }: { id: string }) => {
   const response = await fetch(
-    `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${idParam}&key=${apiKey}`,
+    `${apiUrl}/channels?part=snippet%2CtopicDetails%2Cstatistics&id=${id}&key=${apiKey}`,
   );
   if (!response.ok) {
     throw new Error(`failed fetch channel details: ${response.status}`);
@@ -70,15 +59,9 @@ export const fetchChannelDetails = async ({
   }
 };
 
-export const fetchPlaylistDetails = async ({
-  id,
-}: {
-  id: string | string[];
-}) => {
-  const idParam = Array.isArray(id) ? id.join(',') : id;
-
+export const fetchPlaylistDetails = async ({ id }: { id: string }) => {
   const response = await fetch(
-    `${apiUrl}/playlistItems?part=snippet&playlistId=${idParam}&key=${apiKey}`,
+    `${apiUrl}/playlistItems?part=snippet&playlistId=${id}&key=${apiKey}`,
   );
   if (!response.ok) {
     throw new Error(`failed fetch playlist details: ${response.status}`);
