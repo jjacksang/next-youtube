@@ -3,13 +3,34 @@ import {
   fetchPlaylistDetails,
   fetchVideoDetails,
 } from './api';
-import { IChannel, IEnrichedVideo, PlayList, Video } from './type';
+import {
+  IChannel,
+  IChannelDetail,
+  IEnrichedVideo,
+  IVideoDetail,
+  PlayList,
+  Video,
+} from './type';
 
 type SearchResultItem = Video | PlayList | IChannel;
 
 interface YoutubeResponse {
   items: SearchResultItem[];
   nextPageToken?: string;
+}
+
+function getFulfilledItems<T>(
+  result: PromiseSettledResult<{ items: T[] | undefined }>,
+): T[] {
+  if (
+    result.status === 'fulfilled' &&
+    result.value &&
+    result.value.items &&
+    Array.isArray(result.value.items)
+  ) {
+    return result.value.items;
+  }
+  return [];
 }
 
 export async function processVideoData(searchResults: YoutubeResponse) {
@@ -50,8 +71,6 @@ export async function processVideoData(searchResults: YoutubeResponse) {
       ...new Set(channelIdsFromAllItems.filter(Boolean)),
     ];
 
-    console.log('ChannelIds Mapping :', uniqueChannelIds);
-
     // quota cost를 고려하여 최소 요청으로 줄이기 위해 병렬 배치
     // 만약 해당 id값이 없을땐 빈 배열 반환
     const videoDetailsPromise =
@@ -73,18 +92,88 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         ? fetchChannelDetails({ id: uniqueChannelIds.join(',') })
         : Promise.resolve({ items: [] });
 
-    const [videoResults, playlistResults, channelResults, eachChannelDetails] =
-      await Promise.allSettled([
-        videoDetailsPromise,
-        playlistDetailsPromise,
-        channelDetailsPromise,
-        channelDetailsFromAllItems,
-      ]);
+    // 병렬처리
+    const [
+      videoDetailsResults,
+      playlistDetailsResults,
+      channelDetailsResults,
+      eachChannelDetails,
+    ] = await Promise.allSettled([
+      videoDetailsPromise,
+      playlistDetailsPromise,
+      channelDetailsPromise,
+      channelDetailsFromAllItems,
+    ]);
 
-    console.log('videoDetails :', videoResults);
-    console.log('channelDetails :', playlistResults);
-    console.log('playlistDetails : ', channelResults);
-    console.log('eachChannelDetails', eachChannelDetails);
+    // Promise로 반환받은 데이터 평탄화
+    const videoItemsData: IVideoDetail[] =
+      getFulfilledItems(videoDetailsResults);
+    const playlistItemsData: PlayList[] = getFulfilledItems(
+      playlistDetailsResults,
+    );
+    const channelItemsData: IChannel[] = getFulfilledItems(
+      channelDetailsResults,
+    );
+    const eachChannelItemData: IChannelDetail[] =
+      getFulfilledItems(eachChannelDetails);
+
+    // 빠른 조회를 위해 Mapping
+    const videoDetailsMap = new Map(
+      videoItemsData.map(video => [video.id, video]),
+    );
+    const playlistDetailsMap = new Map(
+      playlistItemsData.map(playlist => [playlist.id.playlistId, playlist]),
+    );
+    const channelThumbnailMap = new Map(
+      eachChannelItemData.map(channel => [
+        channel.id,
+        channel.snippet.thumbnails.default.url,
+      ]),
+    );
+
+    // 최종 데이터 반환
+    const processedSearchResults = searchResults.items
+      .map(item => {
+        if (item.id.kind === 'youtube#video') {
+          const videoDetail = videoDetailsMap.get(item.id.videoId);
+          const channelThumbnail = channelThumbnailMap.get(
+            item.snippet.channelId,
+          );
+
+          return {
+            ...item,
+            viewCount: videoDetail?.statistics?.viewCount || '0',
+            snippet: {
+              ...item.snippet,
+              thumbnail: channelThumbnail || '',
+            },
+          };
+        } else if (item.id.kind === 'youtube#playlist') {
+          // const playlistDetail = playlistDetailsMap.get(item.id.playlistId);
+          const channelThumbnail = channelThumbnailMap.get(
+            item.snippet.channelId,
+          );
+
+          return {
+            ...item,
+            viewCount: '0',
+            snippet: {
+              ...item.snippet,
+              thumbnail: channelThumbnail || '',
+            },
+          };
+        } else if (item.id.kind === 'youtube#channel') {
+          return item;
+        }
+
+        return item;
+      })
+      .filter(Boolean);
+
+    return {
+      videoWithViewCount: processedSearchResults,
+      nextPageToken: searchResults.nextPageToken || '',
+    };
   } catch (error) {
     console.error('Error in processVideoData: ', error);
 

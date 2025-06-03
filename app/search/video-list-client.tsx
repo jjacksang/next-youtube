@@ -25,8 +25,13 @@ export const VideoListClient = ({
     nextPageToken: nextPageToken,
   };
 
-  const { allVideos, allChannels, fetchNextPage, hasNextPage } =
-    useSearchInfinietQuery(initialQuery, initialData);
+  const {
+    allVideos,
+    allChannels,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useSearchInfinietQuery(initialQuery, initialData);
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
   return (
@@ -45,7 +50,17 @@ export const VideoListClient = ({
         {hasNextPage === false ? (
           <button>검색 결과가 없습니다</button>
         ) : (
-          <button onClick={() => fetchNextPage()}>더보기</button>
+          <button
+            onClick={() => {
+              console.log('hasNextPage :', hasNextPage);
+              console.log('isFetchingNextPage : ', isFetchingNextPage);
+              console.log('Current page counts : ', allVideos?.length);
+
+              fetchNextPage();
+            }}
+          >
+            더보기
+          </button>
         )}
       </div>
     </>

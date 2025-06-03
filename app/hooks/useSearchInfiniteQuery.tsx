@@ -48,11 +48,14 @@ export default function useSearchInfinietQuery(
   } = useInfiniteQuery<ProcessedYoutubePageData>({
     queryKey: ['videos', searchParams],
     queryFn: async ({ pageParam }) => {
+      console.log(pageParam);
       const response = await fetchYoutubeVideos({
         q: searchParams,
         maxResults: 24,
-        nextPageToken: pageParam as string | undefined,
+        nextPageToken: pageParam as string,
       });
+
+      console.log(response);
 
       if (!response.ok) {
         console.error('API Error:', response.status, response.statusText);
@@ -61,8 +64,12 @@ export default function useSearchInfinietQuery(
         );
       }
 
+      const rawApiData = await response.json();
+
       const { videoWithViewCount, nextPageToken } =
-        await processVideoData(response);
+        await processVideoData(rawApiData);
+
+      console.log('Process Video Data!!!!!!! : ', videoWithViewCount);
 
       const videos = videoWithViewCount.filter(
         (item): item is IEnrichedVideo => item.id.kind !== 'youtube#channel',
@@ -78,6 +85,7 @@ export default function useSearchInfinietQuery(
         nextPageToken,
       };
     },
+
     getNextPageParam: lastPage => {
       console.log('getNextpageParam', lastPage);
       console.log('returning: ', lastPage.nextPageToken || undefined);
