@@ -10,6 +10,7 @@ interface VideoItemProps {
 }
 
 export default function VideoItem({ video }: VideoItemProps) {
+  console.log(video);
   return (
     <div className={style.container} key={video.id.videoId}>
       <div className={style.thumbnail__img}>
@@ -26,12 +27,12 @@ export default function VideoItem({ video }: VideoItemProps) {
       <div className={style.info__container}>
         <div className={style.channel__img}>
           <Link href={`/channel/${video.snippet.channelId}`}>
-            {/* <Image
+            <Image
               src={video.snippet.channelThumbnail!}
               alt={video.snippet.description}
               width={40}
               height={40}
-            /> */}
+            />
           </Link>
         </div>
         <div className={style.info__content}>
