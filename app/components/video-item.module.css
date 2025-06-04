@@ -76,6 +76,11 @@
   font-size: 0.875rem;
   font-weight: bold;
 }
+
+.content__title {
+  height: 42px;
+}
+
 .content__area {
   display: flex;
   flex-direction: column;

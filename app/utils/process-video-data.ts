@@ -1,8 +1,4 @@
-import {
-  fetchChannelDetails,
-  fetchPlaylistDetails,
-  fetchVideoDetails,
-} from './api';
+import { fetchChannelDetails, fetchVideoDetails } from './api';
 import {
   IChannel,
   IChannelDetail,
@@ -42,28 +38,20 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     // item.id.kind 에 따라 각 데이터 수집
     const isVideos = (item: SearchResultItem): item is Video =>
       item.id?.kind === 'youtube#video' && typeof item.id.videoId === 'string';
-    const isPlaylist = (item: SearchResultItem): item is PlayList =>
-      item.id?.kind === 'youtube#playlist' &&
-      typeof item.id.playlistId === 'string';
     const isChannel = (item: SearchResultItem): item is IChannel =>
       item.id?.kind === 'youtube#channel' &&
       typeof item.snippet.channelId === 'string';
 
     const videoItems = searchResults.items.filter(isVideos);
-    const playlistItems = searchResults.items.filter(isPlaylist);
     const channelItems = searchResults.items.filter(isChannel);
 
     // 각 데이터에 따라 id값 맵핑
     let videoIds = [...new Set(videoItems.map(item => item.id.videoId))];
-    let playlistIds = [
-      ...new Set(playlistItems.map(item => item.id.playlistId)),
-    ];
     let channelIds = [
       ...new Set(channelItems.map(item => item.snippet.channelId)),
     ];
     let channelIdsFromAllItems = [
       ...videoItems.map(item => item.snippet.channelId),
-      ...playlistItems.map(item => item.snippet.channelId),
     ];
 
     // channel thumbnail을 가져오기 위해 videos, playlists 에 각 channelId 수집
@@ -77,10 +65,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
       videoIds.length > 0
         ? fetchVideoDetails({ id: videoIds.join(',') })
         : Promise.resolve({ items: [] });
-    const playlistDetailsPromise =
-      playlistIds.length > 0
-        ? fetchPlaylistDetails({ id: playlistIds.join(',') })
-        : Promise.resolve({ items: [] });
+
     const channelDetailsPromise =
       channelIds.length > 0
         ? fetchChannelDetails({ id: channelIds.join(',') })
@@ -93,24 +78,17 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         : Promise.resolve({ items: [] });
 
     // 병렬처리
-    const [
-      videoDetailsResults,
-      playlistDetailsResults,
-      channelDetailsResults,
-      eachChannelDetails,
-    ] = await Promise.allSettled([
-      videoDetailsPromise,
-      playlistDetailsPromise,
-      channelDetailsPromise,
-      channelDetailsFromAllItems,
-    ]);
+    const [videoDetailsResults, channelDetailsResults, eachChannelDetails] =
+      await Promise.allSettled([
+        videoDetailsPromise,
+        channelDetailsPromise,
+        channelDetailsFromAllItems,
+      ]);
 
     // Promise로 반환받은 데이터 평탄화
     const videoItemsData: IVideoDetail[] =
       getFulfilledItems(videoDetailsResults);
-    const playlistItemsData: PlayList[] = getFulfilledItems(
-      playlistDetailsResults,
-    );
+
     const channelItemsData: IChannel[] = getFulfilledItems(
       channelDetailsResults,
     );
@@ -121,9 +99,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     const videoDetailsMap = new Map(
       videoItemsData.map(video => [video.id, video]),
     );
-    const playlistDetailsMap = new Map(
-      playlistItemsData.map(playlist => [playlist.id.playlistId, playlist]),
-    );
+
     const channelThumbnailMap = new Map(
       eachChannelItemData.map(channel => [
         channel.id,
@@ -145,21 +121,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
             viewCount: videoDetail?.statistics?.viewCount || '0',
             snippet: {
               ...item.snippet,
-              thumbnail: channelThumbnail || '',
-            },
-          };
-        } else if (item.id.kind === 'youtube#playlist') {
-          // const playlistDetail = playlistDetailsMap.get(item.id.playlistId);
-          const channelThumbnail = channelThumbnailMap.get(
-            item.snippet.channelId,
-          );
-
-          return {
-            ...item,
-            viewCount: '0',
-            snippet: {
-              ...item.snippet,
-              thumbnail: channelThumbnail || '',
+              channelThumbnail: channelThumbnail || '',
             },
           };
         } else if (item.id.kind === 'youtube#channel') {
@@ -170,6 +132,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
       })
       .filter(Boolean);
 
+    console.log(processedSearchResults);
     return {
       videoWithViewCount: processedSearchResults,
       nextPageToken: searchResults.nextPageToken || '',
