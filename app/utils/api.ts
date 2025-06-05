@@ -42,7 +42,7 @@ export const fetchYoutubeVideos = async (
       );
     }
 
-    return response.json();
+    return response;
   } catch (error) {
     console.log('Fetch videos Error', error);
     throw error;

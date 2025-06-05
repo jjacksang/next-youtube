@@ -56,8 +56,6 @@ export default function useSearchInfinietQuery(
           nextPageToken: pageParam as string,
         });
 
-        console.log(response);
-
         if (!response.ok) {
           console.error('API Error:', response.status, response.statusText);
           throw new Error(
@@ -65,10 +63,10 @@ export default function useSearchInfinietQuery(
           );
         }
 
-        const data = await response.json();
+        const searchResults = await response.json();
 
         const { videoWithViewCount, nextPageToken } =
-          await processVideoData(data);
+          await processVideoData(searchResults);
 
         console.log('Process Video Data!!!!!!! : ', videoWithViewCount);
 
@@ -92,8 +90,6 @@ export default function useSearchInfinietQuery(
     },
 
     getNextPageParam: lastPage => {
-      console.log('getNextpageParam', lastPage);
-      console.log('returning: ', lastPage.nextPageToken || undefined);
       return lastPage.nextPageToken || undefined;
     },
 
@@ -122,18 +118,25 @@ export default function useSearchInfinietQuery(
     refetchOnMount: false,
   });
 
-  console.log(data);
-
   const allVideos = useMemo((): IEnrichedVideo[] => {
-    if (!data?.pages) return [];
-
-    return data.pages.flatMap(page => page.videos);
+    if (!data?.pages) {
+      console.log('allVideos is empty');
+      return [];
+    }
+    const videos = data.pages.flatMap(page => page.videos);
+    console.log('all videos count : ', videos.length);
+    return videos;
   }, [data?.pages]);
 
   const allChannels = useMemo((): IChannel[] => {
-    if (!data?.pages) return [];
+    if (!data?.pages) {
+      console.log('allChannel is empty');
+      return [];
+    }
 
-    return data.pages.flatMap(page => page.channels);
+    const channels = data.pages.flatMap(page => page.channels);
+    console.log('all channels count :', channels.length);
+    return channels;
   }, [data?.pages]);
 
   const currentPageToken = useMemo(() => {
@@ -141,14 +144,6 @@ export default function useSearchInfinietQuery(
     return data.pages[data.pages.length - 1].nextPageToken;
   }, [data?.pages]);
 
-  console.log('=== TanStack Query Debug ===');
-  console.log('status:', status);
-  console.log('hasNextPage:', hasNextPage);
-  console.log('isFetchingNextPage:', isFetchingNextPage);
-  console.log('data?.pages length:', data?.pages?.length);
-  console.log('data?.pageParams:', data?.pageParams);
-  console.log('Last page:', data?.pages?.[data.pages.length - 1]);
-  console.log('============================');
   return {
     // 데이터
     allChannels,

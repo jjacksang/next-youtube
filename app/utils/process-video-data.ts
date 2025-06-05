@@ -84,6 +84,26 @@ export async function processVideoData(searchResults: YoutubeResponse) {
         channelDetailsFromAllItems,
       ]);
 
+    // 실패한 Promise가 있는지 체크
+    if (videoDetailsResults.status === 'rejected') {
+      console.error(
+        '❌ Video details fetch failed:',
+        videoDetailsResults.reason,
+      );
+    }
+    if (channelDetailsResults.status === 'rejected') {
+      console.error(
+        '❌ Channel details fetch failed:',
+        channelDetailsResults.reason,
+      );
+    }
+    if (eachChannelDetails.status === 'rejected') {
+      console.error(
+        '❌ Channel thumbnails fetch failed:',
+        eachChannelDetails.reason,
+      );
+    }
+
     // Promise로 반환받은 데이터 평탄화
     const videoItemsData: IVideoDetail[] =
       getFulfilledItems(videoDetailsResults);

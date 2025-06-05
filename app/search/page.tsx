@@ -42,17 +42,17 @@ async function Search({
   console.log('Search Page : ', q);
 
   try {
-    const searchData = await fetchYoutubeVideos(
+    const response = await fetchYoutubeVideos(
       { q: q, maxResults: 24 },
       {
         cache: 'no-store',
       },
     );
 
-    console.log(searchData);
+    const searchResults = await response.json();
 
     const { videoWithViewCount, nextPageToken } =
-      await processVideoData(searchData);
+      await processVideoData(searchResults);
 
     return (
       <VideoListClient
