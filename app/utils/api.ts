@@ -21,7 +21,9 @@ export const fetchYoutubeVideos = async (
   { q, maxResults, nextPageToken }: IfetchProps,
   options?: IFetchOptions,
 ) => {
-  let baseUrl = `${apiUrl}/search?part=snippet&order=date&maxResults=${maxResults}&q=${q}&key=${apiKey}`;
+  console.log('fetchYoutubeVideos Params :', q, maxResults, nextPageToken);
+
+  let baseUrl = `${apiUrl}/search?part=snippet&order=date&regionCode=KR&maxResults=${maxResults}&q=${q}&key=${apiKey}`;
 
   if (nextPageToken) {
     baseUrl += `&pageToken=${nextPageToken}`;
@@ -30,9 +32,20 @@ export const fetchYoutubeVideos = async (
   try {
     const response = await fetch(baseUrl, options);
 
-    if (response.ok) return response.json();
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(
+        `Fetch Youtube video is failed : ${response.status} ${response.statusText} - Body: ${errorBody}`,
+      );
+      throw new Error(
+        `Failed to fetch youtube videos : ${response.status} ${response.statusText}`,
+      );
+    }
+
+    return response.json();
   } catch (error) {
     console.log('Fetch videos Error', error);
+    throw error;
   }
 };
 

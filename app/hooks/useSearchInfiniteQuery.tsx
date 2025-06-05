@@ -49,41 +49,46 @@ export default function useSearchInfinietQuery(
     queryKey: ['videos', searchParams],
     queryFn: async ({ pageParam }) => {
       console.log(pageParam);
-      const response = await fetchYoutubeVideos({
-        q: searchParams,
-        maxResults: 24,
-        nextPageToken: pageParam as string,
-      });
+      try {
+        const response = await fetchYoutubeVideos({
+          q: searchParams,
+          maxResults: 24,
+          nextPageToken: pageParam as string,
+        });
 
-      console.log(response);
+        console.log(response);
 
-      if (!response.ok) {
-        console.error('API Error:', response.status, response.statusText);
-        throw new Error(
-          `Failed to fetch Youtube videos: ${response.status}, ${response.statusText}`,
+        if (!response.ok) {
+          console.error('API Error:', response.status, response.statusText);
+          throw new Error(
+            `Failed to fetch Youtube videos: ${response.status}, ${response.statusText}`,
+          );
+        }
+
+        const data = await response.json();
+
+        const { videoWithViewCount, nextPageToken } =
+          await processVideoData(data);
+
+        console.log('Process Video Data!!!!!!! : ', videoWithViewCount);
+
+        const videos = videoWithViewCount.filter(
+          (item): item is IEnrichedVideo => item.id.kind !== 'youtube#channel',
         );
+
+        const channels = videoWithViewCount.filter(
+          (item): item is IChannel => item.id.kind === 'youtube#channel',
+        );
+
+        return {
+          channels,
+          videos,
+          nextPageToken,
+        };
+      } catch (error) {
+        console.error('Error in useInfiniteQuery queryFn : ', error);
+        throw error;
       }
-
-      const rawApiData = await response.json();
-
-      const { videoWithViewCount, nextPageToken } =
-        await processVideoData(rawApiData);
-
-      console.log('Process Video Data!!!!!!! : ', videoWithViewCount);
-
-      const videos = videoWithViewCount.filter(
-        (item): item is IEnrichedVideo => item.id.kind !== 'youtube#channel',
-      );
-
-      const channels = videoWithViewCount.filter(
-        (item): item is IChannel => item.id.kind === 'youtube#channel',
-      );
-
-      return {
-        channels,
-        videos,
-        nextPageToken,
-      };
     },
 
     getNextPageParam: lastPage => {

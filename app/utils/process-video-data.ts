@@ -4,11 +4,10 @@ import {
   IChannelDetail,
   IEnrichedVideo,
   IVideoDetail,
-  PlayList,
   Video,
 } from './type';
 
-type SearchResultItem = Video | PlayList | IChannel;
+type SearchResultItem = Video | IChannel;
 
 interface YoutubeResponse {
   items: SearchResultItem[];
@@ -108,29 +107,38 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     );
 
     // 최종 데이터 반환
-    const processedSearchResults = searchResults.items
-      .map(item => {
-        if (item.id.kind === 'youtube#video') {
-          const videoDetail = videoDetailsMap.get(item.id.videoId);
-          const channelThumbnail = channelThumbnailMap.get(
-            item.snippet.channelId,
-          );
+    const processedSearchResults: (IEnrichedVideo | IChannel)[] =
+      searchResults.items
+        .map(item => {
+          if (item.id.kind === 'youtube#video') {
+            const videoDetail = videoDetailsMap.get(item.id.videoId);
+            const channelThumbnail = channelThumbnailMap.get(
+              item.snippet.channelId,
+            );
 
-          return {
-            ...item,
-            viewCount: videoDetail?.statistics?.viewCount || '0',
-            snippet: {
-              ...item.snippet,
-              channelThumbnail: channelThumbnail || '',
-            },
-          };
-        } else if (item.id.kind === 'youtube#channel') {
-          return item;
-        }
+            return {
+              id: { ...item.id },
+              kind: 'youtube#searchResult',
+              viewCount: videoDetail?.statistics?.viewCount || 0,
+              snippet: {
+                ...item.snippet,
+                channelThumbnail: channelThumbnail || '',
+              },
+            } as IEnrichedVideo;
+          } else if (item.id.kind === 'youtube#channel') {
+            return {
+              ...item,
+              kind: 'youtube#channel',
+              id: item.id,
+              snippet: {
+                ...item.snippet,
+              },
+            } as IChannel;
+          }
 
-        return item;
-      })
-      .filter(Boolean);
+          return null;
+        })
+        .filter((item): item is IEnrichedVideo | IChannel => item !== null);
 
     console.log(processedSearchResults);
     return {

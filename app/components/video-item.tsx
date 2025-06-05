@@ -10,7 +10,6 @@ interface VideoItemProps {
 }
 
 export default function VideoItem({ video }: VideoItemProps) {
-  console.log(video);
   return (
     <div className={style.container} key={video.id.videoId}>
       <div className={style.thumbnail__img}>
