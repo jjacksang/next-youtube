@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchYoutubeVideos } from '../utils/api';
 import { processVideoData } from '../utils/process-video-data';
 import { IChannel, IEnrichedVideo } from '../utils/type';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -37,6 +37,26 @@ export default function useSearchInfinietQuery(
   searchParams: string,
   initialData: InitialYoutubeData,
 ): UseSearchInfiniteQueryReturn {
+  const existingVideoIds = useRef<Set<string>>(new Set());
+  const duplicateRateRef = useRef<number>(0);
+
+  const initialFilteredVideos: IEnrichedVideo[] = [];
+  const initailFilteredChannels: IChannel[] = [];
+
+  if (initialData?.items) {
+    for (const item of initialData.items) {
+      if (item.id.kind === 'youtube#channel') {
+        initailFilteredChannels.push(item as IChannel);
+      } else {
+        const video = item as IEnrichedVideo;
+        if (!existingVideoIds.current.has(video.id.videoId)) {
+          existingVideoIds.current.add(video.id.videoId);
+          initialFilteredVideos.push(video);
+        }
+      }
+    }
+  }
+
   const {
     status,
     data,
@@ -49,44 +69,60 @@ export default function useSearchInfinietQuery(
     queryKey: ['videos', searchParams],
     queryFn: async ({ pageParam }) => {
       console.log(pageParam);
-      try {
+      const targetCount = 24;
+      const collectedVideos: IEnrichedVideo[] = [];
+      const collectedChannels: IChannel[] = [];
+      let nextPageToken = pageParam as string | undefined;
+
+      const MAX_ATTEMPTS = 5;
+      let attemptCount = 0;
+
+      let remainingToFetch = targetCount;
+
+      while (
+        collectedVideos.length < targetCount &&
+        attemptCount < MAX_ATTEMPTS
+      ) {
         const response = await fetchYoutubeVideos({
           q: searchParams,
-          maxResults: 24,
-          nextPageToken: pageParam as string,
+          maxResults: remainingToFetch,
+          nextPageToken,
         });
 
         if (!response.ok) {
-          console.error('API Error:', response.status, response.statusText);
           throw new Error(
-            `Failed to fetch Youtube videos: ${response.status}, ${response.statusText}`,
+            `Failed to fetch: ${response.status} ${response.statusText}`,
           );
         }
 
         const searchResults = await response.json();
-
-        const { videoWithViewCount, nextPageToken } =
+        const { videoWithViewCount, nextPageToken: newToken } =
           await processVideoData(searchResults);
 
-        console.log('Process Video Data!!!!!!! : ', videoWithViewCount);
+        const newVideos: IEnrichedVideo[] = [];
+        const newChannels: IChannel[] = [];
 
-        const videos = videoWithViewCount.filter(
-          (item): item is IEnrichedVideo => item.id.kind !== 'youtube#channel',
-        );
+        for (const item of videoWithViewCount) {
+          if (item.id.kind === 'youtube#channel') {
+            newChannels.push(item as IChannel);
+            continue;
+          }
 
-        const channels = videoWithViewCount.filter(
-          (item): item is IChannel => item.id.kind === 'youtube#channel',
-        );
-
-        return {
-          channels,
-          videos,
-          nextPageToken,
-        };
-      } catch (error) {
-        console.error('Error in useInfiniteQuery queryFn : ', error);
-        throw error;
+          const video = item as IEnrichedVideo;
+          if (!existingVideoIds.current.has(video.id.videoId)) {
+            newVideos.push(video);
+            existingVideoIds.current.add(video.id.videoId);
+          }
+        }
+        collectedVideos.push(...newVideos);
+        collectedChannels.push(...newChannels);
       }
+
+      return {
+        videos: collectedVideos.slice(0, targetCount),
+        channels: collectedChannels,
+        nextPageToken,
+      };
     },
 
     getNextPageParam: lastPage => {

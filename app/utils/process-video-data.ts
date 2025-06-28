@@ -45,11 +45,11 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     const channelItems = searchResults.items.filter(isChannel);
 
     // 각 데이터에 따라 id값 맵핑
-    let videoIds = [...new Set(videoItems.map(item => item.id.videoId))];
-    let channelIds = [
+    const videoIds = [...new Set(videoItems.map(item => item.id.videoId))];
+    const channelIds = [
       ...new Set(channelItems.map(item => item.snippet.channelId)),
     ];
-    let channelIdsFromAllItems = [
+    const channelIdsFromAllItems = [
       ...videoItems.map(item => item.snippet.channelId),
     ];
 
@@ -108,9 +108,9 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     const videoItemsData: IVideoDetail[] =
       getFulfilledItems(videoDetailsResults);
 
-    const channelItemsData: IChannel[] = getFulfilledItems(
-      channelDetailsResults,
-    );
+    // const channelItemsData: IChannel[] = getFulfilledItems(
+    //   channelDetailsResults,
+    // );
     const eachChannelItemData: IChannelDetail[] =
       getFulfilledItems(eachChannelDetails);
 
