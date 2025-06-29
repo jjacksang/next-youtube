@@ -38,7 +38,6 @@ export default function useSearchInfinietQuery(
   initialData: InitialYoutubeData,
 ): UseSearchInfiniteQueryReturn {
   const existingVideoIds = useRef<Set<string>>(new Set());
-  const duplicateRateRef = useRef<number>(0);
 
   const initialFilteredVideos: IEnrichedVideo[] = [];
   const initailFilteredChannels: IChannel[] = [];
@@ -75,9 +74,9 @@ export default function useSearchInfinietQuery(
       let nextPageToken = pageParam as string | undefined;
 
       const MAX_ATTEMPTS = 5;
-      let attemptCount = 0;
+      const attemptCount = 0;
 
-      let remainingToFetch = targetCount;
+      const remainingToFetch = targetCount;
 
       while (
         collectedVideos.length < targetCount &&
@@ -101,6 +100,8 @@ export default function useSearchInfinietQuery(
 
         const newVideos: IEnrichedVideo[] = [];
         const newChannels: IChannel[] = [];
+
+        nextPageToken = newToken;
 
         for (const item of videoWithViewCount) {
           if (item.id.kind === 'youtube#channel') {
