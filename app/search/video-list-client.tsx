@@ -48,7 +48,7 @@ export const VideoListClient = ({
       </div>
       <div className={style.moreBtn}>
         {hasNextPage === false ? (
-          <button>검색 결과가 없습니다</button>
+          <div>검색 결과가 없습니다</div>
         ) : (
           <button
             onClick={() => {
