@@ -3,6 +3,7 @@ import { fetchYoutubeVideos } from '../utils/api';
 import { processVideoData } from '../utils/process-video-data';
 import { IChannel, IEnrichedVideo } from '../utils/type';
 import { useMemo, useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -37,6 +38,12 @@ export default function useSearchInfinietQuery(
   searchParams: string,
   initialData: InitialYoutubeData,
 ): UseSearchInfiniteQueryReturn {
+  // 무한스크롤 감지
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
   const existingVideoIds = useRef<Set<string>>(new Set());
 
   const initialFilteredVideos: IEnrichedVideo[] = [];

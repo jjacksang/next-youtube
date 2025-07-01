@@ -8,6 +8,8 @@ import { RecoChannel } from '../components/reco-channel';
 import useSearchInfinietQuery, {
   InitialYoutubeData,
 } from '../hooks/useSearchInfiniteQuery';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -25,7 +27,14 @@ export const VideoListClient = ({
     nextPageToken: nextPageToken,
   };
 
+  // 무한스크롤 감지
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: false,
+  });
+
   const {
+    status,
     allVideos,
     allChannels,
     fetchNextPage,
@@ -33,6 +42,13 @@ export const VideoListClient = ({
     isFetchingNextPage,
   } = useSearchInfinietQuery(initialQuery, initialData);
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
+
+  // intersection observer 감지
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage && status === 'success') {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, status]);
 
   return (
     <>
@@ -47,21 +63,7 @@ export const VideoListClient = ({
         ))}
       </div>
       <div className={style.moreBtn}>
-        {hasNextPage === false ? (
-          <div>검색 결과가 없습니다</div>
-        ) : (
-          <button
-            onClick={() => {
-              console.log('hasNextPage :', hasNextPage);
-              console.log('isFetchingNextPage : ', isFetchingNextPage);
-              console.log('Current page counts : ', allVideos?.length);
-
-              fetchNextPage();
-            }}
-          >
-            더보기
-          </button>
-        )}
+        {status !== 'success' ? <div>spiner part</div> : <div ref={ref}></div>}
       </div>
     </>
   );
