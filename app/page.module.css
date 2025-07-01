@@ -1,46 +1,50 @@
 .home {
-    width: 100%;
-    color: white;
+  width: 100%;
+  color: white;
 
-    padding: 0px 12px;
+  padding: 0px 12px;
 }
 
 .youtuber {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: calc(18% - 8px);
-    overflow-x: hidden;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(18% - 8px);
+  overflow-x: hidden;
 
-    padding-top: 12px;
+  padding-top: 12px;
 }
 
 .youtuber__profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-    width: 128px;
-    height: auto;
+  width: 128px;
+  height: auto;
 
-    gap: 8px;
+  gap: 8px;
 }
 
 .youtuber__profile > img {
-    width: 120px;
-    height: 120px;
+  width: 120px;
+  height: 120px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
 .youtuber__profile > span {
-    text-align: center;
+  text-align: center;
 }
 
 .swiper__section {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .swiper__section > section {
-    overflow-x: auto;
+  overflow-x: auto;
+}
+
+.swiper__h2 {
+  margin: 1.325rem 0px 0.275rem 0px;
 }

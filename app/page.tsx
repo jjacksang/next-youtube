@@ -111,7 +111,10 @@ export default async function Home() {
         <section>
           {data.map((item, idx: number) => (
             <div key={`${developerChannelId[idx].name}님의 영상목록`}>
-              <h2 key={`youtube-channel-video-${developerChannelId[idx].name}`}>
+              <h2
+                className={styles.swiper__h2}
+                key={`youtube-channel-video-${developerChannelId[idx].name}`}
+              >
                 {developerChannelId[idx].name}님의 영상목록
               </h2>
               <RecoDeveloper channelVideos={item.videoWithViewCount} />
