@@ -1,0 +1,8 @@
+.skeleton__container {
+  display: grid;
+  grid-template-columns: repeat(4, 24%);
+  justify-items: center;
+  grid-gap: 15px;
+
+  width: 100%;
+}

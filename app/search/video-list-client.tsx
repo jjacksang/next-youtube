@@ -10,7 +10,7 @@ import useSearchInfinietQuery, {
 } from '../hooks/useSearchInfiniteQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import { SkeletonSearch } from '../components/skeleton-search';
+import SkeletonGrid from '../components/skeleton-grid';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -45,7 +45,7 @@ export const VideoListClient = ({
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
   if (status === 'pending') {
-    return <SkeletonSearch />;
+    return <SkeletonGrid />;
   }
 
   if (status === 'error') {
@@ -76,7 +76,9 @@ export const VideoListClient = ({
         ))}
       </div>
       <div className={style.skeleton__tab}>
-        {status !== 'success' ? <div></div> : <div ref={ref}></div>}
+        {isFetchingNextPage && hasNextPage && <SkeletonGrid key={4} />}
+
+        <div ref={ref} className={style.trigger}></div>
       </div>
     </>
   );
