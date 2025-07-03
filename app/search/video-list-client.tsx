@@ -10,6 +10,7 @@ import useSearchInfinietQuery, {
 } from '../hooks/useSearchInfiniteQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import { SkeletonSearch } from '../components/skeleton-search';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -43,6 +44,18 @@ export const VideoListClient = ({
   } = useSearchInfinietQuery(initialQuery, initialData);
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
+  if (status === 'pending') {
+    return <SkeletonSearch />;
+  }
+
+  if (status === 'error') {
+    return <div>Error</div>;
+  }
+
+  if (status === 'success' && allVideos.length === 0) {
+    return <div>Empty Results</div>;
+  }
+
   // intersection observer 감지
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage && status === 'success') {
@@ -62,8 +75,8 @@ export const VideoListClient = ({
           <VideoItem key={item.id.videoId} video={item} />
         ))}
       </div>
-      <div className={style.moreBtn}>
-        {status !== 'success' ? <div>spiner part</div> : <div ref={ref}></div>}
+      <div className={style.skeleton__tab}>
+        {status !== 'success' ? <div></div> : <div ref={ref}></div>}
       </div>
     </>
   );
