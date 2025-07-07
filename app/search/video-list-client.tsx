@@ -44,24 +44,19 @@ export const VideoListClient = ({
   } = useSearchInfinietQuery(initialQuery, initialData);
   console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
-  if (status === 'pending') {
-    return <SkeletonGrid />;
-  }
-
-  if (status === 'error') {
-    return <div>Error</div>;
-  }
-
-  if (status === 'success' && allVideos.length === 0) {
-    return <div>Empty Results</div>;
-  }
-
   // intersection observer 감지
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage && status === 'success') {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, isFetchingNextPage, status]);
+  }, [inView, hasNextPage, isFetchingNextPage, status, fetchNextPage]);
+
+  if (status === 'pending') return <SkeletonGrid />;
+
+  if (status === 'error') return <div>Error</div>;
+
+  if (status === 'success' && allVideos.length === 0)
+    return <div>Empty Results</div>;
 
   return (
     <>
