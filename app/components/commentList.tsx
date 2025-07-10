@@ -4,6 +4,7 @@ import { ICommentList } from '../utils/type';
 import { elapsedTime } from '../utils/elapsedTime';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BiLike } from 'react-icons/bi';
 
 export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
   console.log('CommnetList component!!', comments);
@@ -12,7 +13,7 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
     <>
       {comments.map((item: ICommentList) => (
         <div className={style.comment__container} key={item.etag}>
-          <div>
+          <div className={style.comment__author__img}>
             <Link
               href={`/channel/${item.snippet.topLevelComment.snippet.authorChannelId.value}`}
               className={style.author__img}
@@ -43,6 +44,7 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
               <span>{item.snippet.topLevelComment.snippet.textDisplay}</span>
             </div>
             <div className={style.comment__icon}>
+              <BiLike />
               {item.snippet.topLevelComment.snippet.likeCount}
             </div>
           </div>

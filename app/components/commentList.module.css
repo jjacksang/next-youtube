@@ -15,9 +15,21 @@
   text-decoration: none;
 }
 
+.author__comment:hover {
+  color: white;
+  filter: drop-shadow(0 0 0.5px rgba(212, 212, 212, 0.7));
+}
+
+.comment__author__img {
+  display: flex;
+  align-items: center;
+}
+
 .main__container {
   display: flex;
   flex-direction: column;
+
+  gap: 5px;
 }
 
 .author__comment {
@@ -27,4 +39,10 @@
 
 .publishTime {
   color: rgb(119, 119, 119);
+}
+
+.comment__icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
