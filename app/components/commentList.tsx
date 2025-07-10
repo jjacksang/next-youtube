@@ -28,17 +28,19 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
             </Link>
           </div>
           <div className={style.main__container}>
-            <Link
-              href={item.snippet.topLevelComment.snippet.authorChannelUrl}
-              className={style.author}
-            >
-              <span className={style.author__comment}>
-                {item.snippet.topLevelComment.snippet.authorDisplayName}
-              </span>
+            <div className={style.user__section}>
+              <Link
+                href={item.snippet.topLevelComment.snippet.authorChannelUrl}
+                className={style.author}
+              >
+                <span className={style.author__comment}>
+                  {item.snippet.topLevelComment.snippet.authorDisplayName}
+                </span>
+              </Link>
               <span className={style.publishTime}>
                 {elapsedTime(item.snippet.topLevelComment.snippet.publishedAt)}
               </span>
-            </Link>
+            </div>
 
             <div className={style.comment}>
               <span>{item.snippet.topLevelComment.snippet.textDisplay}</span>
