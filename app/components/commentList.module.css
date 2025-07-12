@@ -40,9 +40,3 @@
 .publishTime {
   color: rgb(119, 119, 119);
 }
-
-.comment__icon {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}

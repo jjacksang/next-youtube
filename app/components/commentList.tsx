@@ -4,7 +4,7 @@ import { ICommentList } from '../utils/type';
 import { elapsedTime } from '../utils/elapsedTime';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BiLike } from 'react-icons/bi';
+import CommentItem from './comment-item';
 
 export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
   console.log('CommnetList component!!', comments);
@@ -42,13 +42,7 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
               </span>
             </div>
 
-            <div className={style.comment}>
-              <span>{item.snippet.topLevelComment.snippet.textDisplay}</span>
-            </div>
-            <div className={style.comment__icon}>
-              <BiLike />
-              {item.snippet.topLevelComment.snippet.likeCount}
-            </div>
+            <CommentItem comments={item} />
           </div>
         </div>
       ))}
