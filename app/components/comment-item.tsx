@@ -1,16 +1,18 @@
+'use client';
+
 import { BiLike } from 'react-icons/bi';
 import styles from './comment-item.module.css';
 import { ICommentList } from '../utils/type';
 
-export default function CommentItem({ comments }: { comments: ICommentList }) {
+export default function CommentItem({ htmlText }: { htmlText: ICommentList }) {
   return (
-    <div>
+    <div className={styles.comment__container}>
       <div className={styles.comment}>
-        <span>{comments.snippet.topLevelComment.snippet.textDisplay}</span>
+        <span>{htmlText.snippet.topLevelComment.snippet.textOriginal}</span>
       </div>
       <div className={styles.comment__icon}>
         <BiLike />
-        {comments.snippet.topLevelComment.snippet.likeCount}
+        {htmlText.snippet.topLevelComment.snippet.likeCount}
       </div>
     </div>
   );

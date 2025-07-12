@@ -116,6 +116,7 @@ export interface ICommentList {
         likeCount: number;
         publishedAt: string;
         textDisplay: string;
+        textOriginal: string;
         updateAt: string;
         videoId: string;
       };

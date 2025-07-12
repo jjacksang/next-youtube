@@ -42,7 +42,7 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
               </span>
             </div>
 
-            <CommentItem comments={item} />
+            <CommentItem htmlText={item} />
           </div>
         </div>
       ))}
