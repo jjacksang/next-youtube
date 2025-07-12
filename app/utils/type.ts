@@ -64,6 +64,7 @@ export interface IVideoDetail {
     subscriberCount: number;
     viewCount: number;
     videoCount: number;
+    commentCount: number;
   };
 }
 
