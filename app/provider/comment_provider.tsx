@@ -4,13 +4,16 @@ import style from './comment_provider.module.css';
 
 import { CommentList } from '../components/commentList';
 import { useCommentInfiniteQuery } from '../hooks/useCommentInfiniteQuery';
+import { TimestampContext } from '../contexts/timestampContext';
 
 export const CommentProvider = ({
   id,
   authorChannelId,
+  onTimestampClick,
 }: {
   id: string;
   authorChannelId: string;
+  onTimestampClick: (seconds: number) => void;
 }) => {
   const { ref, comments, isFetching, hasNextPage } = useCommentInfiniteQuery({
     id,
@@ -20,7 +23,9 @@ export const CommentProvider = ({
   return (
     <>
       <form className={style.comment__form}>
-        <CommentList comments={comments} />
+        <TimestampContext.Provider value={onTimestampClick}>
+          <CommentList comments={comments} />
+        </TimestampContext.Provider>
       </form>
       <div ref={ref} className="loading-trigger">
         {isFetching ? (

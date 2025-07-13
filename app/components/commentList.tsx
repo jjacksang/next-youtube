@@ -6,7 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CommentItem from './comment-item';
 
-export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
+interface CommentListProps {
+  comments: ICommentList[];
+}
+
+export const CommentList = ({ comments }: CommentListProps) => {
   console.log('CommnetList component!!', comments);
 
   return (
@@ -42,7 +46,7 @@ export const CommentList = ({ comments }: { comments: ICommentList[] }) => {
               </span>
             </div>
 
-            <CommentItem htmlText={item} />
+            <CommentItem comment={item} />
           </div>
         </div>
       ))}

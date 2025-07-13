@@ -3,17 +3,24 @@
 import { BiLike } from 'react-icons/bi';
 import styles from './comment-item.module.css';
 import { ICommentList } from '../utils/type';
+import { useTimestamp } from '../contexts/timestampContext';
 
-export default function CommentItem({ htmlText }: { htmlText: ICommentList }) {
+interface CommentItemProps {
+  comment: ICommentList;
+}
+
+export default function CommentItem({ comment }: CommentItemProps) {
+  const onTimestampClick = useTimestamp();
+
   return (
     <div className={styles.comment__container}>
       <div className={styles.comment}>
-        <span>{htmlText.snippet.topLevelComment.snippet.textOriginal}</span>
+        <span>{comment.snippet.topLevelComment.snippet.textOriginal}</span>
       </div>
-      <div className={styles.comment__icon}>
+      <span className={styles.comment__icon}>
         <BiLike />
-        {htmlText.snippet.topLevelComment.snippet.likeCount}
-      </div>
+        {comment.snippet.topLevelComment.snippet.likeCount}
+      </span>
     </div>
   );
 }
