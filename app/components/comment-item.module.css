@@ -10,3 +10,62 @@
   align-items: center;
   gap: 5px;
 }
+
+.timestamp {
+  color: rgb(4, 128, 200);
+  border: none;
+  font-size: 16px;
+  font-family: bold;
+
+  border-radius: 5px;
+  background-color: rgb(44, 44, 44);
+  padding: 0px 1px 0px 1px;
+}
+
+.comment {
+  width: 100%;
+  position: relative;
+}
+
+.comment_more_btn {
+  display: none;
+}
+
+.comment_more_btn {
+  display: none;
+}
+
+.comment_text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.comment_label {
+  width: fit-content;
+  display: inline-block;
+  border: none;
+  padding: 0.375rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  text-align: center;
+  color: rgb(4, 128, 200);
+}
+
+.comment_label::after {
+  content: '...더보기';
+}
+
+.comment_label:hover {
+  color: rgb(12, 88, 202);
+}
+
+.comment_more_btn:checked ~ .comment_text {
+  -webkit-line-clamp: unset;
+}
+
+.comment_more_btn:checked ~ .comment_label::after {
+  content: '접기';
+}

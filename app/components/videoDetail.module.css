@@ -1,111 +1,113 @@
 .videoViewPage {
-    padding: 0;
+  padding: 0;
 }
 
 .video__play {
-    width: 100%;
-    padding-bottom: 56.2%;
-    position: relative;
-    margin: 16px 16px 16px 0px;
+  width: 100%;
+  padding-bottom: 56.2%;
+  position: relative;
+  margin: 16px 16px 16px 0px;
 }
 
 .video__play > iframe {
-    border-radius: 12px;
+  border-radius: 12px;
 }
 
 .video__info {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    padding: 20px 12px 20px 12px;
+  padding: 20px 12px 20px 12px;
 }
 
 .video__channel {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-    margin-top: 8px;
+  margin-top: 8px;
 }
 
 .id > a {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    color: white;
-    font-weight: 300;
-    text-decoration: none;
+  color: white;
+  font-weight: 300;
+  text-decoration: none;
 }
 
 .id > a > img {
-    border-radius: 50%;
-    margin-right: 12px;
+  border-radius: 50%;
+  margin-right: 12px;
 }
 
 .video__desc {
-    padding: 12px 20px 12px 20px;
-    margin-top: 20px;
-    background-color: rgb(44, 44, 44);
-    border-radius: 12px;
+  padding: 12px 20px 12px 20px;
+  margin-top: 20px;
+  background-color: rgb(44, 44, 44);
+  border-radius: 12px;
 
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .count {
-    display: flex;
-    white-space: break-spaces;
+  display: flex;
+  white-space: break-spaces;
 }
 
 .view {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .description {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .description_text {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    transition: all 0.3s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .description_text > a {
-    color: rgb(12, 88, 202);
+  color: rgb(12, 88, 202);
 }
 
 .description_text > a:hover {
-    color: rgb(4, 128, 200);
+  color: rgb(4, 128, 200);
 }
 
 .description_more_btn {
-    display: none;
+  display: none;
 }
 
 .description_label {
-    width: 3.75rem;
-    display: inline-block;
-    box-shadow: 1px 1px 0px 0px black;
-    border-radius: 5px;
-    padding: 0.375rem;
-    background-color: rgb(99, 99, 99);
-    cursor: pointer;
-    margin-top: 0.5rem;
-    text-align: center;
+  width: fit-content;
+  display: inline-block;
+  border: none;
+  padding: 0.375rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  text-align: center;
+  color: rgb(4, 128, 200);
+}
+.description_label::after {
+  content: '...더보기';
 }
 
-.description_label::after {
-    content: "더보기";
+.description_label:hover {
+  color: rgb(12, 88, 202);
 }
 
 .description_more_btn:checked ~ .description_text {
-    -webkit-line-clamp: unset;
+  -webkit-line-clamp: unset;
 }
 
 .description_more_btn:checked ~ .description_label::after {
-    content: "접기";
+  content: '접기';
 }
