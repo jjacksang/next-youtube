@@ -31,13 +31,9 @@
   display: none;
 }
 
-.comment_more_btn {
-  display: none;
-}
-
 .comment_text {
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -64,6 +60,7 @@
 
 .comment_more_btn:checked ~ .comment_text {
   -webkit-line-clamp: unset;
+  max-height: none;
 }
 
 .comment_more_btn:checked ~ .comment_label::after {
