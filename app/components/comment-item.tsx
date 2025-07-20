@@ -62,7 +62,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
         )}
       </div>
       <span className={styles.comment__icon}>
-        <BiLike />
+        <BiLike   className={styles.like__button} />
         {comment.snippet.topLevelComment.snippet.likeCount}
       </span>
     </div>

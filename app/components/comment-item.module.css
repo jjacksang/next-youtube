@@ -17,6 +17,7 @@
   font-size: 16px;
   font-family: bold;
 
+  cursor: pointer;
   border-radius: 5px;
   background-color: rgb(44, 44, 44);
   padding: 0px 1px 0px 1px;
@@ -65,4 +66,8 @@
 
 .comment_more_btn:checked ~ .comment_label::after {
   content: '접기';
+}
+
+.like__button {
+  cursor: pointer;
 }
