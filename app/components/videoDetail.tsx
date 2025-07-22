@@ -8,8 +8,8 @@ import { IVideoDetail } from '../utils/type';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { elapsedTime } from '../utils/elapsedTime';
-import type ReactPlayer from 'react-player';
-import React, { RefObject } from 'react';
+import React from 'react';
+import { usePlayer } from '../contexts/player-context';
 
 const ReactYoutubePlayer = dynamic(() => import('react-player'), {
   ssr: false,
@@ -39,12 +39,12 @@ interface IVideoDetailProps {
 export const VideoDetail = ({
   videoDetail,
   channelThumbnail,
-  playerRef,
 }: {
   videoDetail: IVideoDetailProps;
   channelThumbnail: string;
-  playerRef: RefObject<ReactPlayer | null>;
 }) => {
+  const playerRef = usePlayer();
+
   return (
     <section className={style.videoViewPage}>
       {videoDetail && (

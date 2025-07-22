@@ -5,25 +5,30 @@ import style from './comment_provider.module.css';
 import { CommentList } from '../components/commentList';
 import { useCommentInfiniteQuery } from '../hooks/useCommentInfiniteQuery';
 import { TimestampContext } from '../contexts/timestampContext';
+import { usePlayer } from '../contexts/player-context';
 
 export const CommentProvider = ({
   id,
   authorChannelId,
-  onTimestampClick,
 }: {
   id: string;
   authorChannelId: string;
-  onTimestampClick: (seconds: number) => void;
 }) => {
   const { ref, comments, isFetching, hasNextPage } = useCommentInfiniteQuery({
     id,
     authorChannelId,
   });
 
+  const playerRef = usePlayer();
+
+  const handleClick = (seconds: number) => {
+    playerRef.current?.seekTo(seconds, 'seconds');
+  };
+
   return (
     <>
       <form className={style.comment__form}>
-        <TimestampContext.Provider value={onTimestampClick}>
+        <TimestampContext.Provider value={handleClick}>
           <CommentList comments={comments} />
         </TimestampContext.Provider>
       </form>
