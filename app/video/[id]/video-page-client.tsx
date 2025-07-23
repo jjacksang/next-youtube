@@ -1,10 +1,9 @@
 'use client';
 
-import { PlayerProvider } from '@/app/contexts/player-context';
 import styles from './video-page-client.module.css';
 
 import { VideoDetail } from '@/app/components/videoDetail';
-import { CommentProvider } from '@/app/provider/comment_provider';
+import { CommentProvider } from '@/app/contexts/comment_provider';
 import { IVideoDetail } from '@/app/utils/type';
 
 interface IVideoPageClient {
@@ -23,7 +22,7 @@ export default function VideoPageClient({
   authorChannelId,
 }: IVideoPageClient) {
   return (
-    <PlayerProvider>
+    <>
       <VideoDetail
         videoDetail={videoDetails}
         channelThumbnail={channelThumbnail}
@@ -36,6 +35,6 @@ export default function VideoPageClient({
           <CommentProvider id={id} authorChannelId={authorChannelId} />
         </div>
       </div>
-    </PlayerProvider>
+    </>
   );
 }
