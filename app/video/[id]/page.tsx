@@ -1,14 +1,10 @@
 import { fetchChannelDetails, fetchVideoDetails } from '@/app/utils/api';
-import VideoPageClient from './video-page-client';
+import ClientWrapper from './clientWrapper';
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  console.log({ id });
+  console.log(id);
 
   const videoDetails = await fetchVideoDetails({ id });
   console.log(videoDetails);
@@ -25,7 +21,7 @@ export default async function Page({
     channelDetails.items[0].snippet.thumbnails.default.url;
 
   return (
-    <VideoPageClient
+    <ClientWrapper
       videoDetails={videoDetails}
       channelThumbnail={channelThumbnail}
       authorChannelId={authorChannelId}
