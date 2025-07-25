@@ -2,6 +2,7 @@
 
 import { IVideoDetail } from '@/app/utils/type';
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 
 interface IVideoWrapper {
   videoDetails: {
@@ -20,6 +21,13 @@ export default function ClientWrapper({
 }: IVideoWrapper) {
   const VideoPageClient = dynamic(() => import('./video-page-client'), {
     ssr: false,
+  });
+
+  useEffect(() => {
+    if (window.location.search === '?') {
+      window.history.replaceState({}, window.location.pathname);
+      console.log('USEEFFECT!!');
+    }
   });
 
   return (

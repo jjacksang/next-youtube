@@ -32,6 +32,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
             key={index}
             className={styles.timestamp}
             onClick={() => onTimestampClick(seconds)}
+            type="button"
           >
             {part}
           </button>
@@ -51,9 +52,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
           id={`commentToggle-${uniqueId}`}
           className={styles.comment_more_btn}
         />
-        <span ref={textRef} className={styles.comment_text}>
-          {parts}
-        </span>
+        <form>{parts}</form>
         {isOverflowing && (
           <label
             htmlFor={`commentToggle-${uniqueId}`}
@@ -62,7 +61,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
         )}
       </div>
       <span className={styles.comment__icon}>
-        <BiLike   className={styles.like__button} />
+        <BiLike className={styles.like__button} />
         {comment.snippet.topLevelComment.snippet.likeCount}
       </span>
     </div>
