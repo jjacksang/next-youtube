@@ -4,13 +4,11 @@
   justify-content: center;
   margin-right: auto;
   margin-left: auto;
-
-  border: 1px solid;
-  border-radius: 15px;
 }
 
 .channel__thumbnail {
   display: flex;
+  align-items: center;
   margin: 4px 8px 8px 0px;
   width: 180px;
   height: 180px;
@@ -29,17 +27,29 @@
 .channel__info {
   display: flex;
   width: 100%;
+  gap: 10px;
+}
+
+.channel__description {
+  width: 100%;
+  max-width: 1200px;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-line;
 }
 
 .subscribe__button {
   display: flex;
+  justify-content: center;
   align-items: center;
   height: 100%;
+}
 
-  width: 48px;
-  height: 48px;
+.subscribe__button > button {
+  height: 36px;
+  border: none;
+  border-radius: 18px;
 
-  border-radius: 24px 24px 24px 24px;
-
-  background-color: #666666;
+  padding: 0 16px;
+  cursor: pointer;
 }
