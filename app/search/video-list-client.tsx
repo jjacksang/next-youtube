@@ -11,6 +11,7 @@ import useSearchInfinietQuery, {
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import SkeletonGrid from '../components/skeleton-grid';
+import NotFound from './not-found';
 
 type YoutubeItems = (IEnrichedVideo | IChannel)[];
 
@@ -55,8 +56,7 @@ export const VideoListClient = ({
 
   if (status === 'error') return <div>Error</div>;
 
-  if (status === 'success' && allVideos.length === 0)
-    return <div>Empty Results</div>;
+  if (status === 'success' && allVideos.length === 0) return <NotFound />;
 
   return (
     <>

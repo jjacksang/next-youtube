@@ -1,0 +1,17 @@
+.not__found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  font-size: 1.5rem;
+}
+
+.message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
