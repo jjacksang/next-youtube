@@ -10,27 +10,11 @@ import Image from 'next/image';
 import { elapsedTime } from '../utils/elapsedTime';
 import React from 'react';
 import { usePlayer } from '../contexts/player-context';
+import Description from './description';
 
 const ReactYoutubePlayer = dynamic(() => import('react-player'), {
   ssr: false,
 });
-
-const convertUrls = (text: string) => {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-
-  const parts = text.split(urlRegex);
-
-  return parts.map((part, index) => {
-    if (part.match(urlRegex)) {
-      return (
-        <Link key={index} href={part} target="_blank" rel="noopener noreferrer">
-          {part}
-        </Link>
-      );
-    }
-    return <span key={index}>{part}</span>;
-  });
-};
 
 interface IVideoDetailProps {
   items: IVideoDetail[];
@@ -91,20 +75,9 @@ export const VideoDetail = ({
                   <span>{`${elapsedTime(videoDetail.items[0].snippet.publishedAt)}`}</span>
                 </span>
               </div>
-              <div className={style.description}>
-                <input
-                  type="checkbox"
-                  id="descriptionToggle"
-                  className={style.description_more_btn}
-                />
-                <span className={style.description_text}>
-                  {convertUrls(videoDetail.items[0].snippet.description)}
-                </span>
-                <label
-                  htmlFor="descriptionToggle"
-                  className={style.description_label}
-                ></label>
-              </div>
+              <Description
+                description={videoDetail.items[0].snippet.description}
+              />
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import style from './channelDetail.module.css';
 import { IChannelDetail } from '../utils/type';
 import { formatNumber } from '../utils/formatNumber';
 import { fetchChannelDetails } from '../utils/api';
+import Description from './description';
 
 export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
   const channelInfo: IChannelDetail = await fetchChannelDetails({
@@ -33,9 +34,7 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
                 동영상 {formatNumber(channelInfo.statistics.videoCount)}
               </span>
             </div>
-            <div className={style.channel__description}>
-              {channelInfo.snippet.description}
-            </div>
+            <Description description={channelInfo.snippet.description} />
           </div>
         </div>
       </section>
