@@ -1,50 +1,9 @@
 import styles from './page.module.css';
 import { processVideoData } from './utils/process-video-data';
 import { RecoDeveloper } from './components/reco-developer';
-
-async function DeverloperVideo() {
-  return (
-    <>
-      <div className={styles.youtuber}>
-        <div className={styles.youtuber__profile}>
-          <img
-            src="https://yt3.googleusercontent.com/tEHzde-2oKTr_PITRkIu8rdBs_0dUiOpWcPjZ-Taa9adri1lejaide2vjnDAhfH4jUn6EP4g=s160-c-k-c0x00ffffff-no-rj"
-            alt="test-img"
-          />
-          <span>이정환 | Winterlood</span>
-        </div>
-        <div className={styles.youtuber__profile}>
-          <img
-            src="https://yt3.ggpht.com/nv365KiAJyURPEBZyCh0SV3hSBnZXbvVXrzRwcNDfgUpXPn9-3_4PY0SkQrAJWnzQOxKqfUtrQ=s88-c-k-c0x00ffffff-no-rj"
-            alt="test-img"
-          />
-          <span>Dave Gray</span>
-        </div>
-        <div className={styles.youtuber__profile}>
-          <img
-            src="https://yt3.googleusercontent.com/ytc/AIdro_lbqqh0NSFeq6P1F-6qRycC37MtiGyMjZFVsZ4J-c6C474=s160-c-k-c0x00ffffff-no-rj"
-            alt="test-img"
-          />
-          <span>생활코딩</span>
-        </div>
-        <div className={styles.youtuber__profile}>
-          <img
-            src="https://yt3.googleusercontent.com/ytc/AIdro_lGam0UvO8iBSBx0Aackj6laHETsKi_8uMFfPy9lMmRfA=s160-c-k-c0x00ffffff-no-rj"
-            alt="test-img"
-          />
-          <span>webdecoded</span>
-        </div>
-        <div className={styles.youtuber__profile}>
-          <img
-            src="https://yt3.googleusercontent.com/1-JruRYG7BEWlF0kjrMaJzGMBC9ywqX0dWwDHPHZRDoZ_UwQdiWLN-1L6BKi2IQsuvl4vEYP1g=s160-c-k-c0x00ffffff-no-rj"
-            alt="test-img"
-          />
-          <span>잡캐헨리</span>
-        </div>
-      </div>
-    </>
-  );
-}
+import Image from 'next/image';
+import Link from 'next/link';
+import { IChannel, IEnrichedVideo } from './utils/type';
 
 const developerChannelId: IDeveloperId[] = [
   { name: '이정환', key: 'UCn7yFtl60fQsRtEaoyuzFUg' },
@@ -102,9 +61,14 @@ export default async function Home() {
   return (
     <div className={styles.home}>
       <div className={styles.swiper__section}>
-        <section>
-          <h2>제작에 참고한 유튜버</h2>
-          <DeverloperVideo />
+        <h2>제작에 참고한 유튜버</h2>
+        <section className={styles.youtuber}>
+          {data.map(item => {
+            const videoInfo = item.videoWithViewCount.filter(
+              (v): v is IEnrichedVideo => 'viewCount' in v,
+            );
+            return <DeverloperVideo channelInfo={videoInfo} />;
+          })}
         </section>
       </div>
       <div className={styles.video__list}>
@@ -122,6 +86,31 @@ export default async function Home() {
           ))}
         </section>
       </div>
+    </div>
+  );
+}
+
+async function DeverloperVideo({
+  channelInfo,
+}: {
+  channelInfo: IEnrichedVideo[];
+}) {
+  console.log(channelInfo);
+  return (
+    <div className={styles.youtuber__profile}>
+      <Link
+        className={styles.tag}
+        href={`/channel/${channelInfo[0].snippet.channelId}`}
+      >
+        <Image
+          className={styles.youtuber__img}
+          src={channelInfo[0].snippet.channelThumbnail as string}
+          alt={channelInfo[0].snippet.channelThumbnail as string}
+          width={120}
+          height={120}
+        />
+      </Link>
+      <span>{channelInfo[0].snippet.channelTitle}</span>
     </div>
   );
 }
