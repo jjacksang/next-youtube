@@ -42,7 +42,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
     });
 
   const uniqueId = useId();
-  const { ref: textRef, isOverflowing } = useIsOverflowing<HTMLSpanElement>(2);
+  const { isOverflowing } = useIsOverflowing<HTMLSpanElement>(2);
 
   return (
     <div className={styles.comment__container}>

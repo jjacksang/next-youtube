@@ -3,7 +3,7 @@ import { processVideoData } from './utils/process-video-data';
 import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IChannel, IEnrichedVideo } from './utils/type';
+import { IEnrichedVideo } from './utils/type';
 
 const developerChannelId: IDeveloperId[] = [
   { name: '이정환', key: 'UCn7yFtl60fQsRtEaoyuzFUg' },
@@ -63,11 +63,16 @@ export default async function Home() {
       <div className={styles.swiper__section}>
         <h2>제작에 참고한 유튜버</h2>
         <section className={styles.youtuber}>
-          {data.map(item => {
+          {data.map((item, idx: number) => {
             const videoInfo = item.videoWithViewCount.filter(
               (v): v is IEnrichedVideo => 'viewCount' in v,
             );
-            return <DeverloperVideo channelInfo={videoInfo} />;
+            return (
+              <DeverloperVideo
+                channelInfo={videoInfo}
+                key={`youtuber.${idx}`}
+              />
+            );
           })}
         </section>
       </div>
