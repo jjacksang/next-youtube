@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     optimizeCss: true,
   },
   images: {
+    domains: ['yt3.ggpht.com', 'i.ytimg.com'],
     remotePatterns: [
       {
         protocol: 'https',
