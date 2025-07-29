@@ -32,7 +32,7 @@ export interface Video extends YoutubeItem {
   };
 }
 
-export interface PlayList extends YoutubeItem {
+export interface Playlist extends YoutubeItem {
   id: {
     kind: 'youtube#playlist';
     playlistId: string;
@@ -93,6 +93,13 @@ export interface IChannelDetail {
 export interface IEnrichedVideo extends Video {
   viewCount: number;
   snippet: Video['snippet'] & {
+    channelThumbnail: string | null;
+  };
+}
+
+export interface IEnrichedPlaylist extends Playlist {
+  viewCount: number;
+  snippet: Playlist['snippet'] & {
     channelThumbnail: string | null;
   };
 }

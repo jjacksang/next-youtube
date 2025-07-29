@@ -2,12 +2,14 @@ import { fetchChannelDetails, fetchVideoDetails } from './api';
 import {
   IChannel,
   IChannelDetail,
+  IEnrichedPlaylist,
   IEnrichedVideo,
   IVideoDetail,
+  Playlist,
   Video,
 } from './type';
 
-type SearchResultItem = Video | IChannel;
+type SearchResultItem = Video | Playlist | IChannel;
 
 interface YoutubeResponse {
   items: SearchResultItem[];
@@ -28,7 +30,12 @@ function getFulfilledItems<T>(
   return [];
 }
 
-export async function processVideoData(searchResults: YoutubeResponse) {
+export async function processVideoData(
+  searchResults: YoutubeResponse,
+): Promise<{
+  videoWithViewCount: (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];
+  nextPageToken: string;
+}> {
   // searchResults에 대한 상세정보를 통해 viewCount를 받아와
   // VideoItem컴포넌트에 전달
   console.log('searchResults!!', searchResults);
@@ -37,11 +44,17 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     // item.id.kind 에 따라 각 데이터 수집
     const isVideos = (item: SearchResultItem): item is Video =>
       item.id?.kind === 'youtube#video' && typeof item.id.videoId === 'string';
+
+    const isPlaylist = (item: SearchResultItem): item is Playlist =>
+      item.id?.kind === 'youtube#playlist' &&
+      typeof item.id.playlistId === 'string';
+
     const isChannel = (item: SearchResultItem): item is IChannel =>
       item.id?.kind === 'youtube#channel' &&
       typeof item.snippet.channelId === 'string';
 
     const videoItems = searchResults.items.filter(isVideos);
+    const playlistItems = searchResults.items.filter(isPlaylist);
     const channelItems = searchResults.items.filter(isChannel);
 
     // 각 데이터에 따라 id값 맵핑
@@ -51,6 +64,7 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     ];
     const channelIdsFromAllItems = [
       ...videoItems.map(item => item.snippet.channelId),
+      ...playlistItems.map(item => item.snippet.channelId),
     ];
 
     // channel thumbnail을 가져오기 위해 videos, playlists 에 각 channelId 수집
@@ -127,38 +141,54 @@ export async function processVideoData(searchResults: YoutubeResponse) {
     );
 
     // 최종 데이터 반환
-    const processedSearchResults: (IEnrichedVideo | IChannel)[] =
-      searchResults.items
-        .map(item => {
-          if (item.id.kind === 'youtube#video') {
-            const videoDetail = videoDetailsMap.get(item.id.videoId);
-            const channelThumbnail = channelThumbnailMap.get(
-              item.snippet.channelId,
-            );
+    const processedSearchResults: (
+      | IEnrichedVideo
+      | IEnrichedPlaylist
+      | IChannel
+    )[] = searchResults.items
+      .map(item => {
+        if (isVideos(item)) {
+          const videoDetail = videoDetailsMap.get(item.id.videoId);
+          const channelThumbnail = channelThumbnailMap.get(
+            item.snippet.channelId,
+          );
 
-            return {
-              id: { ...item.id },
-              kind: 'youtube#searchResult',
-              viewCount: videoDetail?.statistics?.viewCount || 0,
-              snippet: {
-                ...item.snippet,
-                channelThumbnail: channelThumbnail || '',
-              },
-            } as IEnrichedVideo;
-          } else if (item.id.kind === 'youtube#channel') {
-            return {
-              ...item,
-              kind: 'youtube#channel',
-              id: item.id,
-              snippet: {
-                ...item.snippet,
-              },
-            } as IChannel;
-          }
+          return {
+            id: { ...item.id },
+            kind: 'youtube#searchResult',
+            viewCount: videoDetail?.statistics?.viewCount || 0,
+            snippet: {
+              ...item.snippet,
+              channelThumbnail: channelThumbnail || '',
+            },
+          } as IEnrichedVideo;
+        } else if (isPlaylist(item)) {
+          const channelThumbnail = channelThumbnailMap.get(
+            item.snippet.channelId,
+          );
 
-          return null;
-        })
-        .filter((item): item is IEnrichedVideo | IChannel => item !== null);
+          return {
+            ...item,
+            snippet: {
+              ...item.snippet,
+              channelThumbnail: channelThumbnail || '',
+            },
+          } as IEnrichedPlaylist;
+        } else if (isChannel(item)) {
+          return {
+            ...item,
+            kind: 'youtube#channel',
+            id: item.id,
+            snippet: { ...item.snippet },
+          } as IChannel;
+        }
+
+        return null;
+      })
+      .filter(
+        (item): item is IEnrichedVideo | IEnrichedPlaylist | IChannel =>
+          item !== null,
+      );
 
     console.log(processedSearchResults);
     return {

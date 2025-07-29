@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchYoutubeVideos } from '../utils/api';
 import { processVideoData } from '../utils/process-video-data';
-import { IChannel, IEnrichedVideo } from '../utils/type';
+import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
 import { useMemo, useRef } from 'react';
 
-type YoutubeItems = (IEnrichedVideo | IChannel)[];
+type YoutubeItems = (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];
 
 export interface InitialYoutubeData {
   items: YoutubeItems;
@@ -12,13 +12,13 @@ export interface InitialYoutubeData {
 }
 
 interface ProcessedYoutubePageData {
-  videos: IEnrichedVideo[];
+  videos: (IEnrichedVideo | IEnrichedPlaylist)[];
   channels: IChannel[];
   nextPageToken?: string;
 }
 
 interface UseSearchInfiniteQueryReturn {
-  allVideos: IEnrichedVideo[];
+  allVideos: (IEnrichedVideo | IEnrichedPlaylist)[];
   allChannels: IChannel[];
 
   status: 'error' | 'pending' | 'success';
@@ -39,7 +39,7 @@ export default function useSearchInfinietQuery(
 ): UseSearchInfiniteQueryReturn {
   const existingVideoIds = useRef<Set<string>>(new Set());
 
-  const initialFilteredVideos: IEnrichedVideo[] = [];
+  const initialFilteredVideos: (IEnrichedVideo | IEnrichedPlaylist)[] = [];
   const initailFilteredChannels: IChannel[] = [];
 
   if (initialData?.items) {
@@ -47,10 +47,18 @@ export default function useSearchInfinietQuery(
       if (item.id.kind === 'youtube#channel') {
         initailFilteredChannels.push(item as IChannel);
       } else {
-        const video = item as IEnrichedVideo;
-        if (!existingVideoIds.current.has(video.id.videoId)) {
-          existingVideoIds.current.add(video.id.videoId);
-          initialFilteredVideos.push(video);
+        const id =
+          item.id.kind === 'youtube#video'
+            ? item.id.videoId
+            : item.id.kind === 'youtube#playlist'
+              ? item.id.playlistId
+              : undefined;
+
+        if (id && !existingVideoIds.current.has(id)) {
+          existingVideoIds.current.add(id);
+          initialFilteredVideos.push(
+            item as IEnrichedVideo | IEnrichedPlaylist,
+          );
         }
       }
     }
@@ -69,12 +77,12 @@ export default function useSearchInfinietQuery(
     queryFn: async ({ pageParam }) => {
       console.log(pageParam);
       const targetCount = 24;
-      const collectedVideos: IEnrichedVideo[] = [];
+      const collectedVideos: (IEnrichedVideo | IEnrichedPlaylist)[] = [];
       const collectedChannels: IChannel[] = [];
       let nextPageToken = pageParam as string | undefined;
 
       const MAX_ATTEMPTS = 5;
-      const attemptCount = 0;
+      let attemptCount = 0;
 
       const remainingToFetch = targetCount;
 
@@ -84,7 +92,7 @@ export default function useSearchInfinietQuery(
       ) {
         const response = await fetchYoutubeVideos({
           q: searchParams,
-          maxResults: remainingToFetch,
+          maxResults: targetCount - collectedVideos.length,
           nextPageToken,
         });
 
@@ -98,10 +106,11 @@ export default function useSearchInfinietQuery(
         const { videoWithViewCount, nextPageToken: newToken } =
           await processVideoData(searchResults);
 
-        const newVideos: IEnrichedVideo[] = [];
+        const newVideos: (IEnrichedVideo | IEnrichedPlaylist)[] = [];
         const newChannels: IChannel[] = [];
 
         nextPageToken = newToken;
+        attemptCount++;
 
         for (const item of videoWithViewCount) {
           if (item.id.kind === 'youtube#channel') {
@@ -109,12 +118,18 @@ export default function useSearchInfinietQuery(
             continue;
           }
 
-          const video = item as IEnrichedVideo;
-          if (!existingVideoIds.current.has(video.id.videoId)) {
-            newVideos.push(video);
-            existingVideoIds.current.add(video.id.videoId);
+          const id =
+            item.id.kind === 'youtube#video'
+              ? item.id.videoId
+              : item.id.kind === 'youtube#playlist'
+                ? item.id.playlistId
+                : undefined;
+          if (id && !existingVideoIds.current.has(id)) {
+            newVideos.push(item as IEnrichedVideo | IEnrichedPlaylist);
+            existingVideoIds.current.add(id);
           }
         }
+
         collectedVideos.push(...newVideos);
         collectedChannels.push(...newChannels);
       }
@@ -139,8 +154,9 @@ export default function useSearchInfinietQuery(
                 (item): item is IChannel => item.id.kind === 'youtube#channel',
               ),
               videos: initialData.items.filter(
-                (item): item is IEnrichedVideo =>
-                  item.id.kind !== 'youtube#channel',
+                (item): item is IEnrichedVideo | IEnrichedPlaylist =>
+                  item.id.kind === 'youtube#video' ||
+                  item.id.kind === 'youtube#playlist',
               ),
               nextPageToken: initialData.nextPageToken,
             },
@@ -155,14 +171,12 @@ export default function useSearchInfinietQuery(
     refetchOnMount: false,
   });
 
-  const allVideos = useMemo((): IEnrichedVideo[] => {
+  const allVideos = useMemo((): (IEnrichedVideo | IEnrichedPlaylist)[] => {
     if (!data?.pages) {
       console.log('allVideos is empty');
       return [];
     }
-    const videos = data.pages.flatMap(page => page.videos);
-    console.log('all videos count : ', videos.length);
-    return videos;
+    return data.pages.flatMap(page => page.videos);
   }, [data?.pages]);
 
   const allChannels = useMemo((): IChannel[] => {
