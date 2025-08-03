@@ -84,8 +84,6 @@ export default function useSearchInfinietQuery(
       const MAX_ATTEMPTS = 5;
       let attemptCount = 0;
 
-      const remainingToFetch = targetCount;
-
       while (
         collectedVideos.length < targetCount &&
         attemptCount < MAX_ATTEMPTS

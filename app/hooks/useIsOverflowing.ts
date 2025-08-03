@@ -16,5 +16,5 @@ export function useIsOverflowing<T extends HTMLElement>(maxLines = 3) {
     }
   }, []);
 
-  return { ref, isOverflowing, maxLines };
+  return { ref, isOverflowing };
 }

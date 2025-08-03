@@ -1,17 +1,17 @@
-import { IChannel, IEnrichedVideo } from "../utils/type";
-import { VideoSwiper } from "./swiper/videoSwiper";
+import { IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
+import { VideoSwiper } from './swiper/videoSwiper';
 
-export async function RecoDeveloper({
-    channelVideos,
-}: {
-    channelVideos: (IEnrichedVideo | IChannel)[];
-}) {
-    console.log(channelVideos);
-    return (
-        <div>
-            <div>
-                <VideoSwiper videos={channelVideos} />
-            </div>
-        </div>
-    );
+interface RecoDeveloperProps {
+  channelVideos: (IEnrichedVideo | IEnrichedPlaylist)[];
+}
+
+export async function RecoDeveloper({ channelVideos }: RecoDeveloperProps) {
+  console.log(channelVideos);
+  return (
+    <div>
+      <div>
+        <VideoSwiper videos={channelVideos} />
+      </div>
+    </div>
+  );
 }

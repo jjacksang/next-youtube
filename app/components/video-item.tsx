@@ -2,18 +2,29 @@ import Link from 'next/link';
 import style from './video-item.module.css';
 import Image from 'next/image';
 import { elapsedTime } from '../utils/elapsedTime';
-import { IEnrichedVideo } from '../utils/type';
+import { IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
 import { formatNumber } from '../utils/formatNumber';
 
 interface VideoItemProps {
-  video: IEnrichedVideo;
+  video: IEnrichedVideo | IEnrichedPlaylist;
+}
+
+function getVideoOrPlaylistId(
+  video: IEnrichedVideo | IEnrichedPlaylist,
+): string {
+  if (video.id.kind === 'youtube#video') return video.id.videoId;
+  if (video.id.kind === 'youtube#playlist') return video.id.playlistId;
+  return '';
 }
 
 export default function VideoItem({ video }: VideoItemProps) {
+  const id = getVideoOrPlaylistId(video);
+  const isVideo = video.id.kind === 'youtube#video';
+  const href = isVideo ? `/video/${id}` : `/playlist/${id}`;
   return (
-    <div className={style.container} key={video.id.videoId}>
+    <div className={style.container} key={id}>
       <div className={style.thumbnail__img}>
-        <Link href={`/video/${video.id.videoId}`}>
+        <Link href={href}>
           <Image
             alt={video.snippet.description}
             priority={true}

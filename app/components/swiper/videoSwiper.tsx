@@ -2,7 +2,7 @@
 
 import style from "./videoSwiper.module.css";
 
-import { IChannel, IEnrichedVideo } from "../../utils/type";
+import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from "../../utils/type";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -10,20 +10,28 @@ import { Navigation, Pagination } from "swiper/modules";
 import VideoItem from "../video-item";
 
 interface IVideoSwiperProps {
-    videos: (IEnrichedVideo | IChannel)[];
+    videos: (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];
 }
 
 export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
     console.log("videoSwiper", videos);
 
     // channel, video데이터 구분 후 video데이터만 추출
-    const isEnrichedVideo = (
-        item: IEnrichedVideo | IChannel
-    ): item is IEnrichedVideo => {
-        return "videoId" in item.id && "viewCount" in item;
+    const isEnrichedData = (
+        item: IEnrichedVideo | IEnrichedPlaylist | IChannel
+    ): item is IEnrichedVideo | IEnrichedPlaylist => {
+        return (item.id.kind === 'youtube#video' || item.id.kind === 'youtube#playlist')
     };
 
-    const videoItems = videos.filter(isEnrichedVideo);
+    const videoItems = videos.filter(isEnrichedData);
+
+    const getKey = (video: IEnrichedVideo | IEnrichedPlaylist) => {
+        if(video.id.kind === 'youtube#video' ) {
+            return video.id.videoId;
+        } else if (video.id.kind === 'youtube#playlist') {
+            return video.id.playlistId
+        }
+    }
 
     return (
         <div className={style.swiper__container}>
@@ -38,9 +46,9 @@ export const VideoSwiper = ({ videos }: IVideoSwiperProps) => {
                 {videoItems.map((video) => (
                     <SwiperSlide
                         className={style.swiper__slide}
-                        key={video.id.videoId}
+                        key={getKey(video)}
                     >
-                        <VideoItem video={video} key={video.id.videoId} />
+                        <VideoItem video={video} key={getKey(video)} />
                     </SwiperSlide>
                 ))}
             </Swiper>

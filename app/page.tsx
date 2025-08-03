@@ -3,7 +3,7 @@ import { processVideoData } from './utils/process-video-data';
 import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IEnrichedVideo } from './utils/type';
+import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
 
 const developerChannelId: IDeveloperId[] = [
   { name: '이정환', key: 'UCn7yFtl60fQsRtEaoyuzFUg' },
@@ -86,7 +86,13 @@ export default async function Home() {
               >
                 {developerChannelId[idx].name}님의 영상목록
               </h2>
-              <RecoDeveloper channelVideos={item.videoWithViewCount} />
+              <RecoDeveloper
+                channelVideos={item.videoWithViewCount.filter(
+                  (v): v is IEnrichedVideo | IEnrichedPlaylist =>
+                    v.id.kind === 'youtube#video' ||
+                    v.id.kind === 'youtube#playlist',
+                )}
+              />
             </div>
           ))}
         </section>

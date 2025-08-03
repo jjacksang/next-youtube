@@ -2,7 +2,7 @@
 
 import style from './video-list-client.module.css';
 
-import { IChannel, IEnrichedVideo } from '../utils/type';
+import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
 import VideoItem from '../components/video-item';
 import { RecoChannel } from '../components/reco-channel';
 import useSearchInfinietQuery, {
@@ -13,7 +13,15 @@ import { useEffect } from 'react';
 import SkeletonGrid from '../components/skeleton-grid';
 import NotFound from './not-found';
 
-type YoutubeItems = (IEnrichedVideo | IChannel)[];
+type YoutubeItems = (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];
+
+function getVideoOrPlaylistKey(
+  item: IEnrichedVideo | IEnrichedPlaylist,
+): string {
+  if (item.id.kind === 'youtube#video') return item.id.videoId;
+  if (item.id.kind === 'youtube#playlist') return item.id.playlistId;
+  return '';
+}
 
 export const VideoListClient = ({
   initialQuery,
@@ -67,7 +75,7 @@ export const VideoListClient = ({
       )}
       <div className={style.video} key="video-list">
         {allVideos.map(item => (
-          <VideoItem key={item.id.videoId} video={item} />
+          <VideoItem key={getVideoOrPlaylistKey(item)} video={item} />
         ))}
       </div>
       <div className={style.skeleton__tab}>
