@@ -106,22 +106,22 @@ async function DeverloperVideo({
 }: {
   channelInfo: IEnrichedVideo[];
 }) {
-  console.log(channelInfo);
+  if (!channelInfo || channelInfo.length === 0) return null;
+
+  const { channelId, channelThumbnail, channelTitle } = channelInfo[0].snippet;
+
   return (
     <div className={styles.youtuber__profile}>
-      <Link
-        className={styles.tag}
-        href={`/channel/${channelInfo[0].snippet.channelId}`}
-      >
+      <Link className={styles.tag} href={`/channel/${channelId}`}>
         <Image
           className={styles.youtuber__img}
-          src={channelInfo[0].snippet.channelThumbnail as string}
-          alt={channelInfo[0].snippet.channelThumbnail as string}
+          src={channelThumbnail as string}
+          alt={channelTitle}
           width={120}
           height={120}
         />
       </Link>
-      <span>{channelInfo[0].snippet.channelTitle}</span>
+      <span>{channelTitle}</span>
     </div>
   );
 }
