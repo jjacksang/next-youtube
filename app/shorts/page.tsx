@@ -1,12 +1,26 @@
+import { fetchShortVideos } from '../utils/api';
 import styles from './page.module.css';
 import ShortsPlayer from './shortPlayer';
 import ShortsActions from './shortsActions';
 
-export default function Shorts() {
+interface Props {
+  videos: any[];
+}
+
+async function getShortVideos() {
+  const videos = await fetchShortVideos();
+
+  return videos;
+}
+
+export default async function Shorts() {
+  const videos = await getShortVideos();
+
+  console.log(videos);
   return (
     <div className={styles.shorts__wrapper}>
       <div className={styles.player__container}>
-        <ShortsPlayer />
+        <ShortsPlayer shorts={videos.items} />
         <ShortsActions />
       </div>
     </div>

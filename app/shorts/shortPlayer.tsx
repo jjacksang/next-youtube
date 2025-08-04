@@ -6,6 +6,15 @@ const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 });
 
-export default async function ShortsPlayer() {
-  return <ReactPlayer playing controls={false} height="100%" width="100%" />;
+export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
+  console.log(shorts);
+  return (
+    <ReactPlayer
+      url={`https://www.youtube.com/watch?v=${shorts[0].id}`}
+      playing
+      controls={false}
+      height="100%"
+      width="100%"
+    />
+  );
 }

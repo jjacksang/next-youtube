@@ -49,6 +49,18 @@ export const fetchYoutubeVideos = async (
   }
 };
 
+export const fetchShortVideos = async () => {
+  const response = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=24&regionCode=KR&key=${apiKey}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`fetch Short videos failed: ${response.status}`);
+  } else {
+    return response.json();
+  }
+};
+
 export const fetchVideoDetails = async ({ id }: { id: string }) => {
   const response = await fetch(
     `${apiUrl}/videos?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`,

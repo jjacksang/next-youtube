@@ -10,7 +10,7 @@ import {
 
 export default function ShortsActions() {
   return (
-    <div className={style.actions__container}>
+    <form className={style.actions__container}>
       <button type="button" className={style.action__button}>
         <AiOutlineLike />
       </button>
@@ -20,6 +20,6 @@ export default function ShortsActions() {
       <button type="button" className={style.action__button}>
         <AiOutlineShareAlt />
       </button>
-    </div>
+    </form>
   );
 }
