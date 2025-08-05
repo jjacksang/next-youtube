@@ -19,9 +19,8 @@ export default async function Shorts() {
   console.log(videos);
   return (
     <div className={styles.shorts__wrapper}>
-      <div className={styles.player__container}>
+      <div className={styles.shorts__container}>
         <ShortsPlayer shorts={videos.items} />
-        <ShortsActions />
       </div>
     </div>
   );

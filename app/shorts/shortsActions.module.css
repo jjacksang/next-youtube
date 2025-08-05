@@ -1,15 +1,25 @@
 .actions__container {
   position: absolute;
-  right: 16px;
+  right: 0px;
   top: 50%;
   transform: translateY(-50%);
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
+  z-index: 2;
 }
 .action__button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
   background: transparent;
   border: none;
   font-size: 24px;
   color: white;
   cursor: pointer;
+}
+
+.button__text {
+  font-size: 0.725rem;
 }
