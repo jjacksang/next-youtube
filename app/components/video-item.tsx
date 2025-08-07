@@ -30,7 +30,7 @@ export default function VideoItem({ video }: VideoItemProps) {
             priority={true}
             width={68}
             height={68}
-            src={video.snippet.thumbnails.medium.url}
+            src={video.snippet.thumbnails.medium.url as string}
           />
         </Link>
       </div>
@@ -38,7 +38,7 @@ export default function VideoItem({ video }: VideoItemProps) {
         <div className={style.channel__img}>
           <Link href={`/channel/${video.snippet.channelId}`}>
             <Image
-              src={video.snippet.channelThumbnail!}
+              src={video.snippet.channelThumbnail! as string}
               alt={video.snippet.description}
               width={40}
               height={40}
