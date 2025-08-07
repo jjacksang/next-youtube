@@ -1,7 +1,6 @@
 import { fetchShortVideos } from '../utils/api';
 import styles from './page.module.css';
 import ShortsPlayer from './shortPlayer';
-import ShortsActions from './shortsActions';
 
 interface Props {
   videos: any[];
