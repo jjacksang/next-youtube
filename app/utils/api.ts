@@ -51,7 +51,7 @@ export const fetchYoutubeVideos = async (
 
 export const fetchShortVideos = async () => {
   const response = await fetch(
-    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=24&regionCode=KR&key=${apiKey}`,
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&maxResults=24&regionCode=KR&key=${apiKey}`,
   );
 
   if (!response.ok) {

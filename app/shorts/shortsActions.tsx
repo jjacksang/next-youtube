@@ -10,14 +10,18 @@ import {
 
 export default function ShortsActions({
   onModalToggle,
+  likeCount,
+  commentCount,
 }: {
   onModalToggle: (type: 'comment' | 'share') => void;
+  likeCount: number;
+  commentCount: number;
 }) {
   return (
     <form className={style.actions__container}>
       <button type="button" className={style.action__button}>
         <AiOutlineLike />
-        <span className={style.button__text}>count</span>
+        <span className={style.button__text}>{likeCount}</span>
       </button>
       <button
         type="button"
@@ -25,7 +29,7 @@ export default function ShortsActions({
         onClick={() => onModalToggle('comment')}
       >
         <AiOutlineMessage />
-        <span className={style.button__text}>count</span>
+        <span className={style.button__text}>{commentCount}</span>
       </button>
       <button
         type="button"

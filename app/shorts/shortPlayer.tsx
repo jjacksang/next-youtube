@@ -33,7 +33,11 @@ export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
           height="100%"
           width="80%"
         />
-        <ShortsActions onModalToggle={openModal} />
+        <ShortsActions
+          onModalToggle={openModal}
+          likeCount={shorts[0].statistics.likeCount}
+          commentCount={shorts[0].statistics.commentCount}
+        />
       </div>
 
       {/* Modal */}
