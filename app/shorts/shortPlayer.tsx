@@ -33,12 +33,14 @@ export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
           height="100%"
           width="80%"
         />
-        <ShortsActions />
+        <ShortsActions onModalToggle={openModal} />
       </div>
 
       {/* Modal */}
-      {modal === 'comment' && <CommentModal onClose={closeModal} />}
-      {modal === 'share' && <ShareModal onClose={closeModal} />}
+      <div className={styles.modal}>
+        {modal === 'comment' && <CommentModal onClose={closeModal} />}
+        {modal === 'share' && <ShareModal onClose={closeModal} />}
+      </div>
     </div>
   );
 }

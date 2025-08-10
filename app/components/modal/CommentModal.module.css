@@ -1,0 +1,27 @@
+.modal__panel {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  height: 90%;
+  background-color: #222;
+  margin: 1rem;
+  border-radius: 15px;
+
+  animation: slideIn 0.3s ease-out;
+  color: white;
+  z-index: 1;
+}
+
+.modal__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-bottom: 1px solid white;
+}
+
+.close__button {
+  position: absolute;
+  right: 16px;
+}
