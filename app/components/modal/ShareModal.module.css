@@ -1,0 +1,39 @@
+.modal__panel {
+  position: absolute;
+  top: 30%;
+  width: 90%;
+  height: 30%;
+  background-color: #222;
+  margin: 1rem;
+  border-radius: 15px;
+
+  animation: slideIn 0.3s ease-out;
+  color: white;
+  z-index: 1;
+}
+
+.modal__header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-bottom: 1px solid white;
+  margin-bottom: 12px;
+}
+
+.modal__header > h3 {
+  margin: 8px 0px;
+}
+
+.close__button {
+  position: absolute;
+  right: 16px;
+}
+
+.share__content {
+  height: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

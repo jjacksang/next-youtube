@@ -13,6 +13,7 @@ export default function CommentModal({ onClose }: { onClose: () => void }) {
           X
         </button>
       </div>
+      <div className={styles.comment__list}></div>
     </div>
   );
 }
