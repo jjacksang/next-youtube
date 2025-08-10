@@ -2,10 +2,6 @@ import { fetchShortVideos } from '../utils/api';
 import styles from './page.module.css';
 import ShortsPlayer from './shortPlayer';
 
-interface Props {
-  videos: any[];
-}
-
 async function getShortVideos() {
   const videos = await fetchShortVideos();
 

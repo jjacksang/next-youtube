@@ -21,7 +21,7 @@ export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
       <div
         className={styles.player__background}
         style={{
-          backgroundImage: `url(${shorts[0].snippet.thumbnails.default.url})`,
+          backgroundImage: `url(${shorts[0].snippet.thumbnails.default.url as string})`,
         }}
       />
       <div className={styles.player__foreground}>
