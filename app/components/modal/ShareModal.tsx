@@ -14,7 +14,7 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
         </button>
       </div>
       <div className={styles.share__content}>
-        <input type="url" />
+        <input className={styles.share__input} type="url" />
         <button type="button">복사</button>
       </div>
     </div>

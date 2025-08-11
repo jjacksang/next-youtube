@@ -1,6 +1,6 @@
 .actions__container {
   position: absolute;
-  right: 0px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;

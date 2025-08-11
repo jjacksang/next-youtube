@@ -6,6 +6,8 @@
   background-color: #222;
   margin: 1rem;
   border-radius: 15px;
+  max-width: 356px;
+  max-height: 156px;
 
   animation: slideIn 0.3s ease-out;
   color: white;
@@ -18,8 +20,8 @@
   align-items: center;
   justify-content: center;
 
-  border-bottom: 1px solid white;
   margin-bottom: 12px;
+  border-bottom: 1px solid white;
 }
 
 .modal__header > h3 {
@@ -36,4 +38,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.share__input {
+  width: 75%;
+  padding: 4px 0px;
 }
