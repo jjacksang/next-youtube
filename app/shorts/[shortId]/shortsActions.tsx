@@ -1,6 +1,6 @@
 'use client';
 
-import { formatNumber } from '../utils/formatNumber';
+import { formatNumber } from '../../utils/formatNumber';
 import style from './shortsActions.module.css';
 
 import {

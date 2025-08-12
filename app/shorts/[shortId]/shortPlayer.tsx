@@ -4,9 +4,9 @@ import styles from './shortPlayer.module.css';
 
 import dynamic from 'next/dynamic';
 import ShortsActions from './shortsActions';
-import CommentModal from '../components/modal/CommentModal';
-import { useModalManager } from '../hooks/useModalManager';
-import ShareModal from '../components/modal/ShareModal';
+import CommentModal from '../../components/modal/CommentModal';
+import { useModalManager } from '../../hooks/useModalManager';
+import ShareModal from '../../components/modal/ShareModal';
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,

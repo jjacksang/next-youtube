@@ -49,7 +49,31 @@ export const fetchYoutubeVideos = async (
   }
 };
 
-export const fetchShortVideos = async () => {
+export const fetchShortVideos = async ({ q }: { q?: string }) => {
+  let baseUrl = `${apiUrl}/videos?part=snippet%2Cstatistics&chart=mostPopular&maxResults=24&regionCode=KR&key=${apiKey}`;
+
+  if (q) {
+    baseUrl += `&id=${q}`;
+  }
+
+  try {
+    const response = await fetch(baseUrl);
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(
+        `Fetch Short data failed : ${response.status} ${response.statusText} - Body: ${errorBody}`,
+      );
+
+      throw new Error(
+        `Fetch Short data Failed : ${response.status} ${response.statusText}`,
+      );
+    }
+
+    return response;
+  } catch (error) {
+    console.log('Fetch Shorts Error', error);
+  }
   const response = await fetch(
     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&maxResults=24&regionCode=KR&key=${apiKey}`,
   );
