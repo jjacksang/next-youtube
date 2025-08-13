@@ -1,31 +1,35 @@
-import styles from '../page.module.css';
+import styles from './page.module.css';
 
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import ShortsPlayer from './shortPlayer';
 
 interface Props {
-  params: { shortId: string };
+  params: Promise<{ shortId: string }>;
 }
 
 async function getShortVideos(shortId: string) {
-  const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet%2Cstatistics&chart=mostPopular&maxResults=24&regionCode=KR&id=${shortId || ''}`,
-    {
-      next: { revalidate: 300 },
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`,
+  console.log(shortId);
+  try {
+    const response = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&chart=mostPopular&maxResults=24&regionCode=KR&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`,
+      {
+        next: { revalidate: 300 },
       },
-    },
-  );
+    );
 
-  if (!response.ok) throw new Error('Short not found');
-  return response.json();
+    if (!response.ok) throw new Error('Short not found');
+    return response.json();
+  } catch (error) {
+    console.error('getShortVideos Error!', error);
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { shortId } = await params;
+
   try {
-    const short = await getShortVideos(params.shortId);
+    const short = await getShortVideos(shortId);
 
     return {
       title: `${short.items[0].title} - Youtube Shorts`,
@@ -55,8 +59,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
+  const { shortId } = await params;
+  console.log(shortId);
   try {
-    const short = await getShortVideos(params.shortId);
+    const short = await getShortVideos(shortId);
     console.log('shorts page!!');
     console.log(short);
 
@@ -70,6 +76,6 @@ export default async function Page({ params }: Props) {
   } catch (error) {
     console.error('Error in shorts page: ', error);
 
-    redirect('/shorts');
+    // redirect('/shorts');
   }
 }
