@@ -28,7 +28,8 @@ export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
         <ReactPlayer
           className={styles.player}
           url={`https://www.youtube.com/watch?v=${shorts[0].id}`}
-          playing
+          playing={true}
+          loop={true}
           controls={false}
           height="100%"
           width="80%"
