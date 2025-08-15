@@ -76,6 +76,6 @@ export default async function Page({ params }: Props) {
   } catch (error) {
     console.error('Error in shorts page: ', error);
 
-    // redirect('/shorts');
+    redirect('/shorts');
   }
 }
