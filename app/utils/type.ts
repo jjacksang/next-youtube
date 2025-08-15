@@ -46,6 +46,28 @@ export interface IChannel extends YoutubeItem {
   };
 }
 
+export interface IShortDetail {
+  id: string;
+  snippet: {
+    channelId: string;
+    channelTitle: string;
+    description: string;
+    publishedAt: string;
+    title: string;
+    thumbnails: {
+      default: Thumbnail;
+      high: Thumbnail;
+      medium: Thumbnail;
+    };
+  };
+  statistics: {
+    likeCount: number;
+    viewCount: number;
+    videoCount: number;
+    commentCount: number;
+  };
+}
+
 export interface IVideoDetail {
   id: string;
   snippet: {

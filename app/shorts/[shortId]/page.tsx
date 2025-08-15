@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           },
         ],
         videos: [
-          { url: `https://www.youtube.com/watch?v=${short.items[0].id}` },
+          { url: `https://www.youtube.com/watch?v=${short.items[1].id}` },
         ],
         type: 'video.other',
       },

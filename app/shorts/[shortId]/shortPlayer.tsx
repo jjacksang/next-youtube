@@ -7,12 +7,13 @@ import ShortsActions from './shortsActions';
 import CommentModal from '../../components/modal/CommentModal';
 import { useModalManager } from '../../hooks/useModalManager';
 import ShareModal from '../../components/modal/ShareModal';
+import { IShortDetail } from '@/app/utils/type';
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 });
 
-export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
+export default function ShortsPlayer({ shorts }: { shorts: IShortDetail[] }) {
   const { modal, openModal, closeModal } = useModalManager();
 
   console.log(shorts);
@@ -27,10 +28,10 @@ export default function ShortsPlayer({ shorts }: { shorts: any[] }) {
       <div className={styles.player__foreground}>
         <ReactPlayer
           className={styles.player}
-          url={`https://www.youtube.com/watch?v=${shorts[0].id}`}
+          url={`https://www.youtube.com/watch?v=${shorts[1].id}`}
           playing={true}
           loop={true}
-          controls={false}
+          controls={true}
           height="100%"
           width="80%"
         />
