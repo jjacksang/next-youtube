@@ -63,7 +63,7 @@ export interface IShortDetail {
   statistics: {
     likeCount: number;
     viewCount: number;
-    videoCount: number;
+    favoriteCount: number;
     commentCount: number;
   };
 }
