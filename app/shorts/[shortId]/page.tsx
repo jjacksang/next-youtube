@@ -4,9 +4,14 @@ import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import ShortsPlayer from './shortPlayer';
 import { getShortVideos } from '@/app/lib/getShortVideos';
+import { IShortDetail } from '@/app/utils/type';
 
 interface Props {
   params: Promise<{ shortId: string }>;
+}
+
+interface ShortProps {
+  items: IShortDetail[];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -30,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           },
         ],
         videos: [
-          { url: `https://www.youtube.com/watch?v=${short.items[1].id}` },
+          { url: `https://www.youtube.com/watch?v=${short.items[0].id}` },
         ],
         type: 'video.other',
       },
@@ -47,7 +52,7 @@ export default async function Page({ params }: Props) {
   const { shortId } = await params;
   console.log(shortId);
   try {
-    const short = await getShortVideos(shortId);
+    const short: ShortProps = await getShortVideos(shortId);
     console.log('shorts page!!');
     console.log(short);
 
