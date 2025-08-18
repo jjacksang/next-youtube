@@ -38,6 +38,7 @@ export default function ShortsActions({
         onClick={() => onModalToggle('share')}
       >
         <AiOutlineShareAlt />
+        <span className={style.button__text}>공유하기</span>
       </button>
     </form>
   );

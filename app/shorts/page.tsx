@@ -1,8 +1,88 @@
 'use client';
 
+import styles from './[shortId]/page.module.css';
+
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import ShortsPlayer from './[shortId]/shortPlayer';
+import { IShortDetail } from '../utils/type';
+
+interface ShortProps {
+  items: IShortDetail[];
+}
+
+const DummyData: ShortProps = {
+  items: [
+    {
+      id: 'test',
+      snippet: {
+        channelId: 'test-channelId',
+        channelTitle: 'test-channel-title',
+        description: 'test-description',
+        publishedAt: '2025-08-16',
+        title: 'test-title',
+        thumbnails: {
+          default: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/default.jpg',
+            width: 120,
+            height: 90,
+          },
+          high: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/hqdefault.jpg',
+            width: 480,
+            height: 360,
+          },
+          medium: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/mqdefault.jpg',
+            width: 320,
+            height: 180,
+          },
+        },
+      },
+      statistics: {
+        likeCount: 25230,
+        viewCount: 2031,
+        favoriteCount: 0,
+        commentCount: 3203,
+      },
+    },
+
+    {
+      id: 'test',
+      snippet: {
+        channelId: 'test-channelId',
+        channelTitle: 'test-channel-title',
+        description: 'test-description',
+        publishedAt: '2025-08-16',
+        title: 'test-title',
+        thumbnails: {
+          default: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/default.jpg',
+            width: 120,
+            height: 90,
+          },
+          high: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/hqdefault.jpg',
+            width: 480,
+            height: 360,
+          },
+          medium: {
+            url: 'https://i.ytimg.com/vi/f-fcFGLfEBQ/mqdefault.jpg',
+            width: 320,
+            height: 180,
+          },
+        },
+      },
+      statistics: {
+        likeCount: 25230,
+        viewCount: 2031,
+        favoriteCount: 0,
+        commentCount: 3203,
+      },
+    },
+  ],
+};
 
 async function fetchShorts() {
   const res = await fetch(
@@ -32,5 +112,11 @@ export default function ShortsRootPage() {
     }
   }, [data, router]);
 
-  return <p>Loading Shorts...</p>;
+  return (
+    <div className={styles.shorts__wrapper}>
+      <div className={styles.shorts__container}>
+        <ShortsPlayer shorts={DummyData.items} />
+      </div>
+    </div>
+  );
 }

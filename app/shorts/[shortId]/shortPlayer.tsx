@@ -26,6 +26,7 @@ export default function ShortsPlayer({ shorts }: { shorts: IShortDetail[] }) {
         }}
       />
       <div className={styles.player__foreground}>
+        <div></div>
         <ReactPlayer
           className={styles.player}
           url={`https://www.youtube.com/watch?v=${shorts[1].id}`}
@@ -35,11 +36,13 @@ export default function ShortsPlayer({ shorts }: { shorts: IShortDetail[] }) {
           height="100%"
           width="80%"
         />
-        <ShortsActions
-          onModalToggle={openModal}
-          likeCount={shorts[0].statistics.likeCount}
-          commentCount={shorts[0].statistics.commentCount}
-        />
+        <div className={styles.actions__wrapper}>
+          <ShortsActions
+            onModalToggle={openModal}
+            likeCount={shorts[0].statistics.likeCount}
+            commentCount={shorts[0].statistics.commentCount}
+          />
+        </div>
       </div>
 
       {/* Modal */}

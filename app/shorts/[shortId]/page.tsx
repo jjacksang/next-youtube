@@ -19,7 +19,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   try {
     const short = await getShortVideos(shortId);
-    console.log(short);
 
     return {
       title: `${short.items[0].snippet.title} - Youtube Shorts`,

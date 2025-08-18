@@ -1,6 +1,12 @@
 import { fetchChannelDetails, fetchVideoDetails } from '@/app/utils/api';
 import ClientWrapper from './clientWrapper';
 
+export function generateMetadata() {
+  return {
+    title: ``,
+  };
+}
+
 export default async function Page({
   params,
 }: {

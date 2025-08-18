@@ -1,4 +1,8 @@
 .player {
+  max-width: 100%;
+  max-height: 100%;
+
+  aspect-ratio: 12 / 16;
   background-color: #181818;
 }
 
@@ -25,9 +29,10 @@
   position: relative;
   z-index: 1;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 10% 80% 10%;
   align-items: center;
-  justify-content: center;
+  justify-items: center;
 
   width: 100%;
   height: 100%;
@@ -38,7 +43,15 @@
   max-height: 100%;
   aspect-ratio: 12 / 16; /* 모바일 vertical 비율 유지 */
 
+  position: relative;
   padding: 0px 4px;
+}
+
+.actions__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .modal {
