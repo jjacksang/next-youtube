@@ -46,7 +46,7 @@ export default function ShortsPlayer({ shorts }: { shorts: IShortDetail[] }) {
       </div>
 
       {/* Modal */}
-      <div className={styles.modal}>
+      <div className={styles.overlay}>
         {modal === 'comment' && <CommentModal onClose={closeModal} />}
         {modal === 'share' && <ShareModal onClose={closeModal} />}
       </div>

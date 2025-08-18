@@ -41,7 +41,7 @@
 .player {
   max-width: 100%;
   max-height: 100%;
-  aspect-ratio: 12 / 16; /* 모바일 vertical 비율 유지 */
+  aspect-ratio: 12 / 16;
 
   position: relative;
   padding: 0px 4px;
@@ -54,7 +54,7 @@
   height: 100%;
 }
 
-.modal {
+.overlay {
   display: flex;
   justify-content: center;
   align-items: center;
