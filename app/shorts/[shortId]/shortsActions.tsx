@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { formatNumber } from '../../utils/formatNumber';
 import style from './shortsActions.module.css';
 
@@ -18,11 +19,29 @@ export default function ShortsActions({
   likeCount: number;
   commentCount: number;
 }) {
+  const [liked, setLiked] = useState<boolean>(false);
+  const [likeCounter, setLikeCounter] = useState<number>(likeCount);
+
+  const handleLikeCount = () => {
+    if (liked) {
+      setLikeCounter(prev => prev + 1);
+    } else {
+      setLikeCounter(prev => prev - 1);
+    }
+
+    setLiked(prev => !prev);
+  };
+
+  console.log(likeCounter);
   return (
     <form className={style.actions__container}>
-      <button type="button" className={style.action__button}>
-        <AiOutlineLike />
-        <span className={style.button__text}>{formatNumber(likeCount)}</span>
+      <button
+        type="button"
+        className={`${style.action__button} ${liked ? style.liked : ''}`}
+        onClick={handleLikeCount}
+      >
+        <AiOutlineLike className={style.icon} />
+        <span className={style.button__text}>{formatNumber(likeCounter)}</span>
       </button>
       <button
         type="button"
