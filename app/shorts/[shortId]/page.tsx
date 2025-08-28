@@ -2,10 +2,8 @@
 
 import styles from './page.module.css';
 
-import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import ShortsPlayer from './shortPlayer';
-import { getShortVideos } from '@/app/lib/getShortVideos';
 import { IShortDetail } from '@/app/utils/type';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -115,11 +113,7 @@ export default function Page({ params }: Props) {
     return (
       <div className={styles.shorts__wrapper}>
         <div className={styles.shorts__container}>
-          <ShortsPlayer
-            shorts={data.items}
-            onNext={handleNext}
-            onPrev={handlePrev}
-          />
+          <ShortsPlayer shorts={data.items} />
         </div>
         <div className={styles.shorts__controls}>
           <button type="button" className={styles.next} onClick={handleNext}>

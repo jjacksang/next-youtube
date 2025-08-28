@@ -4,7 +4,7 @@ import styles from './[shortId]/page.module.css';
 
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ShortsPlayer from './[shortId]/shortPlayer';
 import { IShortDetail } from '../utils/type';
 
@@ -101,16 +101,37 @@ export default function ShortsRootPage() {
     staleTime: 1000 * 60 * 5,
   });
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
+    if (!data?.items) return;
+
     const lastId = localStorage.getItem('lastShortId');
 
     if (lastId) {
-      router.replace(`/shorts/${lastId}`);
-    } else if (data?.items?.[0]?.id) {
+      const idx = data.items.findIndex(
+        (item: IShortDetail) => item.id === lastId,
+      );
+      if (idx !== -1) {
+        setCurrentIndex(idx);
+        router.replace(`/shorts/${lastId}`);
+      }
+    }
+
+    if (data?.items[0]?.id) {
+      setCurrentIndex(0);
       localStorage.setItem('lastShortId', data.items[0].id);
       router.replace(`/shorts/${data.items[0].id}`);
     }
   }, [data, router]);
+
+  useEffect(() => {
+    if (!data?.items?.[currentIndex]) return;
+
+    const currentId = data.items[currentIndex].id;
+    localStorage.setItem('lastShortId', currentId);
+    router.replace(`/shorts/${currentId}`);
+  }, [currentIndex, data, router]);
 
   return (
     <div className={styles.shorts__wrapper}>
