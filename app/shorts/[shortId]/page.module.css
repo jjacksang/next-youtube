@@ -15,3 +15,20 @@
 
   padding: 0px 24px;
 }
+
+.shorts__controls {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.next {
+  position: absolute;
+  top: 1rem;
+}
+
+.prev {
+  position: absolute;
+  bottom: 1rem;
+}

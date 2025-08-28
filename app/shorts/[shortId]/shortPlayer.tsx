@@ -9,11 +9,17 @@ import { useModalManager } from '../../hooks/useModalManager';
 import ShareModal from '../../components/modal/ShareModal';
 import { IShortDetail } from '@/app/utils/type';
 
+interface ShortProps {
+  shorts: IShortDetail[];
+  onNext: () => void;
+  onPrev: () => void;
+}
+
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 });
 
-export default function ShortsPlayer({ shorts }: { shorts: IShortDetail[] }) {
+export default function ShortsPlayer({ shorts, onNext, onPrev }: ShortProps) {
   const { modal, openModal, closeModal } = useModalManager();
 
   console.log(shorts);
