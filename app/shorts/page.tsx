@@ -136,7 +136,11 @@ export default function ShortsRootPage() {
   return (
     <div className={styles.shorts__wrapper}>
       <div className={styles.shorts__container}>
-        <ShortsPlayer shorts={DummyData.items} />
+        <ShortsPlayer
+          shorts={DummyData.items}
+          shortId={DummyData.items[0].id}
+          ownerId={DummyData.items[0].snippet.channelId}
+        />
       </div>
     </div>
   );

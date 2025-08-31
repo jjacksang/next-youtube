@@ -11,13 +11,15 @@ import { IShortDetail } from '@/app/utils/type';
 
 interface ShortProps {
   shorts: IShortDetail[];
+  shortId: string;
+  ownerId: string;
 }
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 });
 
-export default function ShortsPlayer({ shorts }: ShortProps) {
+export default function ShortsPlayer({ shorts, shortId, ownerId }: ShortProps) {
   const { modal, openModal, closeModal } = useModalManager();
 
   console.log(shorts);
@@ -51,7 +53,13 @@ export default function ShortsPlayer({ shorts }: ShortProps) {
 
       {/* Modal */}
       <div className={styles.overlay}>
-        {modal === 'comment' && <CommentModal onClose={closeModal} />}
+        {modal === 'comment' && (
+          <CommentModal
+            onClose={closeModal}
+            shortId={shortId}
+            ownerId={ownerId}
+          />
+        )}
         {modal === 'share' && <ShareModal onClose={closeModal} />}
       </div>
     </div>

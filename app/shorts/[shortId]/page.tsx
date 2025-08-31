@@ -72,31 +72,17 @@ export default function Page({ params }: Props) {
   useEffect(() => {
     if (!data?.items) return;
 
-    const lastId = localStorage.getItem('lastShortId');
-
-    if (lastId) {
+    if (currentIndex === null) {
+      const lastId = localStorage.getItem('lastShortId');
       const idx = data.items.findIndex(
         (item: IShortDetail) => item.id === lastId,
       );
-      if (idx !== -1) {
-        setCurrentIndex(idx);
-        router.replace(`/shorts/${lastId}`);
-      }
+      setCurrentIndex(idx !== -1 ? idx : 0);
+    } else {
+      const currentId = data.items[currentIndex].id;
+      localStorage.setItem('lastShortId', currentId);
+      router.replace(`/shorts/${currentId}`);
     }
-
-    if (data?.items[0]?.id) {
-      setCurrentIndex(0);
-      localStorage.setItem('lastShortId', data.items[0].id);
-      router.replace(`/shorts/${data.items[0].id}`);
-    }
-  }, [data, router]);
-
-  useEffect(() => {
-    if (!data?.items?.[currentIndex]) return;
-
-    const currentId = data.items[currentIndex].id;
-    localStorage.setItem('lastShortId', currentId);
-    router.replace(`/shorts/${currentId}`);
   }, [currentIndex, data, router]);
 
   const handleNext = () => {
@@ -113,7 +99,11 @@ export default function Page({ params }: Props) {
     return (
       <div className={styles.shorts__wrapper}>
         <div className={styles.shorts__container}>
-          <ShortsPlayer shorts={data.items} />
+          <ShortsPlayer
+            shorts={data.items}
+            shortId={data.items[currentIndex].id}
+            ownerId={data.items[currentIndex].snippet.channelId}
+          />
         </div>
         <div className={styles.shorts__controls}>
           <button type="button" className={styles.next} onClick={handleNext}>

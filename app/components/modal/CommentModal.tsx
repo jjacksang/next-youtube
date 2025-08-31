@@ -1,6 +1,13 @@
+import { CommentProvider } from '@/app/contexts/comment_provider';
 import styles from './CommentModal.module.css';
 
-export default function CommentModal({ onClose }: { onClose: () => void }) {
+interface Props {
+  onClose: () => void;
+  shortId: string;
+  ownerId: string;
+}
+
+export default function CommentModal({ onClose, shortId, ownerId }: Props) {
   return (
     <div className={styles.modal__panel}>
       <div className={styles.modal__header}>
@@ -13,7 +20,9 @@ export default function CommentModal({ onClose }: { onClose: () => void }) {
           X
         </button>
       </div>
-      <div className={styles.comment__list}></div>
+      <div className={styles.comment__list}>
+        <CommentProvider id={shortId} authorChannelId={ownerId} />
+      </div>
     </div>
   );
 }
