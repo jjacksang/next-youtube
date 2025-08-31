@@ -16,10 +16,15 @@ export const useCommentInfiniteQuery = ({
     triggerOnce: false,
   });
 
-  const { status, data, isFetching, fetchNextPage, hasNextPage } =
+  const { status, data, isFetching, fetchNextPage, hasNextPage, error } =
     useInfiniteQuery({
       queryFn: async ({ pageParam }) => {
-        return fetchCommentList({ id: id, pageToken: pageParam });
+        const res = await fetchCommentList({ id: id, pageToken: pageParam });
+        const comments = await res.json();
+        if (comments.error?.code) {
+          throw comments.error;
+        }
+        return comments;
       },
       getNextPageParam: lastPage => lastPage.nextPageToken || undefined,
       queryKey: ['comments', id],
@@ -78,5 +83,6 @@ export const useCommentInfiniteQuery = ({
     comments: allComments,
     isFetching,
     hasNextPage,
+    error,
   };
 };

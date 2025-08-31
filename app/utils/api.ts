@@ -140,6 +140,6 @@ export const fetchCommentList = async ({
     console.error(`comment list Error: ${response.statusText}`);
     throw new Error(`failed fetch comment list: ${response.status}`);
   } else {
-    return response.json();
+    return response;
   }
 };

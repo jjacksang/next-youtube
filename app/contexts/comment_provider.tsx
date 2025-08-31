@@ -14,16 +14,39 @@ export const CommentProvider = ({
   id: string;
   authorChannelId: string;
 }) => {
-  const { ref, comments, isFetching, hasNextPage } = useCommentInfiniteQuery({
-    id,
-    authorChannelId,
-  });
+  const { ref, comments, isFetching, hasNextPage, error, status } =
+    useCommentInfiniteQuery({
+      id,
+      authorChannelId,
+    });
 
   const playerRef = usePlayer();
 
   const handleClick = (seconds: number) => {
     playerRef.current?.seekTo(seconds, 'seconds');
   };
+
+  console.log(error);
+
+  if (status === 'error') {
+    const err = error as { code?: number; message?: string };
+
+    console.log(err.message);
+
+    if (err?.code === 403) {
+      return (
+        <div className={style.comment__disable}>
+          해당 영상의 댓글이 비활성화되었습니다.
+        </div>
+      );
+    }
+
+    return (
+      <div className={style.comment__error}>
+        댓글을 불러오는 중 오류가 발생하였습니다.
+      </div>
+    );
+  }
 
   return (
     <>
