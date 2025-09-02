@@ -20,11 +20,11 @@ export const useCommentInfiniteQuery = ({
     useInfiniteQuery({
       queryFn: async ({ pageParam }) => {
         const res = await fetchCommentList({ id: id, pageToken: pageParam });
-        const comments = await res.json();
-        if (comments.error?.code) {
-          throw comments.error;
+        const data = await res.json();
+        if (data.error?.code) {
+          throw data.error;
         }
-        return comments;
+        return data;
       },
       getNextPageParam: lastPage => lastPage.nextPageToken || undefined,
       queryKey: ['comments', id],
