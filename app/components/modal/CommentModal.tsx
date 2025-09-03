@@ -20,10 +20,8 @@ export default function CommentModal({ onClose, shortId, ownerId }: Props) {
           X
         </button>
       </div>
-      <div>
-        <div className={styles.comment__list}>
-          <CommentProvider id={shortId} authorChannelId={ownerId} />
-        </div>
+      <div className={styles.comment__list}>
+        <CommentProvider id={shortId} authorChannelId={ownerId} />
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ export default function CommentItem({ comment }: CommentItemProps) {
           id={`commentToggle-${uniqueId}`}
           className={styles.comment_more_btn}
         />
-        <form>{parts}</form>
+        <span className={styles.comment_text}>{parts}</span>
         {isOverflowing && (
           <label
             htmlFor={`commentToggle-${uniqueId}`}
