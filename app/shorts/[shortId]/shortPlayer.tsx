@@ -10,16 +10,14 @@ import ShareModal from '../../components/modal/ShareModal';
 import { IShortDetail } from '@/app/utils/type';
 
 interface ShortProps {
-  shorts: IShortDetail[];
-  shortId: string;
-  ownerId: string;
+  shorts: IShortDetail;
 }
 
 const ReactPlayer = dynamic(() => import('react-player/youtube'), {
   ssr: false,
 });
 
-export default function ShortsPlayer({ shorts, shortId, ownerId }: ShortProps) {
+export default function ShortsPlayer({ shorts }: ShortProps) {
   const { modal, openModal, closeModal } = useModalManager();
 
   console.log(shorts);
@@ -28,14 +26,14 @@ export default function ShortsPlayer({ shorts, shortId, ownerId }: ShortProps) {
       <div
         className={styles.player__background}
         style={{
-          backgroundImage: `url(${shorts[0].snippet.thumbnails.default.url as string})`,
+          backgroundImage: `url(${shorts.snippet.thumbnails.default.url as string})`,
         }}
       />
       <div className={styles.player__foreground}>
         <div></div>
         <ReactPlayer
           className={styles.player}
-          url={`https://www.youtube.com/watch?v=${shorts[1].id}`}
+          url={`https://www.youtube.com/watch?v=${shorts.id}`}
           playing={true}
           loop={true}
           controls={true}
@@ -45,8 +43,8 @@ export default function ShortsPlayer({ shorts, shortId, ownerId }: ShortProps) {
         <div className={styles.actions__wrapper}>
           <ShortsActions
             onModalToggle={openModal}
-            likeCount={shorts[0].statistics.likeCount}
-            commentCount={shorts[0].statistics.commentCount}
+            likeCount={shorts.statistics.likeCount}
+            commentCount={shorts.statistics.commentCount}
           />
         </div>
       </div>
@@ -56,8 +54,8 @@ export default function ShortsPlayer({ shorts, shortId, ownerId }: ShortProps) {
         {modal === 'comment' && (
           <CommentModal
             onClose={closeModal}
-            shortId={shortId}
-            ownerId={ownerId}
+            shortId={shorts.id}
+            ownerId={shorts.snippet.channelId}
           />
         )}
         {modal === 'share' && <ShareModal onClose={closeModal} />}
