@@ -8,6 +8,7 @@ import { IShortDetail } from '@/app/utils/type';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { GrFormPreviousLink } from 'react-icons/gr';
 
 interface Props {
   params: { shortId?: string };
@@ -78,11 +79,15 @@ export default function Page({ params }: Props) {
           <ShortsPlayer shorts={data.items[currentIndex]} />
         </div>
         <div className={styles.shorts__controls}>
-          <button type="button" className={styles.next} onClick={handleNext}>
-            Up
-          </button>
           <button type="button" className={styles.prev} onClick={handlePrev}>
-            Down
+            <GrFormPreviousLink
+              style={{ transform: 'rotate(90deg)', width: 36, height: 36 }}
+            />
+          </button>
+          <button type="button" className={styles.next} onClick={handleNext}>
+            <GrFormPreviousLink
+              style={{ transform: 'rotate(270deg)', width: 36, height: 36 }}
+            />
           </button>
         </div>
       </div>

@@ -19,16 +19,19 @@
 .shorts__controls {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  gap: 0.875rem;
+
   height: 100%;
-  position: relative;
 }
 
-.next {
-  position: absolute;
-  top: 1rem;
-}
-
+.next,
 .prev {
-  position: absolute;
-  bottom: 1rem;
+  width: 3vw;
+  height: 3vw;
+  border: 1px solid #282828;
+  border-radius: 100%;
+
+  background-color: #181818;
+  color: #f1f1f1;
 }
