@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { formatNumber } from '../../utils/formatNumber';
 import style from './shortsActions.module.css';
 
@@ -22,13 +22,13 @@ export default function ShortsActions({
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCounter, setLikeCounter] = useState<number>(likeCount);
 
-  const handleLikeCount = () => {
-    if (liked) {
-      setLikeCounter(prev => prev + 1);
-    } else {
-      setLikeCounter(prev => prev - 1);
-    }
+  useEffect(() => {
+    setLikeCounter(likeCount);
+    setLiked(false);
+  }, [likeCount]);
 
+  const handleLikeCount = () => {
+    setLikeCounter(prev => (liked ? prev - 1 : prev + 1));
     setLiked(prev => !prev);
   };
 
