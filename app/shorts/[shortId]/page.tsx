@@ -25,7 +25,6 @@ async function fetchShorts() {
 
 export default function Page({ params }: Props) {
   const { shortId } = useParams<{ shortId: string }>();
-  console.log(shortId);
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
 

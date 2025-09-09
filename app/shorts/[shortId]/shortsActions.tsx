@@ -32,7 +32,6 @@ export default function ShortsActions({
     setLiked(prev => !prev);
   };
 
-  console.log(likeCounter);
   return (
     <form className={style.actions__container}>
       <button
