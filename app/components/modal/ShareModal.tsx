@@ -1,6 +1,7 @@
 import styles from './ShareModal.module.css';
 
 export default function ShareModal({ onClose }: { onClose: () => void }) {
+  console.log(window.location.href);
   return (
     <div className={styles.modal__panel}>
       <div className={styles.modal__header}>
@@ -13,10 +14,15 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
           X
         </button>
       </div>
-      <div className={styles.share__content}>
-        <input className={styles.share__input} type="url" />
+      <label className={styles.share__content}>
+        <input
+          className={styles.share__input}
+          defaultValue={window.location.href as string}
+          readOnly={true}
+          type="url"
+        />
         <button type="button">복사</button>
-      </div>
+      </label>
     </div>
   );
 }
