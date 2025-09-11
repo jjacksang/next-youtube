@@ -17,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <Header />
+        <header className={style.header}>
+          <Header />
+        </header>
         <main className={style.main} id="main" role="main">
           <Searchbar />
           <Suspense>{children}</Suspense>

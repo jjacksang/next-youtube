@@ -10,9 +10,9 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { GrFormPreviousLink } from 'react-icons/gr';
 
-interface Props {
-  params: { shortId?: string };
-}
+// interface Props {
+//   params: { shortId?: string };
+// }
 
 async function fetchShorts() {
   const res = await fetch(
@@ -23,7 +23,7 @@ async function fetchShorts() {
   return res.json();
 }
 
-export default function Page({ params }: Props) {
+export default function Page() {
   const { shortId } = useParams<{ shortId: string }>();
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);

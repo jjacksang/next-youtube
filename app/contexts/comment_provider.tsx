@@ -31,7 +31,7 @@ export const CommentProvider = ({
   if (status === 'error') {
     const err = error as { code?: number; message?: string };
 
-    console.log(err.code);
+    console.log(err.message);
 
     if (err?.code === 403) {
       return (

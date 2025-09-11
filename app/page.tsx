@@ -5,17 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
 
+interface IDeveloperId {
+  name: string;
+  key: string;
+}
+
 const developerChannelId: IDeveloperId[] = [
   { name: '이정환', key: 'UCn7yFtl60fQsRtEaoyuzFUg' },
   { name: 'Dave Gray', key: 'UCY38RvRIxYODO4penyxUwTg' },
   { name: 'webdecoded', key: 'UCObrjoZZJSjznfCO5Vx9qUQ' },
   { name: '코딩알려주는누나', key: 'UCfBvs0ZJdTA43NQrnI9imGA' },
 ];
-
-interface IDeveloperId {
-  name: string;
-  key: string;
-}
 
 export default async function Home() {
   const channelDataPromises = developerChannelId.map(async channel => {
@@ -68,7 +68,7 @@ export default async function Home() {
               (v): v is IEnrichedVideo => 'viewCount' in v,
             );
             return (
-              <DeverloperVideo
+              <DeverloperChannel
                 channelInfo={videoInfo}
                 key={`youtuber.${idx}`}
               />
@@ -101,7 +101,7 @@ export default async function Home() {
   );
 }
 
-async function DeverloperVideo({
+async function DeverloperChannel({
   channelInfo,
 }: {
   channelInfo: IEnrichedVideo[];

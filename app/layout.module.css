@@ -6,3 +6,17 @@
 
   height: 100%;
 }
+
+@media (max-width: 1024px) {
+  .header {
+    display: none !important;
+  }
+
+  .main {
+    max-width: 1024px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+  }
+}

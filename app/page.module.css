@@ -12,6 +12,7 @@
   overflow-x: hidden;
 
   padding-top: 12px;
+  gap: 1rem;
 }
 
 .youtuber__profile {
@@ -49,4 +50,21 @@
 
 .swiper__h2 {
   margin: 1.325rem 0px 0.275rem 0px;
+}
+
+@media (max-width: 1024px) {
+  .swiper__section > section {
+    position: relative;
+    overflow-x: hidden;
+  }
+  .youtuber {
+    gap: 3.4rem;
+  }
+
+  .youtuber__img {
+    cursor: pointer;
+
+    width: 128px;
+    height: 128px;
+  }
 }
