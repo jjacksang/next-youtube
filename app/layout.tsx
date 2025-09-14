@@ -32,4 +32,9 @@ export default function RootLayout({
 export const metadata: Metadata = {
   title: 'Choptube Project',
   description: 'Choptube에 오신걸 환영합니다.',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };

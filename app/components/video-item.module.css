@@ -75,6 +75,11 @@
   color: #666;
   font-size: 0.875rem;
   font-weight: bold;
+
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .content__title {
@@ -93,9 +98,23 @@
   display: flex;
   flex-direction: row;
   color: #666;
+
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .info__container {
   display: flex;
   flex-direction: row;
 }
+
+/* @media (max-width: 1200px) {
+  .content__author {
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+} */
