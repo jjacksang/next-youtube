@@ -27,3 +27,36 @@
 
   font-size: 1rem;
 }
+
+@media (max-width: 1400px) {
+  .video {
+    display: grid;
+    grid-template-columns: repeat(3, 32%);
+    justify-items: center;
+    grid-gap: 15px;
+
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .video {
+    display: grid;
+    grid-template-columns: repeat(2, 48%);
+    justify-items: center;
+    grid-gap: 15px;
+
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .video {
+    display: grid;
+    grid-template-columns: repeat(1, 100%);
+    justify-items: center;
+    grid-gap: 15px;
+
+    width: 100%;
+  }
+}
