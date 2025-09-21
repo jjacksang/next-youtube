@@ -1,0 +1,63 @@
+.youtube__logo {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  /* left: 1.25rem; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 배경 (붉은 직사각형) */
+.youtube__logo::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 28px; /* 높이 32px */
+  background: #ff0000;
+  /* border-radius: 12px 6px 12px 6px; */
+  border-radius: 6px;
+  animation: bgFill 0.8s ease-out forwards;
+}
+
+/* 플레이 버튼 */
+.play {
+  position: relative;
+  width: 0;
+  height: 0;
+  left: 0.125rem;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 16px solid white;
+  border-radius: 3px;
+  opacity: 0;
+  animation: drawPlay 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+/* 애니메이션 정의 */
+@keyframes bgFill {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 40px;
+    opacity: 1;
+  }
+}
+
+@keyframes drawPlay {
+  0% {
+    clip-path: polygon(0 0, 0 0, 0 100%);
+    opacity: 0;
+  }
+  50% {
+    clip-path: polygon(0 0, 70% 50%, 0 100%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+    opacity: 1;
+  }
+}

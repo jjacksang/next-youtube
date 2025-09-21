@@ -1,27 +1,28 @@
 .logo {
-    border-bottom: 1px solid #333;
+  border-bottom: 1px solid #333;
 }
 
 .logo > a {
-    display: flex;
-    /* margin: 10px; */
-    padding: 12px 0 18px 10px;
-    color: white;
-    text-decoration-line: none;
+  display: flex;
+  /* margin: 10px; */
+  padding: 12px 0 18px 12px;
+  color: white;
+  text-decoration-line: none;
+  gap: 1rem;
 }
 
 .logo > a > em {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 
-    display: block;
-    background-color: red;
-    margin-right: 10px;
+  display: block;
+  background-color: red;
+  margin-right: 10px;
 }
 
 .logo > a > span {
-    font-size: 20px;
-    line-height: 1;
-    font-weight: 900;
-    text-transform: uppercase;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 900;
+  text-transform: uppercase;
 }
