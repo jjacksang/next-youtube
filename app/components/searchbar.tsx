@@ -4,6 +4,7 @@ import React, { useState, useRef, Suspense } from 'react';
 import style from './searchbar.module.css';
 import { useSearchParams, useRouter } from 'next/navigation';
 import YoutubeLogo from './header/youtube-logo';
+import Link from 'next/link';
 
 export default function Searchbar() {
   return (
@@ -49,7 +50,10 @@ function Search() {
 
   return (
     <form className={style.search__form} onSubmit={onSubmit} role="search">
-      <YoutubeLogo />
+      <Link href={'/'} className={style.link}>
+        <YoutubeLogo />
+      </Link>
+
       <div className={style.search__inner}>
         <label htmlFor="searchInput">
           <span className={style.ir}>검색</span>

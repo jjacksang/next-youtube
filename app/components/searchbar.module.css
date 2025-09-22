@@ -44,3 +44,13 @@
   justify-content: center;
   align-items: center;
 }
+
+.link {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .link {
+    display: block;
+  }
+}

@@ -8,6 +8,12 @@
   align-items: center;
 }
 
+@media (max-width: 1042px) {
+  .youtube__logo {
+    left: 1.5rem;
+  }
+}
+
 /* 배경 (붉은 직사각형) */
 .youtube__logo::before {
   content: '';
