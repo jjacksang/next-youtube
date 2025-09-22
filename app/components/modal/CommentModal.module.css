@@ -48,11 +48,6 @@
   background: transparent;
 }
 
-.close__button {
-  position: absolute;
-  right: 16px;
-}
-
 @keyframes slideIn {
   from {
     transform: translateY(100%);

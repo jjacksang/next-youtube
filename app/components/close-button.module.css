@@ -1,0 +1,12 @@
+.close__button {
+  position: absolute;
+  right: 16px;
+
+  border: 0;
+  background-color: transparent;
+}
+
+.close__button > svg {
+  font-size: 2rem;
+  color: white;
+}
