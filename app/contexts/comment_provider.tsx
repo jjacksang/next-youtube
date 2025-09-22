@@ -2,7 +2,7 @@
 
 import style from './comment_provider.module.css';
 
-import { CommentList } from '../components/commentList';
+import { CommentList } from '../components/comment/commentList';
 import { useCommentInfiniteQuery } from '../hooks/useCommentInfiniteQuery';
 import { TimestampContext } from './timestampContext';
 import { usePlayer } from './player-context';

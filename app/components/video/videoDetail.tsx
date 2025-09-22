@@ -4,13 +4,13 @@ import style from './videoDetail.module.css';
 
 import Link from 'next/link';
 import { CiRead } from 'react-icons/ci';
-import { IVideoDetail } from '../utils/type';
+import { IVideoDetail } from '../../utils/type';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { elapsedTime } from '../utils/elapsedTime';
+import { elapsedTime } from '../../utils/elapsedTime';
 import React from 'react';
-import { usePlayer } from '../contexts/player-context';
-import Description from './description';
+import { usePlayer } from '../../contexts/player-context';
+import Description from '../description';
 
 const ReactYoutubePlayer = dynamic(() => import('react-player'), {
   ssr: false,

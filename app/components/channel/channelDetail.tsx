@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import style from './channelDetail.module.css';
-import { IChannelDetail } from '../utils/type';
-import { formatNumber } from '../utils/formatNumber';
-import { fetchChannelDetails } from '../utils/api';
-import Description from './description';
+import { IChannelDetail } from '../../utils/type';
+import { formatNumber } from '../../utils/formatNumber';
+import { fetchChannelDetails } from '../../utils/api';
+import Description from '../description';
 
 export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
   const channelInfo: IChannelDetail = await fetchChannelDetails({
@@ -42,7 +42,6 @@ export const ChannelDetail = async ({ channelId }: { channelId: string }) => {
         <div>홈</div>
         <div>동영상</div>
         <div>재생목록</div>
-        <div>커뮤니티</div>
         <form>
           <Image src="/search.svg" alt="search" width={24} height={24} />
         </form>

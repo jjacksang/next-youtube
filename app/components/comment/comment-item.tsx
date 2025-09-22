@@ -2,10 +2,10 @@
 
 import { BiLike } from 'react-icons/bi';
 import styles from './comment-item.module.css';
-import { ICommentList } from '../utils/type';
-import { useTimestamp } from '../contexts/timestampContext';
+import { ICommentList } from '../../utils/type';
+import { useTimestamp } from '../../contexts/timestampContext';
 import { useId } from 'react';
-import { useIsOverflowing } from '../hooks/useIsOverflowing';
+import { useIsOverflowing } from '../../hooks/useIsOverflowing';
 
 interface CommentItemProps {
   comment: ICommentList;

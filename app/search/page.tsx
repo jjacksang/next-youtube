@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { fetchYoutubeVideos } from '../utils/api';
 import { processVideoData } from '../utils/process-video-data';
 import { VideoListClient } from './video-list-client';
-import { SkeletonSearch } from '../components/skeleton-search';
+import { SkeletonSearch } from '../components/skeleton/skeleton-search';
 
 export default async function Page({
   searchParams,

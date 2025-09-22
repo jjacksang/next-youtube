@@ -10,7 +10,7 @@ import useSearchInfinietQuery, {
 } from '../hooks/useSearchInfiniteQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import SkeletonGrid from '../components/skeleton-grid';
+import SkeletonGrid from '../components/skeleton/skeleton-grid';
 import NotFound from './not-found';
 
 type YoutubeItems = (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];

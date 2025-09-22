@@ -1,7 +1,7 @@
 import style from './commentList.module.css';
 
-import { ICommentList } from '../utils/type';
-import { elapsedTime } from '../utils/elapsedTime';
+import { ICommentList } from '../../utils/type';
+import { elapsedTime } from '../../utils/elapsedTime';
 import Link from 'next/link';
 import Image from 'next/image';
 import CommentItem from './comment-item';
