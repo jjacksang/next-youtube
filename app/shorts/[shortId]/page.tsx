@@ -17,8 +17,7 @@ async function fetchParamsShorts({ shortId }: { shortId: string }) {
 
   if (!res.ok) throw new Error(`Can't find ${shortId}`);
   const data = await res.json();
-  const hitData = data[0];
-  return hitData;
+  return data;
 }
 
 async function fetchShorts() {
@@ -27,8 +26,9 @@ async function fetchShorts() {
       process.env.NEXT_PUBLIC_YOUTUBE_API_KEY,
   );
   if (!res.ok) throw new Error('Failed to fetch : Shorts');
-  console.log(res.json());
-  return res.json();
+
+  const data = await res.json();
+  return data;
 }
 
 export default function Page() {
@@ -37,7 +37,7 @@ export default function Page() {
   const [currentIndex, setCurrentIndex] = useState<number | null>(0);
 
   const queryFunc = shortId
-    ? () => fetchParamsShorts({ shortId })
+    ? () => fetchParamsShorts({ shortId }).then(() => fetchShorts())
     : () => fetchShorts();
 
   console.log(shortId);
