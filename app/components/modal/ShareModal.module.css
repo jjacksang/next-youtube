@@ -44,7 +44,11 @@
 
 .share__input {
   width: 75%;
-  padding: 4px 0px;
+  padding: 4px 2px;
+  background-color: #181818;
+  color: white;
+
+  user-select: none;
 }
 
 @keyframes slideIn {

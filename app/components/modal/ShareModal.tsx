@@ -22,9 +22,9 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
       <label className={styles.share__content}>
         <input
           className={styles.share__input}
-          defaultValue={window.location.href as string}
+          value={window.location.href as string}
           readOnly={true}
-          type="url"
+          type="text"
         />
         <button
           type="button"
