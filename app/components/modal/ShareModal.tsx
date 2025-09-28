@@ -1,17 +1,8 @@
-import CloseButton from '../close-button';
+import CloseButton from '../button/close-button';
+import CButton from '../button/copy-button';
 import styles from './ShareModal.module.css';
 
 export default function ShareModal({ onClose }: { onClose: () => void }) {
-  const clipBoard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert('클립보드 복사 성공');
-      console.log(text);
-    } catch (error) {
-      console.error('클립보드 복사 실패', error);
-    }
-  };
-
   console.log(window.location.href);
   return (
     <div className={styles.modal__panel}>
@@ -26,12 +17,7 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
           readOnly={true}
           type="text"
         />
-        <button
-          type="button"
-          onClick={() => clipBoard(window.location.href as string)}
-        >
-          복사
-        </button>
+        <CButton text={window.location.href as string} />
       </label>
     </div>
   );

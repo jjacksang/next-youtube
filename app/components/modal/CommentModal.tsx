@@ -1,4 +1,4 @@
-import CloseButton from '../close-button';
+import CloseButton from '../button/close-button';
 import styles from './CommentModal.module.css';
 
 import { CommentProvider } from '@/app/contexts/comment_provider';
