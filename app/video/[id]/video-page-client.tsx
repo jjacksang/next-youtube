@@ -1,8 +1,8 @@
 'use client';
 
+import { VideoDetail } from '@/app/components/video/videoDetail';
 import styles from './video-page-client.module.css';
 
-import { VideoDetail } from '@/app/components/videoDetail';
 import { CommentProvider } from '@/app/contexts/comment_provider';
 import { IVideoDetail } from '@/app/utils/type';
 
