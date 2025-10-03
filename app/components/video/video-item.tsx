@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import style from './video-item.module.css';
 import Image from 'next/image';
-import { elapsedTime } from '../utils/elapsedTime';
-import { IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
-import { formatNumber } from '../utils/formatNumber';
+import { elapsedTime } from '../../utils/elapsedTime';
+import { IEnrichedPlaylist, IEnrichedVideo } from '../../utils/type';
+import { formatNumber } from '../../utils/formatNumber';
 
 interface VideoItemProps {
   video: IEnrichedVideo | IEnrichedPlaylist;
