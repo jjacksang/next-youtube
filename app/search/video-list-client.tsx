@@ -3,7 +3,7 @@
 import style from './video-list-client.module.css';
 
 import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
-import VideoItem from '../components/video-item';
+import VideoItem from '../components/video/video-item';
 import { RecoChannel } from '../components/reco-channel';
 import useSearchInfinietQuery, {
   InitialYoutubeData,

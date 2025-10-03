@@ -27,13 +27,13 @@ export const VideoDetail = ({
   videoDetail: IVideoDetailProps;
   channelThumbnail: string;
 }) => {
-  const playerRef = usePlayer();
+  const { playerRef, playerContainerRef } = usePlayer();
 
   return (
     <section className={style.videoViewPage}>
       {videoDetail && (
         <div className={style.video__view}>
-          <div className={style.video__play}>
+          <div className={style.video__play} ref={playerContainerRef}>
             <ReactYoutubePlayer
               ref={playerRef}
               playing={true}

@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { Navigation, Pagination } from 'swiper/modules';
 
-import VideoItem from '../video-item';
+import VideoItem from '../video/video-item';
 
 interface IVideoSwiperProps {
   videos: (IEnrichedVideo | IEnrichedPlaylist | IChannel)[];
