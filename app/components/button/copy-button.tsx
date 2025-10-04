@@ -1,6 +1,6 @@
 import style from './copy-button.module.css';
 
-export default function CButton({ text }: { text: string }) {
+export default function CButton() {
   const clipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
