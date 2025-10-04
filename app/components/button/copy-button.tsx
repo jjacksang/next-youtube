@@ -1,11 +1,11 @@
 import style from './copy-button.module.css';
 
-export default function CButton() {
-  const clipBoard = async (text: string) => {
+export default function CButton({ url }: { url: string }) {
+  const clipBoard = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(url);
       alert('클립보드 복사 성공');
-      console.log(text);
+      console.log(url);
     } catch (error) {
       console.error('클립보드 복사 실패', error);
     }
@@ -15,7 +15,7 @@ export default function CButton() {
     <button
       className={style.copy__button}
       type="button"
-      onClick={() => clipBoard(window.location.href as string)}
+      onClick={() => clipBoard(url)}
     >
       복사
     </button>

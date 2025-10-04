@@ -17,7 +17,7 @@ export default function ShareModal({ onClose }: { onClose: () => void }) {
           readOnly={true}
           type="text"
         />
-        <CButton text={window.location.href as string} />
+        <CButton url={window.location.href as string} />
       </label>
     </div>
   );
