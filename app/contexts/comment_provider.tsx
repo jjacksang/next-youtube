@@ -23,7 +23,7 @@ export const CommentProvider = ({
   const playerRef = usePlayer();
 
   const handleClick = (seconds: number) => {
-    playerRef.current?.seekTo(seconds, 'seconds');
+    playerRef.playerRef.current?.seekTo(seconds, 'seconds');
   };
 
   console.log(error);

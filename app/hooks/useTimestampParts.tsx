@@ -9,12 +9,15 @@ export function useTimestampParts(text: string) {
   return text.split(timeRegex).map((part, index) => {
     if (timeRegex.test(part)) {
       const seconds = parseTimeToSeconds(part);
+
+      console.log(seconds);
       return (
         <button
           key={index}
           // className={styles.timestamp}
           onClick={() => {
             onTimestampClick(seconds);
+            console.log('onClick event', seconds);
             setTimeout(() => {
               focusPlayer();
             }, 0);

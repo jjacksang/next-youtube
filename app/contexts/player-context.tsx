@@ -24,6 +24,7 @@ export const PlayerProvider = ({ children }: { children: React.ReactNode }) => {
     if (!el) return;
 
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
     // if (playerRef.current) {
     //   playerRef.current
     //     .getInternalPlayer()

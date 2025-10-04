@@ -36,6 +36,9 @@ export const VideoDetail = ({
           <div className={style.video__play} ref={playerContainerRef}>
             <ReactYoutubePlayer
               ref={playerRef}
+              onReady={() => {
+                console.log('Player ready: ', playerRef.current);
+              }}
               playing={true}
               controls
               url={`https://www.youtube.com/watch?v=${videoDetail.items[0].id}`}
