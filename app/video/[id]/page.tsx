@@ -1,5 +1,6 @@
 import { fetchChannelDetails, fetchVideoDetails } from '@/app/utils/api';
 import ClientWrapper from './clientWrapper';
+import { parseJson } from '@/app/utils/fetcher';
 
 export function generateMetadata() {
   return {
@@ -16,8 +17,8 @@ export default async function Page({
 
   console.log(id);
 
-  const videoDetails = await fetchVideoDetails({ id });
-  console.log(videoDetails);
+  const response = await fetchVideoDetails({ ids: [id] });
+  const videoDetails = await parseJson(response);
 
   const channelDetails = await fetchChannelDetails({
     id: videoDetails.items[0].snippet.channelId,

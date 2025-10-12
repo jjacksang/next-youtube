@@ -1,11 +1,23 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import { IVideoDetail } from './type';
+import { clientFetcher, serverFetcher } from './fetcher';
 
 const apiKey = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string;
 const apiUrl = process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string;
 
-interface IfetchProps {
-  q: string;
-  maxResults: number;
+type YoutubeOrderType =
+  | 'date'
+  | 'rating'
+  | 'relevance'
+  | 'title'
+  | 'videoCount'
+  | 'viewCount';
+
+interface IFetchProps {
+  q?: string;
+  order?: YoutubeOrderType;
+  maxResults?: number;
+  channelId?: string;
   nextPageToken?: string;
 }
 
@@ -17,36 +29,59 @@ interface IFetchOptions extends RequestInit {
   };
 }
 
-export const fetchYoutubeVideos = async (
-  { q, maxResults, nextPageToken }: IfetchProps,
+// try {
+//   const response = await fetch(baseUrl, options);
+
+//   if (!response.ok) {
+//     const errorBody = await response.text();
+//     console.error(
+//       `Fetch Youtube video is failed : ${response.status} ${response.statusText} - Body: ${errorBody}`,
+//     );
+//     throw new Error(
+//       `Failed to fetch youtube videos : ${response.status} ${response.statusText}`,
+//     );
+//   }
+
+//   return response;
+// } catch (error) {
+//   console.log('Fetch videos Error', error);
+//   throw error;
+// }
+
+export const fetchYoutubeVideos = (
+  {
+    q,
+    maxResults = 24,
+    nextPageToken,
+    channelId,
+    order = 'relevance',
+  }: IFetchProps,
   options?: IFetchOptions,
 ) => {
   console.log('fetchYoutubeVideos Params :', q, maxResults, nextPageToken);
 
-  let baseUrl = `${apiUrl}/search?part=snippet&order=date&regionCode=KR&maxResults=${maxResults}&q=${q}&key=${apiKey}`;
+  const searchParams = new URLSearchParams({
+    key: apiKey,
+    regionCode: 'KR',
+    type: 'video',
+    part: 'snippet',
+    maxResults: maxResults.toString(),
+    order,
+  });
 
   if (nextPageToken) {
-    baseUrl += `&pageToken=${nextPageToken}`;
+    searchParams.append('nextPageToken', nextPageToken);
   }
 
-  try {
-    const response = await fetch(baseUrl, options);
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error(
-        `Fetch Youtube video is failed : ${response.status} ${response.statusText} - Body: ${errorBody}`,
-      );
-      throw new Error(
-        `Failed to fetch youtube videos : ${response.status} ${response.statusText}`,
-      );
-    }
-
-    return response;
-  } catch (error) {
-    console.log('Fetch videos Error', error);
-    throw error;
+  if (q) {
+    searchParams.append('q', q);
   }
+
+  if (channelId) {
+    searchParams.append('channelId', channelId);
+  }
+
+  return fetch(`${apiUrl}/search?${searchParams.toString()}`, options);
 };
 
 export const fetchShortVideos = async ({ q }: { q?: string }) => {
@@ -85,16 +120,24 @@ export const fetchShortVideos = async ({ q }: { q?: string }) => {
   }
 };
 
-export const fetchVideoDetails = async ({ id }: { id: string }) => {
-  const response = await fetch(
-    `${apiUrl}/videos?part=snippet%2Cstatistics&id=${id}&key=${apiKey}`,
-  );
+interface IFetchVideoDetailsProps {
+  ids: string[];
+}
+interface IFetchVideoDetailsResponse {
+  items: IVideoDetail[];
+}
 
-  if (!response.ok) {
-    throw new Error(`Failed fetch video details: ${response.status}`);
-  } else {
-    return response.json();
+export const fetchVideoDetails = ({ ids }: IFetchVideoDetailsProps) => {
+  const searchParams = new URLSearchParams({ id: ids.join(',') });
+
+  if (typeof window === null) {
+    return serverFetcher<IFetchVideoDetailsResponse>(
+      `${apiUrl}/videos?${searchParams.toString()}`,
+    );
   }
+  return clientFetcher<IFetchVideoDetailsResponse>(
+    `${apiUrl}/videos?${searchParams.toString()}`,
+  );
 };
 
 export const fetchChannelDetails = async ({ id }: { id: string }) => {

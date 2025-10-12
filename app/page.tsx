@@ -4,6 +4,7 @@ import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
+import { fetchYoutubeVideos } from './utils/api';
 
 interface IDeveloperId {
   name: string;
@@ -20,8 +21,9 @@ const developerChannelId: IDeveloperId[] = [
 export default async function Home() {
   const channelDataPromises = developerChannelId.map(async channel => {
     try {
-      const response = await fetch(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}`,
+      // `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}`,
+      const response = await fetchYoutubeVideos(
+        { channelId: channel.key, order: 'date' },
         { cache: 'force-cache' },
       );
 
@@ -68,7 +70,7 @@ export default async function Home() {
               (v): v is IEnrichedVideo => 'viewCount' in v,
             );
             return (
-              <DeverloperChannel
+              <DeveloperChannel
                 channelInfo={videoInfo}
                 key={`youtuber.${idx}`}
               />
@@ -101,7 +103,7 @@ export default async function Home() {
   );
 }
 
-async function DeverloperChannel({
+async function DeveloperChannel({
   channelInfo,
 }: {
   channelInfo: IEnrichedVideo[];
