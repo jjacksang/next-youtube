@@ -1,5 +1,5 @@
 import Header from './components/header/header';
-import Searchbar from './components/searchbar';
+import SearchBar from './components/searchBar';
 import style from './layout.module.css';
 import './globals.css';
 
@@ -21,7 +21,7 @@ export default function RootLayout({
           <Header />
         </header>
         <main className={style.main} id="main" role="main">
-          <Searchbar />
+          <SearchBar />
           <Suspense>{children}</Suspense>
         </main>
       </body>
