@@ -1,3 +1,11 @@
+export type YoutubeOrderType =
+  | 'date'
+  | 'rating'
+  | 'relevance'
+  | 'title'
+  | 'videoCount'
+  | 'viewCount';
+
 export interface Thumbnail {
   url: string;
   width: number;
