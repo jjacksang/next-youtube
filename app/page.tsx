@@ -4,7 +4,7 @@ import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
-import { fetchYoutubeVideos } from './utils/api';
+import { fetchYoutubeVideos } from './services/fetchSearch';
 
 interface IDeveloperId {
   name: string;
@@ -23,7 +23,7 @@ export default async function Home() {
     try {
       // `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}`,
       const response = await fetchYoutubeVideos(
-        { channelId: channel.key, order: 'date' },
+        { channelId: channel.key, order: 'date', maxResults: 12 },
         { cache: 'force-cache' },
       );
 

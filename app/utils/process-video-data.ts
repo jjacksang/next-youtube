@@ -1,10 +1,7 @@
-import { fetchChannelDetails, fetchVideoDetails } from './api';
 import {
   IChannel,
-  IChannelDetail,
   IEnrichedPlaylist,
   IEnrichedVideo,
-  IVideoDetail,
   Playlist,
   Video,
 } from './type';
