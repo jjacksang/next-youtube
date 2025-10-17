@@ -13,6 +13,19 @@ interface YoutubeResponse {
   nextPageToken?: string;
 }
 
+const isVideo = (item: SearchResultItem): item is Video =>
+  item.id?.kind === 'youtube#video' && typeof item.id?.kind === 'string';
+
+const isPlaylist = (item: SearchResultItem): item is Playlist =>
+  item.id?.kind === 'youtube#playlist' &&
+  typeof item.id.playlistId === 'string';
+
+const isChannel = (item: SearchResultItem): item is IChannel =>
+  item.id?.kind === 'youtube#channel' &&
+  typeof item.snippet.channelId === 'string';
+
+function VideoConversion(videos: YoutubeResponse) {}
+
 function getFulfilledItems<T>(
   result: PromiseSettledResult<{ items: T[] | undefined }>,
 ): T[] {
