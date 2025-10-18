@@ -4,7 +4,10 @@ import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
-import { fetchYoutubeVideos } from './services/fetchSearch';
+import { fetchSearchVideos } from './services/fetchSearch';
+import { parseJson } from './utils/fetcher';
+import { fetchVideoDetails } from './services/fetchVideoDetail';
+import { VideoSwiper2 } from './components/swiper/videoSwiper2';
 
 interface IDeveloperId {
   name: string;
@@ -19,53 +22,12 @@ const developerChannelId: IDeveloperId[] = [
 ];
 
 export default async function Home() {
-  const channelDataPromises = developerChannelId.map(async channel => {
-    try {
-      // `https://youtube.googleapis.com/youtube/v3/search?part=snippet&order=date&regionCode=KR&channelId=${channel.key}&maxResults=12&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}`,
-      const response = await fetchYoutubeVideos(
-        { channelId: channel.key, order: 'date', maxResults: 12 },
-        { cache: 'force-cache' },
-      );
-
-      if (!response.ok) {
-        console.error(
-          `Failed to fetch data ${channel.name}, ${response.statusText}`,
-        );
-        return {
-          videoWithViewCount: [],
-          nextPageToken: '',
-        };
-      }
-
-      const result = await response.json();
-      console.log(result);
-
-      const { videoWithViewCount, nextPageToken } =
-        await processVideoData(result);
-
-      return {
-        videoWithViewCount,
-        nextPageToken,
-      };
-    } catch (err) {
-      console.error(`channel promises is failed ${err}`);
-      return {
-        videoWithViewCount: [],
-        nextPageToken: '',
-      };
-    }
-  });
-
-  // 최종 데이터 반환
-  const data = await Promise.all(channelDataPromises);
-  console.log(data);
-
   return (
     <div className={styles.home}>
       <div className={styles.swiper__section}>
         <h2>제작에 참고한 유튜버</h2>
         <section className={styles.youtuber}>
-          {data.map((item, idx: number) => {
+          {/* {data.map((item, idx: number) => {
             const videoInfo = item.videoWithViewCount.filter(
               (v): v is IEnrichedVideo => 'viewCount' in v,
             );
@@ -75,12 +37,20 @@ export default async function Home() {
                 key={`youtuber.${idx}`}
               />
             );
-          })}
+          })} */}
         </section>
       </div>
       <div className={styles.video__list}>
         <section>
-          {data.map((item, idx: number) => (
+          {developerChannelId.map(({ name, key }) => {
+            return (
+              <div key={key}>
+                <h2 className={styles.swiper__h2}>{name}님의 영상목록</h2>
+                <DeveloperSection name={name} id={key} />
+              </div>
+            );
+          })}
+          {/* {data.map((item, idx: number) => (
             <div key={`${developerChannelId[idx].name}님의 영상목록`}>
               <h2
                 className={styles.swiper__h2}
@@ -96,13 +66,48 @@ export default async function Home() {
                 )}
               />
             </div>
-          ))}
+          ))} */}
         </section>
       </div>
     </div>
   );
 }
 
+async function DeveloperSection({ id, name }: { id: string; name: string }) {
+  const response = await fetchSearchVideos(
+    { channelId: id, order: 'date', maxResults: 12 },
+    { cache: 'force-cache' },
+  );
+
+  if (!response.ok) {
+    console.error(`Failed to fetch data ${name}, ${response.statusText}`);
+    return;
+  }
+  const results = await parseJson(response);
+  const ids = results.items.map(({ id }) => id.videoId);
+  const detailResponse = await fetchVideoDetails({ ids });
+  const parsedDetail = await parseJson(detailResponse);
+
+  const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
+    id: id,
+    channelId: snippet.channelId,
+    description: snippet.description,
+    thumbnailUrl: snippet.thumbnails.medium.url,
+    // channelThumbnailUrl: results.,
+    title: snippet.title,
+    channelTitle: snippet.channelTitle,
+    viewCount: statistics.viewCount,
+    publishTime: snippet.publishedAt,
+  }));
+
+  return (
+    <div>
+      <div>
+        <VideoSwiper2 videos={videos} />
+      </div>
+    </div>
+  );
+}
 async function DeveloperChannel({
   channelInfo,
 }: {

@@ -1,11 +1,3 @@
-export type YoutubeOrderType =
-  | 'date'
-  | 'rating'
-  | 'relevance'
-  | 'title'
-  | 'videoCount'
-  | 'viewCount';
-
 export interface Thumbnail {
   url: string;
   width: number;
@@ -162,4 +154,44 @@ export interface ICommentList {
     totalReplyCount: number;
     videoId: string;
   };
+}
+
+interface SearchResource {
+  kind: string;
+  etag: string;
+  id: {
+    kind: string;
+    videoId: string;
+    channelId: string;
+    playlistId: string;
+  };
+  snippet: {
+    publishedAt: number;
+    channelId: string;
+    title: string;
+    description: string;
+    thumbnails: Record<
+      string,
+      {
+        url: string;
+        width: number;
+        height: number;
+      }
+    >;
+    channelTitle: string;
+    liveBroadcastContent: string;
+  };
+}
+
+export interface SearchResponse {
+  kind: 'youtube#searchListResponse';
+  etag: string;
+  nextPageToken: string;
+  prevPageToken: string;
+  regionCode: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  };
+  items: SearchResource[];
 }
