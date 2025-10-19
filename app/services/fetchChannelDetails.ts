@@ -16,7 +16,7 @@ export const fetchChannelDetails = async ({ ids }: IChannelDetailsProps) => {
 
   if (typeof window === null) {
     return serverFetcher<IFetchChannelDetailsResponse>(
-      `${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}/videos?${searchParams.toString()}`,
+      `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string}/videos?${searchParams.toString()}`,
     );
   }
 

@@ -1,6 +1,6 @@
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { fetcher } from '../utils/fetcher';
-import { SearchResponse, Video } from '../utils/type';
+import { SearchResponse } from '../utils/type';
 
 export type YoutubeSearchType = 'video' | 'playlist' | 'channel';
 export type YoutubeOrderType =

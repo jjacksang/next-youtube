@@ -1,4 +1,4 @@
-import { YoutubeOrderType } from '../utils/type';
+import { YoutubeOrderType } from './fetchSearch';
 
 interface IShortVideosProps {
   q?: string;

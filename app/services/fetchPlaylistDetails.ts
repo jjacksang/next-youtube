@@ -18,10 +18,10 @@ export const fetchPlaylistDetails = async ({ ids }: IPlaylistDetailsProps) => {
 
   if (typeof window === null) {
     return serverFetcher<IPlaylistDetailsResponse>(
-      `${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}/playlistItems?${searchParams.toString()}`,
+      `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string}/playlistItems?${searchParams.toString()}`,
     );
   }
   return clientFetcher<IPlaylistDetailsResponse>(
-    `${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string}/playlistItems?${searchParams.toString()}`,
+    `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string}/playlistItems?${searchParams.toString()}`,
   );
 };

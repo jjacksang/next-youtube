@@ -7,14 +7,14 @@ export const parseJson = async <T>(data: FetcherResponse<T>) => {
   return parsedData as T;
 };
 
-const serverFetcher = <T>(
+export const serverFetcher = <T>(
   input: string | URL | Request,
   init?: RequestInit | undefined,
 ) => {
   return fetch(input, init) as Promise<FetcherResponse<T>>;
 };
 
-const clientFetcher = <T>(
+export const clientFetcher = <T>(
   input: string | URL | Request,
   init?: RequestInit | undefined,
 ) => {
