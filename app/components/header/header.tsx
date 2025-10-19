@@ -1,4 +1,3 @@
-'use client';
 import style from './header.module.css';
 
 import Logo from './Logo';
