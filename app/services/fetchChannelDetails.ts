@@ -11,7 +11,9 @@ interface IFetchChannelDetailsResponse {
 
 export const fetchChannelDetails = async ({ ids }: IChannelDetailsProps) => {
   const searchParams = new URLSearchParams({
+    key: process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
     id: ids.join(','),
+    part: 'snippet&statistics',
   });
 
   if (typeof window === null) {
