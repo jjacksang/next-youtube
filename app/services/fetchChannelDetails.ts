@@ -1,4 +1,4 @@
-import { clientFetcher, fetcher, serverFetcher } from '../utils/fetcher';
+import { fetcher } from '../utils/fetcher';
 import { IChannelDetail } from '../utils/type';
 
 interface IChannelDetailsProps {

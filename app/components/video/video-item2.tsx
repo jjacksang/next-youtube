@@ -2,7 +2,6 @@ import Link from 'next/link';
 import style from './video-item.module.css';
 import Image from 'next/image';
 import { elapsedTime } from '../../utils/elapsedTime';
-import { IEnrichedPlaylist, IEnrichedVideo } from '../../utils/type';
 import { formatNumber } from '../../utils/formatNumber';
 
 export interface Video {
@@ -44,6 +43,7 @@ export default function VideoItem2({ video }: VideoItemProps) {
             priority={true}
             width={68}
             height={68}
+            loading="eager"
             src={thumbnailUrl}
           />
         </Link>

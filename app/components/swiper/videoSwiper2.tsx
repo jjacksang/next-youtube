@@ -2,13 +2,10 @@
 
 import style from './videoSwiper.module.css';
 
-import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../../utils/type';
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
 import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
 
-import VideoItem from '../video/video-item';
 import VideoItem2, { Video } from '../video/video-item2';
 
 interface IVideoSwiperProps {
@@ -39,7 +36,11 @@ export const VideoSwiper2 = ({ videos }: IVideoSwiperProps) => {
         direction="horizontal"
       >
         {videos.map(video => (
-          <SwiperSlide className={style.swiper__slide} key={video.id}>
+          <SwiperSlide
+            className={style.swiper__slide}
+            key={video.id}
+            style={{ width: 'auto' }}
+          >
             <VideoItem2 video={video} />
           </SwiperSlide>
         ))}

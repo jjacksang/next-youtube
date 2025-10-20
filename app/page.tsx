@@ -1,13 +1,11 @@
 import styles from './page.module.css';
-import { processVideoData } from './utils/process-video-data';
-import { RecoDeveloper } from './components/reco-developer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IEnrichedPlaylist, IEnrichedVideo } from './utils/type';
 import { fetchSearchVideos } from './services/fetchSearch';
 import { parseJson } from './utils/fetcher';
 import { fetchVideoDetails } from './services/fetchVideoDetail';
 import { VideoSwiper2 } from './components/swiper/videoSwiper2';
+import { fetchChannelDetails } from './services/fetchChannelDetails';
 
 interface IDeveloperId {
   name: string;
@@ -22,22 +20,16 @@ const developerChannelId: IDeveloperId[] = [
 ];
 
 export default async function Home() {
+  const developerChannelIds = developerChannelId.map(data => data.key);
+
+  console.log(developerChannelIds);
+
   return (
     <div className={styles.home}>
       <div className={styles.swiper__section}>
         <h2>제작에 참고한 유튜버</h2>
         <section className={styles.youtuber}>
-          {/* {data.map((item, idx: number) => {
-            const videoInfo = item.videoWithViewCount.filter(
-              (v): v is IEnrichedVideo => 'viewCount' in v,
-            );
-            return (
-              <DeveloperChannel
-                channelInfo={videoInfo}
-                key={`youtuber.${idx}`}
-              />
-            );
-          })} */}
+          <DeveloperChannel ids={developerChannelIds} />
         </section>
       </div>
       <div className={styles.video__list}>
@@ -50,23 +42,6 @@ export default async function Home() {
               </div>
             );
           })}
-          {/* {data.map((item, idx: number) => (
-            <div key={`${developerChannelId[idx].name}님의 영상목록`}>
-              <h2
-                className={styles.swiper__h2}
-                key={`youtube-channel-video-${developerChannelId[idx].name}`}
-              >
-                {developerChannelId[idx].name}님의 영상목록
-              </h2>
-              <RecoDeveloper
-                channelVideos={item.videoWithViewCount.filter(
-                  (v): v is IEnrichedVideo | IEnrichedPlaylist =>
-                    v.id.kind === 'youtube#video' ||
-                    v.id.kind === 'youtube#playlist',
-                )}
-              />
-            </div>
-          ))} */}
         </section>
       </div>
     </div>
@@ -93,7 +68,7 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
     channelId: snippet.channelId,
     description: snippet.description,
     thumbnailUrl: snippet.thumbnails.medium.url,
-    // channelThumbnailUrl: results.,
+    // channelThumbnailUrl: results,
     title: snippet.title,
     channelTitle: snippet.channelTitle,
     viewCount: statistics.viewCount,
@@ -102,33 +77,34 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
 
   return (
     <div>
-      <div>
-        <VideoSwiper2 videos={videos} />
-      </div>
+      <VideoSwiper2 videos={videos} />
     </div>
   );
 }
-async function DeveloperChannel({
-  channelInfo,
-}: {
-  channelInfo: IEnrichedVideo[];
-}) {
-  if (!channelInfo || channelInfo.length === 0) return null;
+async function DeveloperChannel({ ids }: { ids: string[] }) {
+  const response = await fetchChannelDetails({ ids });
 
-  const { channelId, channelThumbnail, channelTitle } = channelInfo[0].snippet;
+  const results = await parseJson(response);
 
+  console.log('RESULTS', results);
   return (
-    <div className={styles.youtuber__profile}>
-      <Link className={styles.tag} href={`/channel/${channelId}`}>
-        <Image
-          className={styles.youtuber__img}
-          src={channelThumbnail as string}
-          alt={channelTitle}
-          width={120}
-          height={120}
-        />
-      </Link>
-      <span>{channelTitle}</span>
-    </div>
+    <>
+      {results.items.map(item => {
+        return (
+          <div className={styles.youtuber__profile}>
+            <Link className={styles.tag} href={`/channel/${item.id}`}>
+              <Image
+                className={styles.youtuber__img}
+                src={item.snippet.thumbnails.default.url as string}
+                alt={item.snippet.description}
+                width={120}
+                height={120}
+              />
+            </Link>
+            <span>{item.snippet.title}</span>
+          </div>
+        );
+      })}
+    </>
   );
 }
