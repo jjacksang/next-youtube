@@ -8,6 +8,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Suspense } from 'react';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 export default function RootLayout({
   children,
@@ -16,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <Script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" />
+      </head>
       <body>
         <header className={style.header}>
           <Header />
