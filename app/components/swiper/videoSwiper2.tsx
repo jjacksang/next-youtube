@@ -35,11 +35,14 @@ export const VideoSwiper2 = ({ videos }: IVideoSwiperProps) => {
         modules={[Navigation, Pagination]}
         direction="horizontal"
       >
-        {videos.map(video => (
+        {videos.map((video, index) => (
           <SwiperSlide
             className={style.swiper__slide}
             key={video.id}
-            style={{ width: 'auto' }}
+            style={{
+              width: 'auto',
+              marginLeft: index === 0 ? '0px' : '16px',
+            }}
           >
             <VideoItem2 video={video} />
           </SwiperSlide>
