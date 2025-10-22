@@ -33,7 +33,7 @@ interface UseSearchInfiniteQueryReturn {
   totalPages: number;
 }
 
-export default function useSearchInfinietQuery(
+export default function useSearchInfiniteQuery(
   searchParams: string,
   initialData: InitialYoutubeData,
 ): UseSearchInfiniteQueryReturn {
