@@ -20,7 +20,7 @@ export default async function Page({
   };
 
   return (
-    <div className={style.contanier}>
+    <div className={style.container}>
       <Suspense
         fallback={
           <div className={style.video}>
