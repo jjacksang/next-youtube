@@ -2,12 +2,7 @@
 
 import style from './video-list-client.module.css';
 
-import {
-  IChannel,
-  IEnrichedPlaylist,
-  IEnrichedVideo,
-  Video,
-} from '../utils/type';
+import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
 import VideoItem from '../components/video/video-item';
 import { RecoChannel } from '../components/reco-channel';
 import useSearchInfiniteQuery, {
@@ -17,6 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import SkeletonGrid from '../components/skeleton/skeleton-grid';
 import NotFound from './not-found';
+import { Video } from '../components/video/video-item2';
 
 interface IVideoProps {
   initialQuery: string;

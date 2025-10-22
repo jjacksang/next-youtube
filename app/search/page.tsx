@@ -43,40 +43,41 @@ async function Search({
 
   console.log('Search Page : ', q);
 
-  try {
-    const response = await fetchSearchVideos({
-      q: q,
-      order: 'date',
-      maxResults: 24,
-    });
-    const results = await parseJson(response);
+  const response = await fetchSearchVideos({
+    q: q,
+    order: 'date',
+    maxResults: 24,
+  });
+  const results = await parseJson(response);
 
-    const ids = results.items.map(({ id }) => id.videoId);
-    const detailResponse = await fetchVideoDetails({ ids });
-    const parsedDetail = await parseJson(detailResponse);
-    const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
-      id: id,
-      channelId: snippet.channelId,
-      description: snippet.description,
-      thumbnailUrl: snippet.thumbnails.medium.url,
-      title: snippet.title,
-      channelTitle: snippet.channelTitle,
-      viewCount: statistics.viewCount,
-      publishTime: snippet.publishedAt,
-    }));
+  const ids = results.items.map(({ id }) => id.videoId);
+  const detailResponse = await fetchVideoDetails({ ids });
+  const parsedDetail = await parseJson(detailResponse);
+  const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
+    id: id,
+    channelId: snippet.channelId,
+    description: snippet.description,
+    thumbnailUrl: snippet.thumbnails.medium.url,
+    title: snippet.title,
+    channelTitle: snippet.channelTitle,
+    viewCount: statistics.viewCount,
+    publishTime: snippet.publishedAt,
+  }));
 
-    return (
-      <VideoListClient
-        initialQuery={q}
-        initialVideos={videos}
-        nextPageToken={results.nextPageToken}
-      />
-    );
-  } catch (error) {
-    console.error('Video Fetching Error', error);
-    if (error instanceof Error) {
-      console.error('Error stack:', error.stack);
-    }
-    return <div>fetching Error</div>;
-  }
+  return (
+    <VideoListClient
+      initialQuery={q}
+      initialVideos={videos}
+      nextPageToken={results.nextPageToken}
+    />
+  );
+  // try {
+
+  // } catch (error) {
+  //   console.error('Video Fetching Error', error);
+  //   if (error instanceof Error) {
+  //     console.error('Error stack:', error.stack);
+  //   }
+  //   return <div>fetching Error</div>;
+  // }
 }
