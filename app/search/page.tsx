@@ -1,10 +1,12 @@
 import style from './page.module.css';
 
 import { Suspense } from 'react';
-import { fetchYoutubeVideos } from '../utils/api';
 import { processVideoData } from '../utils/process-video-data';
 import { VideoListClient } from './video-list-client';
 import { SkeletonSearch } from '../components/skeleton/skeleton-search';
+import { fetchSearchVideos } from '../services/fetchSearch';
+import { parseJson } from '../utils/fetcher';
+import { fetchVideoDetails } from '../services/fetchVideoDetail';
 
 export default async function Page({
   searchParams,
@@ -42,23 +44,32 @@ async function Search({
   console.log('Search Page : ', q);
 
   try {
-    const response = await fetchYoutubeVideos(
-      { q: q, maxResults: 24 },
-      {
-        cache: 'no-store',
-      },
-    );
+    const response = await fetchSearchVideos({
+      q: q,
+      order: 'date',
+      maxResults: 24,
+    });
+    const results = await parseJson(response);
 
-    const searchResults = await response.json();
-
-    const { videoWithViewCount, nextPageToken } =
-      await processVideoData(searchResults);
+    const ids = results.items.map(({ id }) => id.videoId);
+    const detailResponse = await fetchVideoDetails({ ids });
+    const parsedDetail = await parseJson(detailResponse);
+    const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
+      id: id,
+      channelId: snippet.channelId,
+      description: snippet.description,
+      thumbnailUrl: snippet.thumbnails.medium.url,
+      title: snippet.title,
+      channelTitle: snippet.channelTitle,
+      viewCount: statistics.viewCount,
+      publishTime: snippet.publishedAt,
+    }));
 
     return (
       <VideoListClient
         initialQuery={q}
-        initialVideos={videoWithViewCount}
-        nextPageToken={nextPageToken}
+        initialVideos={videos}
+        nextPageToken={results.nextPageToken}
       />
     );
   } catch (error) {
