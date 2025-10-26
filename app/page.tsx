@@ -59,21 +59,39 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
     return;
   }
   const results = await parseJson(response);
+  // video id목록 추출 후 detail 요청
   const ids = results.items.map(({ id }) => id.videoId);
   const detailResponse = await fetchVideoDetails({ ids });
   const parsedDetail = await parseJson(detailResponse);
+
+  // channel id목록 추출 후 thumbnails 요청
+  const channelIds = parsedDetail.items.map(id => id.snippet.channelId);
+  const channelDetailsResponse = await fetchChannelDetails({ channelIds });
+  const parsedChannelDetails = await parseJson(channelDetailsResponse);
+
+  const channelThumbnailMap = parsedChannelDetails.items.reduce(
+    (acc, { id, snippet }) => {
+      acc[id] = snippet.thumbnails.default.url ?? null;
+      return acc;
+    },
+    {} as Record<string, string | null>,
+  );
+
+  console.log(channelThumbnailMap);
 
   const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
     id: id,
     channelId: snippet.channelId,
     description: snippet.description,
     thumbnailUrl: snippet.thumbnails.medium.url,
-    // channelThumbnailUrl: results,
+    channelThumbnailUrl: channelThumbnailMap[snippet.channelId] ?? null,
     title: snippet.title,
     channelTitle: snippet.channelTitle,
     viewCount: statistics.viewCount,
     publishTime: snippet.publishedAt,
   }));
+
+  console.log(videos);
 
   return (
     <div>
@@ -82,8 +100,7 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
   );
 }
 async function DeveloperChannel({ ids }: { ids: string[] }) {
-  const response = await fetchChannelDetails({ ids });
-
+  const response = await fetchChannelDetails({ channelIds: ids });
   const results = await parseJson(response);
 
   console.log('RESULTS', results);

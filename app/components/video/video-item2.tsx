@@ -9,7 +9,7 @@ export interface Video {
   channelId: string;
   description: string;
   thumbnailUrl: string;
-  // channelThumbnailUrl: string;
+  channelThumbnailUrl: string | null;
   title: string;
   channelTitle: string;
   viewCount: number;
@@ -26,7 +26,7 @@ export default function VideoItem2({ video }: VideoItemProps) {
     channelId,
     description,
     thumbnailUrl,
-    // channelThumbnailUrl,
+    channelThumbnailUrl,
     title,
     channelTitle,
     viewCount,
@@ -50,14 +50,14 @@ export default function VideoItem2({ video }: VideoItemProps) {
       </div>
       <div className={style.info__container}>
         <div className={style.channel__img}>
-          {/* <Link href={`/channel/${channelId}`}>
+          <Link href={`/channel/${channelId}`}>
             <Image
-              src={channelThumbnailUrl}
+              src={channelThumbnailUrl!}
               alt={description}
               width={40}
               height={40}
             />
-          </Link> */}
+          </Link>
         </div>
         <div className={style.info__content}>
           <h3 className={style.content__title}>{title}</h3>
