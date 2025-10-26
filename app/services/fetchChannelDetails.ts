@@ -1,6 +1,8 @@
 import { fetcher } from '../utils/fetcher';
 import { IChannelDetail } from '../utils/type';
 
+// channel Detail의 경우 id값이 여러 개 들어가도 중복이 있으면 한개만 반환함
+
 interface IChannelDetailsProps {
   ids: string[];
 }
