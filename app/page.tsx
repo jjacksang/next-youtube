@@ -77,7 +77,6 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
     {} as Record<string, string | null>,
   );
 
-  console.log(channelThumbnailMap);
 
   const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
     id: id,
@@ -95,7 +94,7 @@ async function DeveloperSection({ id, name }: { id: string; name: string }) {
 
   return (
     <div>
-      <VideoSwiper2 videos={videos} />
+      <VideoSwiper2 videos={videos} nextPageToken={results.nextPageToken}/>
     </div>
   );
 }
