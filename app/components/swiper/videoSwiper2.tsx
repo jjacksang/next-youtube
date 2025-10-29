@@ -10,6 +10,7 @@ import VideoItem2, { Video } from '../video/video-item2';
 
 interface IVideoSwiperProps {
   videos: Video[];
+  nextPageToken: string;
 }
 
 export const VideoSwiper2 = ({ videos }: IVideoSwiperProps) => {

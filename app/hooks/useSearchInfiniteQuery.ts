@@ -40,12 +40,12 @@ export default function useSearchInfiniteQuery(
   const existingVideoIds = useRef<Set<string>>(new Set());
 
   const initialFilteredVideos: (IEnrichedVideo | IEnrichedPlaylist)[] = [];
-  const initailFilteredChannels: IChannel[] = [];
+  const initialFilteredChannels: IChannel[] = [];
 
   if (initialData?.items) {
     for (const item of initialData.items) {
       if (item.id.kind === 'youtube#channel') {
-        initailFilteredChannels.push(item as IChannel);
+        initialFilteredChannels.push(item as IChannel);
       } else {
         const id =
           item.id.kind === 'youtube#video'
