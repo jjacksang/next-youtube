@@ -74,18 +74,37 @@ export default function useSearchInfiniteQuery2(
         {} as Record<string, string | null>,
       );
 
-      const videos = parsedDetail.items.map(({ id, snippet, statistics }) => ({
-        id: id,
-        channelId: snippet.channelId,
-        description: snippet.description,
-        thumbnailUrl: snippet.thumbnails.medium.url,
-        channelThumbnailUrl: channelThumbnailMap[snippet.channelId] ?? null,
-        title: snippet.title,
-        channelTitle: snippet.channelTitle,
-        viewCount: statistics.viewCount,
-        publishTime: snippet.publishedAt,
-      }));
-      return { videos, nextPageToken: results.nextPageToken };
+      type SearchVideos = {
+        id: string;
+        channelId: string;
+        description: string;
+        thumbnailUrl: string;
+        channelThumbnailUrl: string | null;
+        title: string;
+        channelTitle: string;
+        viewCount: number;
+        publishTime: string;
+      };
+
+      const searchVideos: SearchVideos[] = [];
+
+      const videos: SearchVideos[] = parsedDetail.items.map(
+        ({ id, snippet, statistics }) => ({
+          id: id,
+          channelId: snippet.channelId,
+          description: snippet.description,
+          thumbnailUrl: snippet.thumbnails.medium.url,
+          channelThumbnailUrl: channelThumbnailMap[snippet.channelId] ?? null,
+          title: snippet.title,
+          channelTitle: snippet.channelTitle,
+          viewCount: statistics.viewCount,
+          publishTime: snippet.publishedAt,
+        }),
+      );
+
+      searchVideos.push(...videos);
+
+      return { videos: searchVideos, nextPageToken: results.nextPageToken };
     },
     getNextPageParam: lastPage => lastPage.nextPageToken ?? undefined,
     initialPageParam: undefined,
@@ -104,7 +123,7 @@ export default function useSearchInfiniteQuery2(
     gcTime: 30 * 60 * 1000,
   });
 
-  const videos = data.pages.flatMap(page => page.videos);
+  const videos = data?.pages?.flatMap(page => page.videos);
 
   return {
     videos,
