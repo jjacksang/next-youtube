@@ -56,6 +56,8 @@ export default function useSearchInfiniteQuery2(
       });
 
       const results = await parseJson(response);
+      console.log(results);
+
       // video id목록 추출 후 detail 요청
       const ids = results.items.map(({ id }) => id.videoId);
       const detailResponse = await fetchVideoDetails({ ids });
@@ -86,10 +88,8 @@ export default function useSearchInfiniteQuery2(
         publishTime: string;
       };
 
-      const searchVideos: SearchVideos[] = [];
-
-      const videos: SearchVideos[] = parsedDetail.items.map(
-        ({ id, snippet, statistics }) => ({
+      return {
+        videos: parsedDetail.items.map(({ id, snippet, statistics }) => ({
           id: id,
           channelId: snippet.channelId,
           description: snippet.description,
@@ -99,15 +99,12 @@ export default function useSearchInfiniteQuery2(
           channelTitle: snippet.channelTitle,
           viewCount: statistics.viewCount,
           publishTime: snippet.publishedAt,
-        }),
-      );
-
-      searchVideos.push(...videos);
-
-      return { videos: searchVideos, nextPageToken: results.nextPageToken };
+        })),
+        nextPageToken: results.nextPageToken,
+      };
     },
-    getNextPageParam: lastPage => lastPage.nextPageToken ?? undefined,
-    initialPageParam: undefined,
+    getNextPageParam: lastPage => lastPage.nextPageToken || undefined,
+    initialPageParam: initialVideos.nextPageToken,
     initialData: initialVideos
       ? {
           pages: [

@@ -60,8 +60,6 @@ const fetchYoutubeSearch = <T>(
     searchParams.append('channelId', channelId);
   }
 
-  console.log(searchParams);
-
   return fetcher<T>(
     `${process.env.NEXT_PUBLIC_YOUTUBE_API_URL as string}/search?${searchParams.toString()}`,
     options,

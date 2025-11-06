@@ -2,12 +2,8 @@
 
 import style from './video-list-client.module.css';
 
-import { IChannel, IEnrichedPlaylist, IEnrichedVideo } from '../utils/type';
 import VideoItem from '../components/video/video-item';
 import { RecoChannel } from '../components/reco-channel';
-import useSearchInfiniteQuery, {
-  InitialYoutubeData,
-} from '../hooks/useSearchInfiniteQuery';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import SkeletonGrid from '../components/skeleton/skeleton-grid';
@@ -21,26 +17,14 @@ interface IVideoProps {
   nextPageToken: string;
 }
 
-// function getVideoOrPlaylistKey(
-//   item: IEnrichedVideo | IEnrichedPlaylist,
-// ): string {
-//   if (item.id.kind === 'youtube#video') return item.id.videoId;
-//   if (item.id.kind === 'youtube#playlist') return item.id.playlistId;
-//   return '';
-// }
-
 export const VideoListClient = ({
   initialQuery,
   initialVideos,
   nextPageToken,
 }: IVideoProps) => {
   const initialData = { items: initialVideos, nextPageToken: nextPageToken };
-  console.log(initialVideos);
-  // const initialData: InitialYoutubeData = {
-  //   items: initialVideos,
-  //   nextPageToken: nextPageToken,
-  // };
 
+  const searchVideos: Video[] = [...initialVideos];
   // // 무한스크롤 감지
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -60,10 +44,14 @@ export const VideoListClient = ({
   const { status, videos, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSearchInfiniteQuery2(initialQuery, initialData);
 
+  console.log(videos);
+
   // // intersection observer 감지
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage && status === 'success') {
       fetchNextPage();
+
+      searchVideos.push(...videos);
     }
   }, [inView, hasNextPage, isFetchingNextPage, status, fetchNextPage]);
 
@@ -84,7 +72,7 @@ export const VideoListClient = ({
         </>
       )}
       <div className={style.video} key="video-list">
-        {initialVideos.map(item => (
+        {searchVideos.map(item => (
           <VideoItem key={item.title} video={item} />
         ))}
       </div>
