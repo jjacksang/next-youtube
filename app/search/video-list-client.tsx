@@ -3,7 +3,7 @@
 import style from './video-list-client.module.css';
 
 import VideoItem from '../components/video/video-item';
-import { RecoChannel } from '../components/reco-channel';
+// import { RecoChannel } from '../components/reco-channel';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import SkeletonGrid from '../components/skeleton/skeleton-grid';
@@ -24,22 +24,11 @@ export const VideoListClient = ({
 }: IVideoProps) => {
   const initialData = { items: initialVideos, nextPageToken: nextPageToken };
 
-  const searchVideos: Video[] = [...initialVideos];
   // // 무한스크롤 감지
   const [ref, inView] = useInView({
     threshold: 0.1,
     triggerOnce: false,
   });
-
-  // const {
-  //   status,
-  //   allVideos,
-  //   allChannels,
-  //   fetchNextPage,
-  //   hasNextPage,
-  //   isFetchingNextPage,
-  // } = useSearchInfiniteQuery(initialQuery, initialData);
-  // console.log('REACT QUERY ACTIVE : ', { ...allChannels, ...allVideos });
 
   const { status, videos, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSearchInfiniteQuery2(initialQuery, initialData);
@@ -50,8 +39,6 @@ export const VideoListClient = ({
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage && status === 'success') {
       fetchNextPage();
-
-      searchVideos.push(...videos);
     }
   }, [inView, hasNextPage, isFetchingNextPage, status, fetchNextPage]);
 
@@ -72,7 +59,7 @@ export const VideoListClient = ({
         </>
       )}
       <div className={style.video} key="video-list">
-        {searchVideos.map(item => (
+        {videos.map(item => (
           <VideoItem key={item.title} video={item} />
         ))}
       </div>

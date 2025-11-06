@@ -76,18 +76,6 @@ export default function useSearchInfiniteQuery2(
         {} as Record<string, string | null>,
       );
 
-      type SearchVideos = {
-        id: string;
-        channelId: string;
-        description: string;
-        thumbnailUrl: string;
-        channelThumbnailUrl: string | null;
-        title: string;
-        channelTitle: string;
-        viewCount: number;
-        publishTime: string;
-      };
-
       return {
         videos: parsedDetail.items.map(({ id, snippet, statistics }) => ({
           id: id,
