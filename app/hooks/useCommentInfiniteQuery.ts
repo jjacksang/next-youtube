@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { fetchCommentList } from '../utils/api';
 import { ICommentList } from '../utils/type';
+import { fetchCommentList } from '../services/fetchComments';
 
 export const useCommentInfiniteQuery = ({
   id,
@@ -19,7 +19,12 @@ export const useCommentInfiniteQuery = ({
   const { status, data, isFetching, fetchNextPage, hasNextPage, error } =
     useInfiniteQuery({
       queryFn: async ({ pageParam }) => {
-        const res = await fetchCommentList({ id: id, pageToken: pageParam });
+        const res = await fetchCommentList({
+          id: id,
+          pageToken: pageParam,
+          maxResults: 50,
+          order: 'date',
+        });
         const data = await res.json();
         if (data.error?.code) {
           throw data.error;
